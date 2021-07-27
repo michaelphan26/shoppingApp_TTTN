@@ -1,17 +1,13 @@
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Alert, Text, View } from 'react-native';
-import Button from '../../../common/ui/base/button';
 import {
   NormalTextInput,
   PasswordTextInput,
 } from '../../../common/ui/base/textInput';
 import styles from '../../../common/ui/base/textInput/style';
 import { SmallText } from '../../../common/ui/base/errorText';
-import {
-  LargeText,
-  LargeTextTouchable,
-} from '../../../common/ui/base/touchableText';
+import { LargeTextTouchable } from '../../../common/ui/base/touchableText';
 import AuthLayout from '../../../common/ui/layout/authLayout';
 import axios from 'axios';
 import { api_url } from '../../../common/util/constant';
@@ -23,6 +19,7 @@ import { useDispatch } from 'react-redux';
 import { accountLogin } from '../../../models/accountReducer';
 import { emailReg } from '../../../common/util/common';
 import { SmallCardView } from '../../../common/ui/base/cardView';
+import { BlueButton } from '../../../common/ui/base/button';
 
 interface LoginInfo {
   email: string;
@@ -64,7 +61,8 @@ const Login = () => {
             res.headers['x-auth-token']
           );
           dispatch(accountLogin(res.data['data']));
-          Actions.push('menu');
+          Actions.pop();
+          Actions.push('profile');
         }
       })
       .catch((err) =>
@@ -97,6 +95,7 @@ const Login = () => {
               iconName="at"
               onTextChange={onChange}
               value={value}
+              editable={true}
             />
           )}
           name="email"
@@ -122,8 +121,15 @@ const Login = () => {
         />
         {errors.password && <SmallText title="Mật khẩu có độ dài 8-30 kí tự" />}
 
-        <Button title="Đăng nhập" pressed={handleSubmit(handleLoginPress)} />
+        <BlueButton
+          title="Đăng nhập"
+          pressed={handleSubmit(handleLoginPress)}
+        />
         <LargeTextTouchable title="Đăng ký" pressed={handleRegisterPress} />
+        <LargeTextTouchable
+          title="Trở về trang chủ"
+          pressed={() => Actions.pop()}
+        />
       </SmallCardView>
     </AuthLayout>
   );

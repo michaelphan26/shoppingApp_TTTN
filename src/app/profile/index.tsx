@@ -6,8 +6,8 @@ import { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Alert, Text, View } from 'react-native';
 import { Actions } from 'react-native-router-flux';
-import { useSelector } from 'react-redux';
-import Button, { BlueButton } from '../../common/ui/base/button';
+import { useDispatch, useSelector } from 'react-redux';
+import { BlueButton } from '../../common/ui/base/button';
 import PinkButton from '../../common/ui/base/button/pinkButton';
 import { LargeCardView } from '../../common/ui/base/cardView';
 import { SmallText } from '../../common/ui/base/errorText';
@@ -18,6 +18,7 @@ import {
 } from '../../common/ui/base/touchableText';
 import AuthLayout from '../../common/ui/layout/authLayout';
 import { api_url } from '../../common/util/constant';
+import { accountLogout } from '../../models/accountReducer';
 import { RootState } from '../../models/store';
 import styles from './styles';
 
@@ -42,11 +43,12 @@ const Profile = (props: Props) => {
     phone: '',
     address: '',
   });
+  const dispatch = useDispatch();
 
-  const setFormValue = () => {
-    setValue('name', userInfo.name);
-    setValue('phone', userInfo.phone);
-    setValue('address', userInfo.address);
+  const setFormValue = (userDetail: UserInfo) => {
+    setValue('name', userDetail.name);
+    setValue('phone', userDetail.phone);
+    setValue('address', userDetail.address);
   };
 
   async function getUserInfo(token: string) {
@@ -60,9 +62,9 @@ const Profile = (props: Props) => {
     })
       .then((res) => {
         if (res.data['code'] === 200) {
-          const userInfo: UserInfo = res.data['data'];
-          setUserInfo(userInfo);
-          setFormValue();
+          const userResponse: UserInfo = res.data['data'];
+          setFormValue(userResponse);
+          setUserInfo(userResponse);
         }
       })
       .catch((err) =>
@@ -96,7 +98,7 @@ const Profile = (props: Props) => {
   }, []);
 
   const cancelEdit = () => {
-    setFormValue();
+    setFormValue(userInfo);
     setIsEdited(!isEdited);
   };
 
@@ -104,7 +106,41 @@ const Profile = (props: Props) => {
     Actions.popTo('menu');
   };
 
-  const handleSaveButton = () => {};
+  const handleSaveButton = async (editedInfo: UserInfo) => {
+    const token = await AsyncStorage.getItem('@token');
+    axios({
+      url: `user/edit-detail/${account.id_userInfo}`,
+      baseURL: `${api_url}`,
+      method: 'put',
+      headers: {
+        'x-auth-token': token,
+      },
+      data: editedInfo,
+      responseType: 'json',
+    })
+      .then((res) => {
+        if (res.data['code'] === 200) {
+          setFormValue(res.data['data']);
+          setUserInfo(res.data['data']);
+          setIsEdited(!isEdited);
+        }
+      })
+      .catch((err) =>
+        Alert.alert('Lỗi', err.response.data['message'], [
+          {
+            text: 'OK',
+            onPress: () => cancelEdit(),
+            style: 'cancel',
+          },
+        ])
+      );
+  };
+
+  const handleLogout = async () => {
+    dispatch(accountLogout({}));
+    await AsyncStorage.setItem('@token', '');
+    Actions.push('menu');
+  };
 
   const handleChangePassword = () => {};
 
@@ -186,7 +222,7 @@ const Profile = (props: Props) => {
               />
               <PinkButton title="Đổi mật khẩu" pressed={handleChangePassword} />
             </View>
-
+            <PinkButton title="Đăng xuất" pressed={handleLogout} />
             <LargeTextTouchable
               title="Quay về màn hình chính"
               pressed={backToHome}

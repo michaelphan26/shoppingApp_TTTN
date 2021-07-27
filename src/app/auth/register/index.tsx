@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Controller, useForm, useFormState } from 'react-hook-form';
 import { Alert, View } from 'react-native';
-import Button from '../../../common/ui/base/button';
+import Button, { BlueButton } from '../../../common/ui/base/button';
 import { SmallText } from '../../../common/ui/base/errorText';
 import {
   NormalTextInput,
@@ -82,6 +82,7 @@ const Register = () => {
               iconName="at"
               onTextChange={onChange}
               value={value}
+              editable={true}
             />
           )}
           rules={{ required: true, pattern: emailReg }}
@@ -118,6 +119,7 @@ const Register = () => {
               iconName="user"
               onTextChange={onChange}
               value={value}
+              editable={true}
             />
           )}
           rules={{ required: true, minLength: 2, maxLength: 50 }}
@@ -134,6 +136,7 @@ const Register = () => {
               iconName="phone"
               onTextChange={onChange}
               value={value}
+              editable={true}
             />
           )}
           rules={{
@@ -155,6 +158,7 @@ const Register = () => {
               iconName="home"
               onTextChange={onChange}
               value={value}
+              editable={true}
             />
           )}
           rules={{ required: true, minLength: 5, maxLength: 100 }}
@@ -163,7 +167,10 @@ const Register = () => {
         />
         {errors.address && <SmallText title="Địa chỉ không đúng" />}
 
-        <Button title="Đăng ký" pressed={handleSubmit(handleRegisterPress)} />
+        <BlueButton
+          title="Đăng ký"
+          pressed={handleSubmit(handleRegisterPress)}
+        />
         <LargeTextTouchable
           title="Quay về đăng nhập"
           pressed={handleBackToLogin}

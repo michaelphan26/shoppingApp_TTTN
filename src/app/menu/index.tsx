@@ -1,17 +1,11 @@
 import React, { useState } from 'react';
-import { Text, View } from 'react-native';
-import { NormalTextInput } from '../../common/ui/base/textInput';
 import MainLayout from '../../common/ui/layout/main-layout';
-import styles from './style';
-import { Entypo } from 'react-native-vector-icons';
-import { Color } from '../../common/util/enum';
-import {
-  TouchableHighlight,
-  TouchableWithoutFeedback,
-} from 'react-native-gesture-handler';
-import { useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Actions } from 'react-native-router-flux';
+import HeadComponent from './components/headComponent';
+import axios from 'axios';
+import { api_url } from '../../common/util/constant';
+import { useEffect } from 'react';
 
 interface Props {}
 const Menu = (props: Props) => {
@@ -21,31 +15,50 @@ const Menu = (props: Props) => {
     setSearch(searchText);
   };
 
+  const getProduct = () => {
+    axios({
+      url: '/product/product-list',
+      method: 'get',
+      baseURL: `${api_url}`,
+      responseType: 'json',
+    }).then((res) => {
+      console.log(res.data['data']);
+    });
+  };
+
+  const getCategory = () => {
+    axios({
+      url: '/category/category-list',
+      method: 'get',
+      baseURL: `${api_url}`,
+      responseType: 'json',
+    }).then((res) => {
+      console.log(res.data['data']);
+    });
+  };
+
+  useEffect(() => {
+    getProduct();
+    getCategory();
+  }, []);
+
   const handleProfilePress = async () => {
     const token = await AsyncStorage.getItem('@token');
+    console.log(token);
     if (!token) {
       Actions.push('login');
+    } else {
+      Actions.push('profile');
     }
-    Actions.push('profile');
   };
 
   return (
     <MainLayout>
-      <View style={styles.boxContainer}>
-        <NormalTextInput
-          iconName="search"
-          placeholderText="Search..."
-          onTextChange={handleTextChange}
-          value={search}
-        />
-        <TouchableWithoutFeedback>
-          <Entypo name="shopping-cart" size={20} color={Color.black} />
-        </TouchableWithoutFeedback>
-        <TouchableWithoutFeedback onPress={handleProfilePress}>
-          <Entypo name="user" size={20} color={Color.black} />
-        </TouchableWithoutFeedback>
-      </View>
-      <View style={{ flex: 1, backgroundColor: 'red' }}></View>
+      <HeadComponent
+        onTextChange={handleTextChange}
+        search={search}
+        profilePressed={handleProfilePress}
+      />
     </MainLayout>
   );
 };

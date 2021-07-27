@@ -6,7 +6,8 @@ const styles = StyleSheet.create({
         fontSize: Dimensions.get('window').width * 6 / 100 - 4,
         fontWeight: 'bold',
         color: Color["light-blue"],
-        alignSelf:'center'
+        alignSelf: 'center',
+        marginVertical:5
     },
     smallText: {
         fontSize: Dimensions.get('window').width * 6 / 100 - 6,

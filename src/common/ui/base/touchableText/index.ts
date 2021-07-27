@@ -1,4 +1,4 @@
-import LargeText from "./largeText";
-import SmallText from "./smallText";
+import LargeTextTouchable from "./largeTextTouchable";
+import SmallTextTouchable from "./smallTextTouchable";
 
-export {LargeText, SmallText}
+export {LargeTextTouchable, SmallTextTouchable}

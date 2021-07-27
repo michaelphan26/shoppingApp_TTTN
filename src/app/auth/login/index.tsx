@@ -2,14 +2,16 @@ import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Alert, Text, View } from 'react-native';
 import Button from '../../../common/ui/base/button';
-import CardView from '../../../common/ui/base/cardView';
 import {
   NormalTextInput,
   PasswordTextInput,
 } from '../../../common/ui/base/textInput';
 import styles from '../../../common/ui/base/textInput/style';
 import { SmallText } from '../../../common/ui/base/errorText';
-import { LargeText } from '../../../common/ui/base/touchableText';
+import {
+  LargeText,
+  LargeTextTouchable,
+} from '../../../common/ui/base/touchableText';
 import AuthLayout from '../../../common/ui/layout/authLayout';
 import axios from 'axios';
 import { api_url } from '../../../common/util/constant';
@@ -19,6 +21,8 @@ import { Actions } from 'react-native-router-flux';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { accountLogin } from '../../../models/accountReducer';
+import { emailReg } from '../../../common/util/common';
+import { SmallCardView } from '../../../common/ui/base/cardView';
 
 interface LoginInfo {
   email: string;
@@ -45,7 +49,7 @@ const Login = () => {
 
   const handleLoginPress = (info: LoginInfo): void => {
     axios({
-      url: `/auth/login`,
+      url: '/auth/login',
       baseURL: `${api_url}`,
       method: 'post',
       data: info,
@@ -64,7 +68,7 @@ const Login = () => {
         }
       })
       .catch((err) =>
-        Alert.alert('Login error', err.response.data['message'], [
+        Alert.alert('Lỗi đăng nhập', err.response.data['message'], [
           {
             text: 'OK',
             style: 'cancel',
@@ -77,34 +81,40 @@ const Login = () => {
     setVisible(!visible);
   };
 
+  const handleRegisterPress = () => {
+    Actions.push('register');
+  };
+
   return (
     <AuthLayout>
-      <CardView title="Đăng nhập">
+      <SmallCardView title="Đăng nhập">
         <Controller
           control={control}
-          rules={{ required: true }}
-          render={({ field: { onChange } }) => (
+          rules={{ required: true, pattern: emailReg }}
+          render={({ field: { onChange, value } }) => (
             <NormalTextInput
               placeholderText="Email"
               iconName="at"
               onTextChange={onChange}
+              value={value}
             />
           )}
           name="email"
           defaultValue=""
         />
-        {errors.email && <SmallText title="Tài khoản không được để trống" />}
+        {errors.email && <SmallText title="Email không đúng định dạng" />}
 
         <Controller
           control={control}
           rules={{ required: true, minLength: 8, maxLength: 30 }}
-          render={({ field: { onChange } }) => (
+          render={({ field: { onChange, value } }) => (
             <PasswordTextInput
               placeholderText="Password"
               iconName="key"
               secure={visible}
               onTextChange={onChange}
               onVisibleChange={handleChangeVisible}
+              value={value}
             />
           )}
           name="password"
@@ -113,8 +123,8 @@ const Login = () => {
         {errors.password && <SmallText title="Mật khẩu có độ dài 8-30 kí tự" />}
 
         <Button title="Đăng nhập" pressed={handleSubmit(handleLoginPress)} />
-        <LargeText title="Đăng ký" />
-      </CardView>
+        <LargeTextTouchable title="Đăng ký" pressed={handleRegisterPress} />
+      </SmallCardView>
     </AuthLayout>
   );
 };

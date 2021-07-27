@@ -1,7 +1,5 @@
 import React, { ReactNode } from 'react';
 import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
-import { TextInput } from 'react-native-gesture-handler';
-import TextInputRounded from '../../base/textInput';
 import styles from './style';
 
 interface Props {

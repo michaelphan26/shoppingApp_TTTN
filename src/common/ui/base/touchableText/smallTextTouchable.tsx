@@ -6,7 +6,7 @@ import styles from './style';
 interface Props {
   title: string;
 }
-const SmallText = (props: Props) => {
+const SmallTextTouchable = (props: Props) => {
   return (
     <TouchableWithoutFeedback>
       <Text style={styles.smallText}>{props.title}</Text>
@@ -14,4 +14,4 @@ const SmallText = (props: Props) => {
   );
 };
 
-export default SmallText;
+export default SmallTextTouchable;

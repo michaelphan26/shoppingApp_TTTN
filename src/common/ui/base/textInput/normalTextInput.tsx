@@ -8,6 +8,8 @@ interface Props {
   placeholderText: string;
   iconName: string;
   onTextChange: (textChange: string) => void;
+  value: string;
+  editable: boolean;
 }
 const NormalTextInput = (props: Props) => {
   return (
@@ -22,6 +24,8 @@ const NormalTextInput = (props: Props) => {
         style={styles.normalInput}
         placeholder={props.placeholderText}
         onChangeText={(text) => props.onTextChange(text)}
+        value={props.value}
+        editable={props.editable}
       />
     </View>
   );

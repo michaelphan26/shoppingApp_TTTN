@@ -2,10 +2,20 @@ import { Dimensions, StyleSheet } from "react-native";
 import { Color } from "../../../util/enum";
 
 const styles = StyleSheet.create({
-    button: {
+    blueButton: {
         width: Dimensions.get("window").width * 32 / 100,
         height: Dimensions.get("window").height * 6 / 100,
         backgroundColor: Color["light-blue"],
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 20,
+        marginVertical: 20,
+        alignSelf:'center'
+    },
+    pinkButton: {
+        width: Dimensions.get("window").width * 32 / 100,
+        height: Dimensions.get("window").height * 6 / 100,
+        backgroundColor: Color["pink"],
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 20,

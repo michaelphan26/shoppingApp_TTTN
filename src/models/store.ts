@@ -2,11 +2,13 @@ import { combineReducers, configureStore} from "@reduxjs/toolkit";
 import AccountReducer from "./accountReducer";
 import logger from 'redux-logger';
 
+
+const Reducers = combineReducers({
+    accountReducer:AccountReducer
+})
+
 const store = configureStore({
-    reducer: combineReducers({
-        accountReducer: AccountReducer,
-        
-    }),
+    reducer: Reducers,
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({
         serializableCheck: false,
     })
@@ -14,4 +16,5 @@ const store = configureStore({
 })
 
 export type RootState = ReturnType<typeof store.getState>
+
 export default store

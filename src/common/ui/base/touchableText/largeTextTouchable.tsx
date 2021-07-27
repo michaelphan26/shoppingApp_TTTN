@@ -5,13 +5,14 @@ import styles from './style';
 
 interface Props {
   title: string;
+  pressed: () => void;
 }
-const LargeText = (props: Props) => {
+const LargeTextTouchable = (props: Props) => {
   return (
-    <TouchableWithoutFeedback>
+    <TouchableWithoutFeedback onPress={() => props.pressed()}>
       <Text style={styles.largeText}>{props.title}</Text>
     </TouchableWithoutFeedback>
   );
 };
 
-export default LargeText;
+export default LargeTextTouchable;

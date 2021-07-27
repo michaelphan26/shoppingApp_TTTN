@@ -10,6 +10,7 @@ interface Props {
   secure: boolean;
   onTextChange: (passwordChange: string) => void;
   onVisibleChange: () => void;
+  value: string;
 }
 const PasswordTextInput = (props: Props) => {
   return (
@@ -25,6 +26,7 @@ const PasswordTextInput = (props: Props) => {
         placeholder={props.placeholderText}
         secureTextEntry={!props.secure}
         onChangeText={(text) => props.onTextChange(text)}
+        value={props.value}
       />
       <TouchableWithoutFeedback onPress={() => props.onVisibleChange()}>
         <View style={styles.eyeContainer}>

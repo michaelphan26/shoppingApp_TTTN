@@ -1,7 +1,7 @@
 import React from 'react';
 import { TouchableWithoutFeedback, View } from 'react-native';
 import { NormalTextInput } from '../../../common/ui/base/textInput';
-import { Entypo } from 'react-native-vector-icons';
+import { Entypo, FontAwesome } from 'react-native-vector-icons';
 import { Color } from '../../../common/util/enum';
 import styles from '../style';
 
@@ -21,7 +21,7 @@ const HeadComponent = (props: Props) => {
         editable={true}
       />
       <TouchableWithoutFeedback>
-        <Entypo name="shopping-cart" size={20} color={Color.black} />
+        <FontAwesome name="shopping-cart" size={22} color={Color.black} />
       </TouchableWithoutFeedback>
       <TouchableWithoutFeedback onPress={() => props.profilePressed()}>
         <Entypo name="user" size={20} color={Color.black} />

@@ -8,7 +8,7 @@ import {
 import styles from '../../../common/ui/base/textInput/style';
 import { SmallText } from '../../../common/ui/base/errorText';
 import { LargeTextTouchable } from '../../../common/ui/base/touchableText';
-import AuthLayout from '../../../common/ui/layout/authLayout';
+import AuthLayoutContainer from '../../../common/ui/layout/auth-Layout/layoutContainer';
 import axios from 'axios';
 import { api_url } from '../../../common/util/constant';
 import { useState } from 'react';
@@ -18,7 +18,7 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { accountLogin } from '../../../models/accountReducer';
 import { emailReg } from '../../../common/util/common';
-import { SmallCardView } from '../../../common/ui/base/cardView';
+import { SmallCardView } from '../../../common/ui/layout/auth-Layout';
 import { BlueButton } from '../../../common/ui/base/button';
 
 interface LoginInfo {
@@ -84,7 +84,7 @@ const Login = () => {
   };
 
   return (
-    <AuthLayout>
+    <AuthLayoutContainer>
       <SmallCardView title="Đăng nhập">
         <Controller
           control={control}
@@ -131,7 +131,7 @@ const Login = () => {
           pressed={() => Actions.pop()}
         />
       </SmallCardView>
-    </AuthLayout>
+    </AuthLayoutContainer>
   );
 };
 

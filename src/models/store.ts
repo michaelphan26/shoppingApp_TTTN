@@ -1,11 +1,7 @@
 import { combineReducers, configureStore} from "@reduxjs/toolkit";
 import AccountReducer from "./accountReducer";
 import logger from 'redux-logger';
-
-
-const Reducers = combineReducers({
-    accountReducer:AccountReducer
-})
+import Reducers from "./rootReducer";
 
 const store = configureStore({
     reducer: Reducers,

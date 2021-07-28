@@ -5,7 +5,7 @@ import styles from './style';
 interface Props {
   children: ReactNode;
 }
-const MainLayout = (props: Props) => {
+const MainLayoutContainer = (props: Props) => {
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>Welcome</Text>
@@ -14,4 +14,4 @@ const MainLayout = (props: Props) => {
   );
 };
 
-export default MainLayout;
+export default MainLayoutContainer;

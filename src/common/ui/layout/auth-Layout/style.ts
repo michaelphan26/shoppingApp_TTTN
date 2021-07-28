@@ -2,6 +2,12 @@ import { Dimensions, StyleSheet } from "react-native";
 import { Color } from "../../../util/enum";
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor:Color.white
+    },
     largeContainer: {
         width: Dimensions.get('window').width * 95 / 100,
         height: Dimensions.get("window").height * 99 / 100,

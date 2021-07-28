@@ -26,6 +26,24 @@ const styles = StyleSheet.create({
         fontSize: Dimensions.get("window").width * 6 / 100 - 3,
         fontWeight: 'bold',
         color:Color.white
+    },
+    circlePink: {
+        width: '14%',
+        height: '70%',
+        backgroundColor: Color.pink,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 100,
+        elevation:5
+    },
+    circleBlue: {
+        width: '14%',
+        height: '70%',
+        backgroundColor: Color["light-blue"],
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 100,
+        elevation:5
     }
 }
 )

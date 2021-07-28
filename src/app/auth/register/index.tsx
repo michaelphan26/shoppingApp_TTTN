@@ -7,7 +7,7 @@ import {
   NormalTextInput,
   PasswordTextInput,
 } from '../../../common/ui/base/textInput';
-import AuthLayout from '../../../common/ui/layout/authLayout';
+import AuthLayoutContainer from '../../../common/ui/layout/auth-Layout/layoutContainer';
 import { emailReg, phoneReg } from '../../../common/util/common';
 import {
   LargeTextTouchable,
@@ -19,7 +19,7 @@ import { api_url } from '../../../common/util/constant';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch } from 'react-redux';
 import { accountLogin } from '../../../models/accountReducer';
-import { LargeCardView } from '../../../common/ui/base/cardView';
+import { LargeCardView } from '../../../common/ui/layout/auth-Layout';
 
 interface RegisterInfo {
   email: '';
@@ -72,7 +72,7 @@ const Register = () => {
   };
 
   return (
-    <AuthLayout>
+    <AuthLayoutContainer>
       <LargeCardView title="Đăng ký">
         <Controller
           control={control}
@@ -176,7 +176,7 @@ const Register = () => {
           pressed={handleBackToLogin}
         />
       </LargeCardView>
-    </AuthLayout>
+    </AuthLayoutContainer>
   );
 };
 

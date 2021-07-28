@@ -9,14 +9,14 @@ import { Actions } from 'react-native-router-flux';
 import { useDispatch, useSelector } from 'react-redux';
 import { BlueButton } from '../../common/ui/base/button';
 import PinkButton from '../../common/ui/base/button/pinkButton';
-import { LargeCardView } from '../../common/ui/base/cardView';
+import { LargeCardView } from '../../common/ui/layout/auth-Layout';
 import { SmallText } from '../../common/ui/base/errorText';
 import { NormalTextInput } from '../../common/ui/base/textInput';
 import {
   LargeTextTouchable,
   SmallTextTouchable,
 } from '../../common/ui/base/touchableText';
-import AuthLayout from '../../common/ui/layout/authLayout';
+import AuthLayoutContainer from '../../common/ui/layout/auth-Layout/layoutContainer';
 import { api_url } from '../../common/util/constant';
 import { accountLogout } from '../../models/accountReducer';
 import { RootState } from '../../models/store';
@@ -145,7 +145,7 @@ const Profile = (props: Props) => {
   const handleChangePassword = () => {};
 
   return (
-    <AuthLayout>
+    <AuthLayoutContainer>
       <LargeCardView title="Thông tin tài khoản">
         <NormalTextInput
           placeholderText="Email"
@@ -230,7 +230,7 @@ const Profile = (props: Props) => {
           </>
         )}
       </LargeCardView>
-    </AuthLayout>
+    </AuthLayoutContainer>
   );
 };
 

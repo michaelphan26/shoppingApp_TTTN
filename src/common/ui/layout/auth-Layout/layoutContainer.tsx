@@ -6,8 +6,8 @@ import styles from './style';
 interface Props {
   children: ReactNode;
 }
-const AuthLayout = (props: Props) => {
+const AuthLayoutContainer = (props: Props) => {
   return <SafeAreaView style={styles.container}>{props.children}</SafeAreaView>;
 };
 
-export default AuthLayout;
+export default AuthLayoutContainer;

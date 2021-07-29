@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Image, ScrollView, Text, View } from 'react-native';
 import HeaderComponent from '../../common/ui/layout/product-layout/components/headerComponent';
-import ProductLayoutContainer from '../../common/ui/layout/product-layout/layoutContainer';
+import ProductLayout from '../../common/ui/layout/product-layout';
 import { ProductItem } from '../../common/util/common';
 import styles from './style';
 import numeral from 'numeral';
@@ -11,6 +11,7 @@ import { addToCart, loadCart } from '../../models/cartReducer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { api_url } from '../../common/util/constant';
+import BottomComponent from '../../common/ui/layout/product-layout/components/bottomComponent';
 
 interface Props {
   item: ProductItem;
@@ -68,31 +69,37 @@ const Product = (props: Props) => {
   };
 
   return (
-    <ProductLayoutContainer
-      title="Thông tin sản phẩm"
-      backPressed={handleBackPressed}
-      addToCartPressed={handleAddToCartPressed}
-    >
-      <ScrollView style={styles.scrollView}>
-        <View style={styles.detailContainer}>
-          <Image
-            source={{ uri: `data:image/png;base64,${props.item.image}` }}
-            style={styles.image}
-            resizeMode="contain"
-          />
-          <Text style={styles.textName}>{props.item.name}</Text>
-          <Text style={styles.text}>Hãng sản xuất: {props.item.brand}</Text>
-          <Text style={styles.text}>Phân loại: {props.categoryName}</Text>
-          <Text style={styles.text}>
-            Giá: {numeral(props.item.price).format('0,0')}đ
-          </Text>
-          <Text style={styles.text}>Số lượng còn lại: {props.item.stock}</Text>
-          <Text style={styles.text}>Giảm giá: {props.item.discount}%</Text>
-          <Text style={styles.text}>Mô tả:</Text>
-          <Text style={styles.text}>{props.item.description}</Text>
-        </View>
-      </ScrollView>
-    </ProductLayoutContainer>
+    <ProductLayout title="Thông tin sản phẩm">
+      <View style={styles.body}>
+        <ScrollView style={styles.scrollView}>
+          <View style={styles.detailContainer}>
+            <Image
+              source={{ uri: `data:image/png;base64,${props.item.image}` }}
+              style={styles.image}
+              resizeMode="contain"
+            />
+            <Text style={styles.textName}>{props.item.name}</Text>
+            <Text style={styles.text}>Hãng sản xuất: {props.item.brand}</Text>
+            <Text style={styles.text}>Phân loại: {props.categoryName}</Text>
+            <Text style={styles.text}>
+              Giá: {numeral(props.item.price).format('0,0')}đ
+            </Text>
+            <Text style={styles.text}>
+              Số lượng còn lại: {props.item.stock}
+            </Text>
+            <Text style={styles.text}>Giảm giá: {props.item.discount}%</Text>
+            <Text style={styles.text}>Mô tả:</Text>
+            <Text style={styles.text}>{props.item.description}</Text>
+          </View>
+        </ScrollView>
+      </View>
+      <View style={styles.bottom}>
+        <BottomComponent
+          backPressed={handleBackPressed}
+          addToCartPressed={handleAddToCartPressed}
+        />
+      </View>
+    </ProductLayout>
   );
 };
 

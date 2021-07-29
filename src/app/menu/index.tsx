@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import MainLayoutContainer from '../../common/ui/layout/main-layout/layoutContainer';
+import MainLayout from '../../common/ui/layout/main-layout';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Actions } from 'react-native-router-flux';
 import HeadComponent from './components/headComponent';
@@ -33,7 +33,6 @@ const Menu = (props: Props) => {
 
   const handleProfilePress = async () => {
     const token = await AsyncStorage.getItem('@token');
-    console.log(token);
     if (!token) {
       Actions.push('login');
     } else {
@@ -42,14 +41,14 @@ const Menu = (props: Props) => {
   };
 
   return (
-    <MainLayoutContainer>
+    <MainLayout>
       <HeadComponent
         onTextChange={handleTextChange}
         search={search}
         profilePressed={handleProfilePress}
       />
       <BodyComponent searchText={search} />
-    </MainLayoutContainer>
+    </MainLayout>
   );
 };
 

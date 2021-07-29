@@ -27,11 +27,14 @@ interface ProductItem {
 }
 interface Props {
   item: ProductItem;
+  productPressed: (item: ProductItem) => void;
 }
 const ProductRowItem = (props: Props) => {
   return (
     <View style={styles.productContainer}>
-      <TouchableWithoutFeedback>
+      <TouchableWithoutFeedback
+        onPress={() => props.productPressed(props.item)}
+      >
         <>
           <Image
             source={{ uri: `data:image/png;base64,${props.item.image}` }}
@@ -47,7 +50,9 @@ const ProductRowItem = (props: Props) => {
           </View>
         </>
       </TouchableWithoutFeedback>
-      <CartIconContainer />
+      <CartIconContainer
+        onDetailPressed={() => props.productPressed(props.item)}
+      />
     </View>
   );
 };

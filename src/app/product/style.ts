@@ -29,6 +29,18 @@ const styles = StyleSheet.create({
         color: Color.black,
         marginBottom: 20,
         alignSelf:'center'
-    }
+    },
+    body: {
+        width: '100%',
+        height: '89%',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    bottom: {
+        flexDirection:'row',
+        width: '100%',
+        height: '11%',
+      justifyContent:'space-around'
+    },
 })
 export default styles

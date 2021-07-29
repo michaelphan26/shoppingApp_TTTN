@@ -21,13 +21,10 @@ import { api_url } from '../../common/util/constant';
 import { accountLogout } from '../../models/accountReducer';
 import { RootState } from '../../models/store';
 import styles from './styles';
+import { UserInfo } from '../../common/util/common';
 
 interface Props {}
-interface UserInfo {
-  name: string;
-  phone: string;
-  address: string;
-}
+
 const Profile = (props: Props) => {
   const {
     control,

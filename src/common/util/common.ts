@@ -26,3 +26,9 @@ export interface CartItem{
   discount: number;
   quantity:number
 }
+
+export interface UserInfo {
+  name: string;
+  phone: string;
+  address: string;
+}

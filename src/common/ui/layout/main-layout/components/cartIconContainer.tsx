@@ -1,13 +1,18 @@
 import React from 'react';
-import { View } from 'react-native';
+import { TouchableWithoutFeedback, View } from 'react-native';
 import { Entypo, FontAwesome } from 'react-native-vector-icons';
 import styles from '../style';
 
-const CartIconContainer = () => {
+interface Props {
+  onDetailPressed: () => void;
+}
+const CartIconContainer = (props: Props) => {
   return (
     <View style={styles.buttonContainer}>
       <FontAwesome name="cart-plus" size={22} />
-      <Entypo name="chevron-right" size={30} />
+      <TouchableWithoutFeedback onPress={() => props.onDetailPressed()}>
+        <Entypo name="chevron-right" size={30} />
+      </TouchableWithoutFeedback>
     </View>
   );
 };

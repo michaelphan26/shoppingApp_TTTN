@@ -1,4 +1,5 @@
-import { Dimensions, StyleSheet } from "react-native";
+
+import { Dimensions, Platform, StyleSheet, StatusBar } from "react-native";
 import { Color } from "../../../util/enum";
 
 const styles = StyleSheet.create({
@@ -15,7 +16,8 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        backgroundColor: Color.white
+        backgroundColor: Color.white,
+        paddingTop:Platform.OS==='android' ? StatusBar.currentHeight : 0
     },
     title: {
         fontSize: 24,

@@ -27,7 +27,6 @@ const BodyComponent = (props: Props) => {
       .then((res) => {
         if (res.data['code'] === 200) {
           setProductList(res.data['data']);
-          console.log(productList);
         }
       })
       .catch((err) => {
@@ -99,7 +98,13 @@ const BodyComponent = (props: Props) => {
               );
             })
             .map((item: ProductItem) => {
-              return <ProductRowContainer item={item} key={item._id} />;
+              return (
+                <ProductRowContainer
+                  item={item}
+                  key={item._id}
+                  productPressed={handleProductPressed}
+                />
+              );
             })}
     </ScrollView>
   );

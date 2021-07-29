@@ -9,24 +9,16 @@ import styles from './style';
 interface Props {
   title: string;
   children: ReactNode;
-  backPressed: () => void;
-  addToCartPressed: () => void;
 }
-const ProductLayoutContainer = (props: Props) => {
+const ProductLayout = (props: Props) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <HeaderComponent title={props.title} />
       </View>
       <View style={styles.body}>{props.children}</View>
-      <View style={styles.bottom}>
-        <BottomComponent
-          backPressed={() => props.backPressed()}
-          addToCartPressed={() => props.addToCartPressed()}
-        />
-      </View>
     </SafeAreaView>
   );
 };
 
-export default ProductLayoutContainer;
+export default ProductLayout;

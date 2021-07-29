@@ -6,6 +6,7 @@ import Profile from '../app/profile';
 import Login from '../app/auth/login';
 import Register from '../app/auth/register';
 import Product from '../app/product';
+import Cart from '../app/cart';
 
 const Route = () => {
   return (
@@ -17,6 +18,7 @@ const Route = () => {
           <Scene key="register" hideNavBar={true} component={Register} />
           <Scene key="profile" hideNavBar={true} component={Profile} />
           <Scene key="product" hideNavBar={true} component={Product} />
+          <Scene key="cart" hideNavBar={true} component={Cart} />
         </Scene>
       </Stack>
     </Router>

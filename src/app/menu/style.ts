@@ -99,6 +99,22 @@ const styles = StyleSheet.create({
         height: '90%',
         alignItems: 'center',
         justifyContent: 'space-around',
+    },
+    badge: {
+        position: 'absolute',
+        right: -6,
+        top: -3,
+        height: 13,
+        width: 13,
+        borderRadius: 10,
+        backgroundColor: Color.pink,
+        alignItems: 'center',
+        justifyContent:'center'
+    },
+    badgeText: {
+        fontSize: 10,
+        fontWeight: 'bold',
+        color:Color.white
     }
 })
  

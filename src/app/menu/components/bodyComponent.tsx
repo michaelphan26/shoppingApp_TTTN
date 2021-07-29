@@ -9,6 +9,9 @@ import ProductRowContainer from '../../../common/ui/layout/main-layout/component
 import ProductRowItem from '../../../common/ui/layout/main-layout/components/productRowContainer';
 import { CategoryItem, ProductItem } from '../../../common/util/common';
 import { Actions } from 'react-native-router-flux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useDispatch } from 'react-redux';
+import { addToCart } from '../../../models/cartReducer';
 
 interface Props {
   searchText: string;
@@ -16,6 +19,7 @@ interface Props {
 const BodyComponent = (props: Props) => {
   const [categoryList, setCategoryList] = useState([] as any);
   const [productList, setProductList] = useState([] as any);
+  const dispatch = useDispatch();
 
   const getProductList = async () => {
     axios({
@@ -68,6 +72,45 @@ const BodyComponent = (props: Props) => {
     Actions.push('product', { item: item, categoryName: categoryName });
   };
 
+  const handleSearchPressed = async (item: ProductItem): Promise<void> => {
+    const categoryName = await getCategoryName(item);
+    console.log(categoryName);
+    Actions.push('product', {
+      item: item,
+      categoryName: categoryName,
+    });
+  };
+
+  const getCategoryName = async (product: ProductItem): Promise<string> => {
+    let categoryName = '';
+    await axios({
+      url: `category/get-name/${product.id_category}`,
+      baseURL: `${api_url}`,
+      method: 'get',
+    }).then((res) => {
+      if (res.data['code'] === 200) {
+        categoryName = res.data['data'].name;
+      }
+    });
+    return categoryName;
+  };
+
+  const handleAddToCart = async (item: ProductItem): Promise<void> => {
+    const token = await AsyncStorage.getItem('@token');
+    console.log(token);
+    dispatch(
+      addToCart({
+        cartItem: {
+          id_product: item._id,
+          price: item.price,
+          discount: item.discount,
+          quantity: 1,
+        },
+        token: token,
+      })
+    );
+  };
+
   useEffect(() => {
     getCategory();
     getProductList();
@@ -87,7 +130,6 @@ const BodyComponent = (props: Props) => {
           })
         : productList
             .filter((item: ProductItem) => {
-              console.log(item);
               return (
                 item.name
                   .toLowerCase()
@@ -102,7 +144,8 @@ const BodyComponent = (props: Props) => {
                 <ProductRowContainer
                   item={item}
                   key={item._id}
-                  productPressed={handleProductPressed}
+                  addToCart={handleAddToCart}
+                  productPressed={handleSearchPressed}
                 />
               );
             })}

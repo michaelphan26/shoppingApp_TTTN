@@ -18,7 +18,10 @@ const AccountReducer = createSlice({
             state.role_name=action.payload.role_name
         },
         accountLogout(state, action) {
-            state = initialState;
+            state.email = initialState.email;
+            state.id_role = initialState.id_role;
+            state.id_userInfo = initialState.id_userInfo;
+            state.role_name = initialState.role_name;
         }
     }
 })

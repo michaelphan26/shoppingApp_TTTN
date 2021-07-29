@@ -1,13 +1,21 @@
 import React from 'react';
-import { View } from 'react-native';
+import { TouchableWithoutFeedback, View } from 'react-native';
 import { Entypo, MaterialIcons } from 'react-native-vector-icons';
 import styles from './style';
 
-const CartWithDiscardContainer = () => {
+interface Props {
+  removeFromCart: () => void;
+  checkDetail: () => void;
+}
+const CartWithDiscardContainer = (props: Props) => {
   return (
     <View style={styles.buttonContainer}>
-      <MaterialIcons name="remove-circle" size={25} />
-      <Entypo name="chevron-right" size={30} />
+      <TouchableWithoutFeedback onPress={() => props.removeFromCart()}>
+        <MaterialIcons name="remove-circle" size={25} />
+      </TouchableWithoutFeedback>
+      <TouchableWithoutFeedback onPress={() => props.checkDetail()}>
+        <Entypo name="chevron-right" size={30} />
+      </TouchableWithoutFeedback>
     </View>
   );
 };

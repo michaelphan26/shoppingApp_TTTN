@@ -217,7 +217,7 @@ const Profile = (props: Props) => {
                   setIsEdited(!isEdited);
                 }}
               />
-              <PinkButton title="Đổi mật khẩu" pressed={handleChangePassword} />
+              <BlueButton title="Đổi mật khẩu" pressed={handleChangePassword} />
             </View>
             <PinkButton title="Đăng xuất" pressed={handleLogout} />
             <LargeTextTouchable

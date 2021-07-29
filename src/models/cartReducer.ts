@@ -29,7 +29,7 @@ const CartReducer = createSlice({
                     "x-auth-token":token
                     },
                     responseType: 'json',
-                    data: { state}
+                    data: { productList:state.productList, total:state.total}
                 }).catch(err => {
                     console.log(err.response.data['message'])
                 })
@@ -37,8 +37,38 @@ const CartReducer = createSlice({
             
         },
         loadCart(state, action) {
-            state=action.payload
-        }
+            state.productList = action.payload.productList;
+            state.total=action.payload.total
+        },
+        changeQuantity(state, action) {
+            const cartItem = action.payload.item;
+            const newQuantity = action.payload.newQuantity;
+            for (const index in state.productList) {
+                if (state.productList[index].id_product === cartItem.id_product) {
+                    if (parseInt(state.productList[index].quantity) > parseInt(newQuantity)) {
+                        const change = parseInt(state.productList[index].quantity) - parseInt(newQuantity);
+                        const totalChange = change * parseInt(state.productList[index].price);
+                        state.total = state.total - totalChange;
+                        state.productList[index].quantity = newQuantity;
+
+                        if (state.productList[index].quantity === 0) {
+                            state.productList.splice(index,1)
+                        }
+                    }
+                    else if (parseInt(state.productList[index].quantity) < parseInt(newQuantity)) {
+                        console.log("Increase")
+                        const change = parseInt(newQuantity) - parseInt(state.productList[index].quantity);
+                        const totalChange = change * parseInt(state.productList[index].price);
+                        state.total = state.total + totalChange;
+                        state.productList[index].quantity = newQuantity;
+                    }
+                }
+            }
+        },
+        removeFromCart(state, action) {
+            state.productList=state.productList.filter((item:CartItem)=>item.id_product!==action.payload.id_product)
+            state.total=state.total-(parseInt(action.payload.quantity)*parseInt(action.payload.price))
+        },
     },
     initialState: {
         productList: [] as any,
@@ -46,6 +76,6 @@ const CartReducer = createSlice({
     }
 })
 
-export const { addToCart, loadCart } = CartReducer.actions;
+export const { addToCart, loadCart, changeQuantity,removeFromCart } = CartReducer.actions;
 
 export default CartReducer.reducer

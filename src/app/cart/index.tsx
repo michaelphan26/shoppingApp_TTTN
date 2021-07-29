@@ -22,6 +22,7 @@ interface Props {}
 const Cart = (props: Props) => {
   const account = useSelector((state: RootState) => state.accountReducer);
   const cart = useSelector((state: RootState) => state.cartReducer);
+  console.log(cart.total);
   const [userInfo, setUserInfo] = useState<UserInfo>({
     name: '',
     address: '',
@@ -30,39 +31,42 @@ const Cart = (props: Props) => {
 
   async function getUserInfo() {
     const token = await AsyncStorage.getItem('@token');
-    if (token === null) {
-      return Alert.alert('Lỗi', 'Không lấy được token', [
-        {
-          text: 'OK',
-          style: 'cancel',
-          onPress: () => Actions.popTo('menu'),
+    if (token !== null) {
+      axios({
+        url: '/user/me',
+        baseURL: `${api_url}`,
+        method: 'get',
+        headers: {
+          'x-auth-token': token,
         },
-      ]);
-    }
-    axios({
-      url: '/user/me',
-      baseURL: `${api_url}`,
-      method: 'get',
-      headers: {
-        'x-auth-token': token,
-      },
-    })
-      .then((res) => {
-        if (res.data['code'] === 200) {
-          const userResponse: UserInfo = res.data['data'];
-          setUserInfo(userResponse);
-        }
       })
-      .catch((err) =>
-        Alert.alert('Lỗi', err.response.data['message'], [
-          {
-            text: 'OK',
-            style: 'cancel',
-            onPress: () => Actions.popTo('menu'),
-          },
-        ])
-      );
+        .then((res) => {
+          if (res.data['code'] === 200) {
+            const userResponse: UserInfo = res.data['data'];
+            setUserInfo(userResponse);
+          }
+        })
+        .catch((err) =>
+          Alert.alert('Lỗi', err.response.data['message'], [
+            {
+              text: 'OK',
+              style: 'cancel',
+              onPress: () => Actions.popTo('menu'),
+            },
+          ])
+        );
+    }
   }
+
+  const handleConfirmPressed = () => {
+    if (cart.productList.length === 0) {
+      //Toast loi
+      return;
+    }
+    // axios({
+    //   url:`/receipt/receipt-checkout/${}`
+    // })
+  };
 
   useEffect(() => {
     getUserInfo();
@@ -76,7 +80,6 @@ const Cart = (props: Props) => {
           style={styles.scrollView}
         >
           {cart.productList.map((item: CartItem) => {
-            console.log(item);
             return <ProductRowWithQuantity item={item} key={item.id_product} />;
           })}
         </ScrollView>
@@ -92,7 +95,7 @@ const Cart = (props: Props) => {
         <Text style={styles.totalText}>
           {numeral(cart.total).format('0,0')}đ
         </Text>
-        <PinkButton title="Xác nhận" pressed={() => {}} />
+        <PinkButton title="Xác nhận" pressed={handleConfirmPressed} />
       </View>
     </ProductLayout>
   );

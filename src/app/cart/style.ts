@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '35%',
         justifyContent: 'center',
-        paddingHorizontal: 5,
+        paddingHorizontal: 10,
         borderTopWidth: 1,
         borderColor:Color["light-gray"]
     },

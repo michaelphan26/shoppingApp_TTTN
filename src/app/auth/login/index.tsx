@@ -15,11 +15,13 @@ import { useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Actions } from 'react-native-router-flux';
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { accountLogin } from '../../../models/accountReducer';
 import { emailReg } from '../../../common/util/common';
 import { SmallCardView } from '../../../common/ui/layout/auth-Layout';
 import { BlueButton } from '../../../common/ui/base/button';
+import { loadCart } from '../../../models/cartReducer';
+import { RootState } from '../../../models/store';
 
 interface LoginInfo {
   email: string;
@@ -33,6 +35,7 @@ const Login = () => {
   } = useForm({ reValidateMode: 'onSubmit' });
   const [visible, setVisible] = useState<boolean>(false);
   const dispatch = useDispatch();
+  const cart = useSelector((state: RootState) => state.cartReducer);
 
   async function checkToken() {
     const token = await AsyncStorage.getItem('@token');
@@ -56,11 +59,47 @@ const Login = () => {
         console.log(res.data);
         console.log(res.data['code']);
         if (res.data['code'] === 200) {
-          const saveToken = await AsyncStorage.setItem(
-            '@token',
-            res.headers['x-auth-token']
-          );
+          await AsyncStorage.setItem('@token', res.headers['x-auth-token']);
           dispatch(accountLogin(res.data['data']));
+          //Check cart
+          if (cart.productList.length === 0) {
+            axios({
+              url: `/receipt/get-cart`,
+              baseURL: `${api_url}`,
+              method: 'get',
+              responseType: 'json',
+              headers: {
+                'x-auth-token': res.headers['x-auth-token'],
+              },
+            })
+              .then((res) => {
+                if (res.data['code'] === 200) {
+                  dispatch(loadCart(res.data['data']));
+                }
+              })
+              .catch((err) => {
+                console.log(err.response.data['message']);
+              });
+          } else {
+            axios({
+              url: `/receipt/add-receipt`,
+              baseURL: `${api_url}`,
+              method: 'post',
+              headers: {
+                'x-auth-token': res.headers['x-auth-token'],
+              },
+              responseType: 'json',
+              data: { productList: cart.productList, total: cart.total },
+            })
+              .then((res) => {
+                if (res.data['code'] === 200) {
+                  dispatch(loadCart(res.data['data']));
+                }
+              })
+              .catch((err) => {
+                console.log(err.response.data['message']);
+              });
+          }
           Actions.pop();
           Actions.push('profile');
         }

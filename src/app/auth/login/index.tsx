@@ -18,7 +18,6 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { accountLogin } from '../../../models/accountReducer';
 import {
-  addReceipt,
   addReceiptAPI,
   CartInterface,
   emailReg,
@@ -53,8 +52,8 @@ const Login = () => {
     checkToken();
   }, []);
 
-  const handleLoginPress = (info: LoginInfo): void => {
-    axios({
+  const handleLoginPress = async (info: LoginInfo) => {
+    await axios({
       url: '/auth/login',
       baseURL: `${api_url}`,
       method: 'post',
@@ -145,7 +144,7 @@ const Login = () => {
         <LargeTextTouchable title="Đăng ký" pressed={handleRegisterPress} />
         <LargeTextTouchable
           title="Trở về trang chủ"
-          pressed={() => Actions.pop()}
+          pressed={() => Actions.popTo('menu')}
         />
       </SmallCardView>
     </AuthLayoutContainer>

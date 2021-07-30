@@ -107,7 +107,7 @@ export async function getUserInfoFromAPI() {
     })
       .then((res) => {
         if (res.data['code'] === 200) {
-          userInfo=res.data['code']
+          userInfo=res.data['data']
         }
         else {
           return res.data['message'] as string;

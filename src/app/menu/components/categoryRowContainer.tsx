@@ -24,7 +24,6 @@ const CategoryRowContainer = (props: Props) => {
     const productListByCategory = await getProductByCategoryFromAPI(
       props.categoryItem._id
     );
-    console.log(productListByCategory);
     if (typeof getProductByCategoryFromAPI !== 'string') {
       setProductList(productListByCategory);
     } else {

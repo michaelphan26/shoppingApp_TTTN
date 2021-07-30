@@ -126,7 +126,9 @@ const Profile = (props: Props) => {
     Actions.push('menu');
   };
 
-  const handleChangePassword = () => {};
+  const handleChangePassword = () => {
+    Actions.push('changePassword');
+  };
 
   const handleReceiptList = () => {};
 

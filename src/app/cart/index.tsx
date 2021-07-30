@@ -54,8 +54,7 @@ const Cart = (props: Props) => {
     }
 
     const token = await AsyncStorage.getItem('@token');
-    if (token) {
-      console.log('Checkout');
+    if (token && account.email !== '') {
       axios({
         url: `/receipt/receipt-checkout`,
         baseURL: `${api_url}`,
@@ -78,6 +77,8 @@ const Cart = (props: Props) => {
           console.log(err);
           console.log(err.response.data['message']);
         });
+    } else {
+      Actions.push('login');
     }
   };
 

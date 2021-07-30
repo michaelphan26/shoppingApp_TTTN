@@ -62,7 +62,6 @@ const BodyComponent = (props: Props) => {
 
   const handleAddToCart = async (item: ProductItem): Promise<void> => {
     const token = await AsyncStorage.getItem('@token');
-    console.log(token);
     dispatch(
       addToCart({
         cartItem: {

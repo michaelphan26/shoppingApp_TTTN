@@ -11,6 +11,7 @@ interface Props {
   onTextChange: (search: string) => void;
   profilePressed: () => void;
   search: string;
+  isAdmin: boolean;
 }
 const HeadComponent = (props: Props) => {
   return (
@@ -24,13 +25,20 @@ const HeadComponent = (props: Props) => {
       />
       <TouchableWithoutFeedback onPress={() => Actions.push('cart')}>
         <View>
-          <FontAwesome name="shopping-cart" size={22} color={Color.black} />
+          <FontAwesome name="shopping-cart" size={25} color={Color.black} />
           <IconBadge />
         </View>
       </TouchableWithoutFeedback>
       <TouchableWithoutFeedback onPress={() => props.profilePressed()}>
-        <Entypo name="user" size={20} color={Color.black} />
+        <Entypo name="user" size={22} color={Color.black} />
       </TouchableWithoutFeedback>
+      {props.isAdmin ? (
+        <TouchableWithoutFeedback onPress={() => {}}>
+          <Entypo name="database" size={25} color={Color.black} />
+        </TouchableWithoutFeedback>
+      ) : (
+        <></>
+      )}
     </View>
   );
 };

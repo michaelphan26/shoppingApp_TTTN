@@ -7,6 +7,7 @@ import Login from '../app/auth/login';
 import Register from '../app/auth/register';
 import Product from '../app/product';
 import Cart from '../app/cart';
+import ChangePassword from '../app/auth/changePassword';
 
 const Route = () => {
   return (
@@ -19,6 +20,11 @@ const Route = () => {
           <Scene key="profile" hideNavBar={true} component={Profile} />
           <Scene key="product" hideNavBar={true} component={Product} />
           <Scene key="cart" hideNavBar={true} component={Cart} />
+          <Scene
+            key="changePassword"
+            hideNavBar={true}
+            component={ChangePassword}
+          />
         </Scene>
       </Stack>
     </Router>

@@ -27,7 +27,6 @@ interface Props {
 const ProductRowWithQuantity = (props: Props) => {
   const [product, setProduct] = useState<ProductItem>({} as ProductItem);
   const dispatch = useDispatch();
-  const cart = useSelector((state: RootState) => state.cartReducer);
 
   useEffect(() => {
     axios({
@@ -52,21 +51,21 @@ const ProductRowWithQuantity = (props: Props) => {
         token: token,
       })
     );
-    if (token !== null) {
-      console.log('Push API');
-      axios({
-        url: `/receipt/add-receipt`,
-        baseURL: `${api_url}`,
-        method: 'post',
-        headers: {
-          'x-auth-token': token,
-        },
-        responseType: 'json',
-        data: { productList: cart.productList, total: cart.total },
-      }).catch((err) => {
-        console.log(err.response.data['message']);
-      });
-    }
+    // if (token !== null) {
+    //   console.log('Push API');
+    //   axios({
+    //     url: `/receipt/add-receipt`,
+    //     baseURL: `${api_url}`,
+    //     method: 'post',
+    //     headers: {
+    //       'x-auth-token': token,
+    //     },
+    //     responseType: 'json',
+    //     data: { productList: cart.productList, total: cart.total },
+    //   }).catch((err) => {
+    //     console.log(err.response.data['message']);
+    //   });
+    // }
   };
 
   const handleDecreaseQuantity = async () => {
@@ -79,21 +78,21 @@ const ProductRowWithQuantity = (props: Props) => {
         token: token,
       })
     );
-    if (token !== null) {
-      console.log('Push API');
-      axios({
-        url: `/receipt/add-receipt`,
-        baseURL: `${api_url}`,
-        method: 'post',
-        headers: {
-          'x-auth-token': token,
-        },
-        responseType: 'json',
-        data: { productList: cart.productList, total: cart.total },
-      }).catch((err) => {
-        console.log(err.response.data['message']);
-      });
-    }
+    // if (token !== null) {
+    //   console.log('Push API');
+    //   axios({
+    //     url: `/receipt/add-receipt`,
+    //     baseURL: `${api_url}`,
+    //     method: 'post',
+    //     headers: {
+    //       'x-auth-token': token,
+    //     },
+    //     responseType: 'json',
+    //     data: { productList: cart.productList, total: cart.total },
+    //   }).catch((err) => {
+    //     console.log(err.response.data['message']);
+    //   });
+    // }
   };
 
   const handleRemoveFromCart = () => {

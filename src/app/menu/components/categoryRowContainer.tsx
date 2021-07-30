@@ -6,7 +6,11 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { api_url } from '../../../common/util/constant';
 import styles from '../style';
 import SquareItemView from '../../../common/ui/layout/main-layout/components/squareItemView';
-import { CategoryItem, ProductItem } from '../../../common/util/common';
+import {
+  CategoryItem,
+  getProductByCategoryFromAPI,
+  ProductItem,
+} from '../../../common/util/common';
 
 interface Props {
   categoryItem: CategoryItem;
@@ -17,26 +21,15 @@ const CategoryRowContainer = (props: Props) => {
   const [productlist, setProductList] = useState([] as any);
 
   const getProductListByCategory = async () => {
-    axios({
-      url: `/category/get-product-list/${props.categoryItem._id}`,
-      baseURL: `${api_url}`,
-      method: 'get',
-      responseType: 'json',
-    })
-      .then((res) => {
-        if (res.data['code'] === 200) {
-          setProductList(res.data['data']);
-          console.log(productlist);
-        }
-      })
-      .catch((err) => {
-        Alert.alert('Lỗi lấy sản phẩm', err.response.data['message'], [
-          {
-            text: 'OK',
-            style: 'cancel',
-          },
-        ]);
-      });
+    const productListByCategory = await getProductByCategoryFromAPI(
+      props.categoryItem._id
+    );
+    console.log(productListByCategory);
+    if (typeof getProductByCategoryFromAPI !== 'string') {
+      setProductList(productListByCategory);
+    } else {
+      //Toast string
+    }
   };
 
   useEffect(() => {

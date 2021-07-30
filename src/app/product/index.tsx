@@ -20,34 +20,6 @@ interface Props {
 const Product = (props: Props) => {
   const dispatch = useDispatch();
 
-  async function getCart() {
-    const token = await AsyncStorage.getItem('@token');
-    if (token !== null) {
-      axios({
-        url: '/receipt/get-cart',
-        baseURL: `${api_url}`,
-        method: 'get',
-        responseType: 'json',
-        headers: {
-          'x-auth-token': token,
-        },
-      })
-        .then((res) => {
-          if (res.data['code'] === 200) {
-            dispatch(loadCart(res.data['data']));
-          }
-        })
-        .catch((err) => {
-          console.log(err.response['data'].message);
-        });
-    }
-  }
-
-  //Lay cart tu api khi mo app
-  useEffect(() => {
-    getCart();
-  }, []);
-
   const handleBackPressed = () => {
     Actions.pop();
   };

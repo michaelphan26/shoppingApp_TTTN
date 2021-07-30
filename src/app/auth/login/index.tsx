@@ -17,7 +17,13 @@ import { Actions } from 'react-native-router-flux';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { accountLogin } from '../../../models/accountReducer';
-import { emailReg } from '../../../common/util/common';
+import {
+  addReceipt,
+  addReceiptAPI,
+  CartInterface,
+  emailReg,
+  getCartFromAPI,
+} from '../../../common/util/common';
 import { SmallCardView } from '../../../common/ui/layout/auth-Layout';
 import { BlueButton } from '../../../common/ui/base/button';
 import { loadCart } from '../../../models/cartReducer';
@@ -56,52 +62,24 @@ const Login = () => {
       responseType: 'json',
     })
       .then(async (res) => {
-        console.log(res.data);
-        console.log(res.data['code']);
         if (res.data['code'] === 200) {
           await AsyncStorage.setItem('@token', res.headers['x-auth-token']);
           dispatch(accountLogin(res.data['data']));
           //Check cart
           if (cart.productList.length === 0) {
-            axios({
-              url: `/receipt/get-cart`,
-              baseURL: `${api_url}`,
-              method: 'get',
-              responseType: 'json',
-              headers: {
-                'x-auth-token': res.headers['x-auth-token'],
-              },
-            })
-              .then((res) => {
-                if (res.data['code'] === 200) {
-                  dispatch(loadCart(res.data['data']));
-                }
-              })
-              .catch((err) => {
-                console.log(err.response.data['message']);
-              });
+            const cartFromAPI = await getCartFromAPI();
+            if (typeof cartFromAPI !== 'string') {
+              dispatch(loadCart(cartFromAPI));
+            } else {
+              //Toast
+            }
           } else {
-            axios({
-              url: `/receipt/add-receipt`,
-              baseURL: `${api_url}`,
-              method: 'post',
-              headers: {
-                'x-auth-token': res.headers['x-auth-token'],
-              },
-              responseType: 'json',
-              data: { productList: cart.productList, total: cart.total },
-            })
-              .then((res) => {
-                if (res.data['code'] === 200) {
-                  dispatch(loadCart(res.data['data']));
-                }
-              })
-              .catch((err) => {
-                console.log(err.response.data['message']);
-              });
+            await addReceiptAPI(cart);
           }
           Actions.pop();
           Actions.push('profile');
+        } else {
+          //Toast res.data['message']
         }
       })
       .catch((err) =>

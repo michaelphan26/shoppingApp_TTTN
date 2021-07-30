@@ -7,7 +7,13 @@ import { api_url } from '../../../common/util/constant';
 import styles from '../style';
 import ProductRowContainer from '../../../common/ui/layout/main-layout/components/productRowContainer';
 import ProductRowItem from '../../../common/ui/layout/main-layout/components/productRowContainer';
-import { CategoryItem, ProductItem } from '../../../common/util/common';
+import {
+  CategoryItem,
+  getCategoryListFromAPI,
+  getCategoryNameFromAPI,
+  getProductListFromAPI,
+  ProductItem,
+} from '../../../common/util/common';
 import { Actions } from 'react-native-router-flux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch } from 'react-redux';
@@ -22,47 +28,21 @@ const BodyComponent = (props: Props) => {
   const dispatch = useDispatch();
 
   const getProductList = async () => {
-    axios({
-      url: `/product/product-list`,
-      baseURL: `${api_url}`,
-      method: 'get',
-      responseType: 'json',
-    })
-      .then((res) => {
-        if (res.data['code'] === 200) {
-          setProductList(res.data['data']);
-        }
-      })
-      .catch((err) => {
-        Alert.alert('Lỗi lấy sản phẩm', err.response.data['message'], [
-          {
-            text: 'OK',
-            style: 'cancel',
-          },
-        ]);
-      });
+    const productListFromAPI = await getProductListFromAPI();
+    if (typeof productListFromAPI !== 'string') {
+      setProductList(productListFromAPI);
+    } else {
+      //Toast string
+    }
   };
 
-  const getCategory = () => {
-    axios({
-      url: '/category/category-list',
-      method: 'get',
-      baseURL: `${api_url}`,
-      responseType: 'json',
-    })
-      .then((res) => {
-        if (res.data['code'] === 200) {
-          setCategoryList(res.data['data']);
-        }
-      })
-      .catch((err) => {
-        Alert.alert('Lỗi lấy sản phẩm', err.response.data['message'], [
-          {
-            text: 'OK',
-            style: 'cancel',
-          },
-        ]);
-      });
+  const getCategory = async () => {
+    const categoryListFromAPI = await getCategoryListFromAPI();
+    if (typeof categoryListFromAPI !== 'string') {
+      setCategoryList(categoryListFromAPI);
+    } else {
+      //Toast string
+    }
   };
 
   const handleProductPressed = (
@@ -73,26 +53,11 @@ const BodyComponent = (props: Props) => {
   };
 
   const handleSearchPressed = async (item: ProductItem): Promise<void> => {
-    const categoryName = await getCategoryName(item);
-    console.log(categoryName);
+    const categoryName = await getCategoryNameFromAPI(item);
     Actions.push('product', {
       item: item,
       categoryName: categoryName,
     });
-  };
-
-  const getCategoryName = async (product: ProductItem): Promise<string> => {
-    let categoryName = '';
-    await axios({
-      url: `category/get-name/${product.id_category}`,
-      baseURL: `${api_url}`,
-      method: 'get',
-    }).then((res) => {
-      if (res.data['code'] === 200) {
-        categoryName = res.data['data'].name;
-      }
-    });
-    return categoryName;
   };
 
   const handleAddToCart = async (item: ProductItem): Promise<void> => {

@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { CartItem } from "../common/util/common";
+import { addReceiptAPI, CartItem } from "../common/util/common";
 import { api_url } from "../common/util/constant";
 
 const CartReducer = createSlice({
@@ -18,27 +18,15 @@ const CartReducer = createSlice({
                 state.total=state.total+(addItem.price - (addItem.price*addItem.discount/100))
             }
 
-            const token = action.payload.token
-            if (token !== null) {
-                console.log("Push API")
-                axios({
-                url: `/receipt/add-receipt`,
-                baseURL: `${api_url}`,
-                method: 'post',
-                headers: {
-                    "x-auth-token":token
-                    },
-                    responseType: 'json',
-                    data: { productList:state.productList, total:state.total}
-                }).catch(err => {
-                    console.log(err.response.data['message'])
-                })
-            }
-            
+            const message = addReceiptAPI({ productList: state.productList, total: state.total })
+            console.log(message)
         },
         loadCart(state, action) {
-            state.productList = action.payload.productList;
+            if (Object.keys(action.payload).length !== 0) {
+                state.productList = action.payload.productList;
             state.total=action.payload.total
+            }
+            
         },
         changeQuantity(state, action) {
             const cartItem = action.payload.item;
@@ -56,7 +44,6 @@ const CartReducer = createSlice({
                         }
                     }
                     else if (parseInt(state.productList[index].quantity) < parseInt(newQuantity)) {
-                        console.log("Increase")
                         const change = parseInt(newQuantity) - parseInt(state.productList[index].quantity);
                         const totalChange = change * parseInt(state.productList[index].price);
                         state.total = state.total + totalChange;
@@ -64,11 +51,18 @@ const CartReducer = createSlice({
                     }
                 }
             }
+            
         },
         removeFromCart(state, action) {
             state.productList=state.productList.filter((item:CartItem)=>item.id_product!==action.payload.id_product)
-            state.total=state.total-(parseInt(action.payload.quantity)*parseInt(action.payload.price))
+            state.total = state.total - (parseInt(action.payload.quantity) * parseInt(action.payload.price))
+            const message = addReceiptAPI({ productList: state.productList, total: state.total })
+            console.log(message)
         },
+        emptyCart(state, action) {
+            state.productList = [] as any;
+            state.total = 0;
+        }
     },
     initialState: {
         productList: [] as any,
@@ -76,6 +70,6 @@ const CartReducer = createSlice({
     }
 })
 
-export const { addToCart, loadCart, changeQuantity,removeFromCart } = CartReducer.actions;
+export const { addToCart, loadCart, changeQuantity,removeFromCart,emptyCart } = CartReducer.actions;
 
 export default CartReducer.reducer

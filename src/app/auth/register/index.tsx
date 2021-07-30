@@ -50,11 +50,12 @@ const Register = () => {
       responseType: 'json',
     })
       .then(async (res) => {
-        console.log(res.data);
         if (res.data['code'] === 200) {
           await AsyncStorage.setItem('@token', res.headers['x-auth-token']);
           dispatch(accountLogin(res.data['data']));
           Actions.push('menu');
+        } else {
+          //Toast res.data['message']
         }
       })
       .catch((err) =>

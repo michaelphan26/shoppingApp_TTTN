@@ -21,7 +21,7 @@ import { api_url } from '../../common/util/constant';
 import { accountLogout } from '../../models/accountReducer';
 import { RootState } from '../../models/store';
 import styles from './styles';
-import { UserInfo } from '../../common/util/common';
+import { getUserInfoFromAPI, UserInfo } from '../../common/util/common';
 
 interface Props {}
 
@@ -48,37 +48,24 @@ const Profile = (props: Props) => {
     setValue('address', userDetail.address);
   };
 
-  async function getUserInfo(token: string) {
-    axios({
-      url: '/user/me',
-      baseURL: `${api_url}`,
-      method: 'get',
-      headers: {
-        'x-auth-token': token,
-      },
-    })
-      .then((res) => {
-        if (res.data['code'] === 200) {
-          const userResponse: UserInfo = res.data['data'];
-          setFormValue(userResponse);
-          setUserInfo(userResponse);
-        }
-      })
-      .catch((err) =>
-        Alert.alert('Lỗi', err.response.data['message'], [
-          {
-            text: 'OK',
-            style: 'cancel',
-            onPress: () => Actions.popTo('menu'),
-          },
-        ])
-      );
+  async function getUserInfo() {
+    const userInfoFromAPI = await getUserInfoFromAPI();
+    if (typeof userInfoFromAPI !== 'string') {
+      if (Object.keys(userInfoFromAPI).length !== 0) {
+        setFormValue(userInfoFromAPI);
+        setUserInfo(userInfoFromAPI);
+      } else {
+        //Toast cannot get info
+      }
+    } else {
+      //Toast string
+    }
   }
 
   async function getProfile() {
     const token = await AsyncStorage.getItem('@token');
     if (token) {
-      return await getUserInfo(token);
+      return await getUserInfo();
     } else {
       Alert.alert('Lỗi', 'Bạn chưa đăng nhập/đăng ký', [
         {
@@ -140,6 +127,8 @@ const Profile = (props: Props) => {
   };
 
   const handleChangePassword = () => {};
+
+  const handleReceiptList = () => {};
 
   return (
     <AuthLayoutContainer>
@@ -219,7 +208,11 @@ const Profile = (props: Props) => {
               />
               <BlueButton title="Đổi mật khẩu" pressed={handleChangePassword} />
             </View>
-            <PinkButton title="Đăng xuất" pressed={handleLogout} />
+            <View style={styles.buttonContainer}>
+              <PinkButton title="DS hóa đơn" pressed={handleReceiptList} />
+              <PinkButton title="Đăng xuất" pressed={handleLogout} />
+            </View>
+
             <LargeTextTouchable
               title="Quay về màn hình chính"
               pressed={backToHome}

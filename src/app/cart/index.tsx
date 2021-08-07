@@ -24,6 +24,8 @@ import numeral from 'numeral';
 import ProductRowItem from '../../common/ui/layout/main-layout/components/productRowContainer';
 import ProductRowWithQuantity from '../../common/ui/layout/cart-layout/productRowWithQuantity';
 import { emptyCart } from '../../models/cartReducer';
+import BlueButton from '../../common/ui/base/button/blueButton';
+import PinkRoundedButton from '../../common/ui/base/button/pinkRoundedButton';
 
 interface Props {}
 const Cart = (props: Props) => {
@@ -96,7 +98,7 @@ const Cart = (props: Props) => {
   }, [cart]);
 
   return (
-    <ProductLayout title="Giỏ hàng">
+    <ProductLayout title="Giỏ hàng" backPressed={() => Actions.pop()}>
       <View style={styles.productContainer}>
         <ScrollView
           showsVerticalScrollIndicator={false}
@@ -118,7 +120,7 @@ const Cart = (props: Props) => {
         <Text style={styles.totalText}>
           {numeral(cart.total).format('0,0')}đ
         </Text>
-        <PinkButton title="Xác nhận" pressed={handleConfirmPressed} />
+        <BlueButton title="Xác nhận" pressed={handleConfirmPressed} />
       </View>
     </ProductLayout>
   );

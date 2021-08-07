@@ -1,4 +1,4 @@
-import { Platform, StatusBar, StyleSheet } from "react-native";
+import { Dimensions, Platform, StatusBar, StyleSheet } from "react-native";
 import { Color } from "../../../util/enum";
 
 const styles = StyleSheet.create({
@@ -11,13 +11,8 @@ const styles = StyleSheet.create({
         flexDirection:'row',
         width: '100%',
         height: '8%',
-        justifyContent: 'center',
-        alignItems:'center'
-    },
-    headerContainer: {
-        flex: 1,
+        justifyContent:'center',
         alignItems: 'center',
-        justifyContent: 'center',
     },
     body: {
         width: '100%',
@@ -26,13 +21,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     title: {
-        fontSize: 36,
+        fontSize: Platform.OS==='android' ? Dimensions.get('window').height *5 /100 : Dimensions.get('window').height*3/100,
         fontWeight: 'bold',
         color: Color.black,
     },
     backButton: {
         position: 'absolute',
-        alignSelf: 'flex-start',
         left:10
     },
     bottomContainer: {

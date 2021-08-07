@@ -1,29 +1,30 @@
-import { Dimensions, StyleSheet } from "react-native";
+import { Dimensions, Platform, StyleSheet } from "react-native";
 import { Color } from "../../../util/enum";
 
 const styles = StyleSheet.create({
     blueButton: {
-        width: Dimensions.get("window").width * 32 / 100,
+        width: Platform.OS==='android' ? Dimensions.get('window').width *32 /100 : Dimensions.get('window').width*35/100,
         height: Dimensions.get("window").height * 6 / 100,
         backgroundColor: Color["light-blue"],
         alignItems: 'center',
         justifyContent: 'center',
-        borderRadius: 20,
+        borderRadius: Platform.OS==='android' ? 20 : 25,
         marginVertical: 20,
         alignSelf:'center'
     },
     pinkButton: {
-        width: Dimensions.get("window").width * 32 / 100,
+        width: Platform.OS==='android' ? Dimensions.get('window').width *32 /100 : Dimensions.get('window').width*35/100,
         height: Dimensions.get("window").height * 6 / 100,
         backgroundColor: Color["pink"],
         alignItems: 'center',
         justifyContent: 'center',
-        borderRadius: 20,
+        borderRadius: Platform.OS==='android' ? 20 : 25,
         marginVertical: 20,
         alignSelf:'center'
     },
     title: {
-        fontSize: Dimensions.get("window").width * 6 / 100 - 3,
+        fontSize:Platform.OS==='android' ? Dimensions.get('window').height *2.5 /100 : Dimensions.get('window').height*1.8/100,
+        // fontSize: Dimensions.get("window").height * 6 / 100 - 3,
         fontWeight: 'bold',
         color:Color.white
     },
@@ -34,7 +35,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 100,
-        elevation:5
+        elevation: Platform.OS === 'android' ? 5 : 0,
     },
     circleBlue: {
         width: '14%',
@@ -43,7 +44,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 100,
-        elevation:5
+        elevation: Platform.OS === 'android' ? 5 : 0,
     }
 }
 )

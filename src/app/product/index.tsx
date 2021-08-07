@@ -41,7 +41,7 @@ const Product = (props: Props) => {
   };
 
   return (
-    <ProductLayout title="Thông tin sản phẩm">
+    <ProductLayout title="Thông tin sản phẩm" backPressed={() => Actions.pop()}>
       <View style={styles.body}>
         <ScrollView style={styles.scrollView}>
           <View style={styles.detailContainer}>

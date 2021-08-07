@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { Dimensions, Platform, StyleSheet } from "react-native";
 import { Color } from "../../common/util/enum";
 
 const styles = StyleSheet.create({
@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
         alignSelf:'center'
     },
     text: {
-        fontSize: 20,
+        fontSize:Platform.OS==='android' ? Dimensions.get('window').height *3.2 /100 : Dimensions.get('window').height*2.2/100,
         fontWeight: 'bold',
         color: Color.black,
         paddingVertical:2,
@@ -24,7 +24,8 @@ const styles = StyleSheet.create({
         justifyContent:'center'
     },
     textName: {
-        fontSize: 30,
+        fontSize:Platform.OS==='android' ? Dimensions.get('window').height *4.5 /100 : Dimensions.get('window').height*3.5/100,
+        //Maybe 24-25
         fontWeight: 'bold',
         color: Color.black,
         marginBottom: 20,

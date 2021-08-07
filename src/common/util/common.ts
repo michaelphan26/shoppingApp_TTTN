@@ -42,6 +42,23 @@ export interface CartInterface{
   total:number
 }
 
+export interface ReceiptInterface{
+  _id: string,
+  date: string,
+  total: number,
+  email: string,
+  id_receiptType: string,
+}
+
+export interface ReceiptDetailInterface{
+  _id: string,
+  discount: number,
+  id_product: string,
+  id_receipt: string,
+  price: number,
+  quantity: number
+}
+
 
 export const getCartFromAPI = async ()=>{
   const token = await AsyncStorage.getItem("@token");
@@ -205,4 +222,69 @@ export async function getProductByCategoryFromAPI(id_category:string) {
         return err.response.data['message'];
       });
   return productList;
+}
+
+export async function getReceiptListFromAPI() {
+  const token = await AsyncStorage.getItem("@token");
+  let receiptList = [] as any;
+  await axios({
+    url: 'receipt/receipt-list',
+    baseURL: `${api_url}`,
+    method: 'get',
+    headers: {
+      "x-auth-token":token
+    },
+    responseType:'json',
+  }).then(res => {
+    if (res.data['code'] === 200) {
+      receiptList = res.data['data'] as ReceiptInterface;
+    }
+    else return res.data['message']
+  }).catch(err => {
+    return err.response.data['message'];
+  })
+
+  return receiptList;
+}
+
+export async function getReceiptDetailFromAPI(_id:string){
+const token = await AsyncStorage.getItem("@token");
+  let receiptDetailList = [] as any;
+  await axios({
+    url: `receipt/receipt-detail/${_id}`,
+    baseURL: `${api_url}`,
+    method: 'get',
+    headers: {
+      "x-auth-token":token
+    },
+    responseType:'json',
+  }).then(res => {
+    if (res.data['code'] === 200) {
+      receiptDetailList = res.data['data'];
+    }
+    else return res.data['message']
+  }).catch(err => {
+    return err.response.data['message'];
+  })
+
+  return receiptDetailList;
+}
+
+export async function getProductDetailFromAPI(_id:string) {
+  let productDetail = {} as ProductItem;
+  await axios({
+    url: `product/product-detail/${_id}`,
+    baseURL: `${api_url}`,
+    method: 'get',
+    responseType:'json',
+  }).then(res => {
+    if (res.data['code'] === 200) {
+      productDetail = res.data['data'];
+    }
+    else return res.data['message']
+  }).catch(err => {
+    return err.response.data['message'];
+  })
+
+  return productDetail;
 }

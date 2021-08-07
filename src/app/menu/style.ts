@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet } from "react-native";
+import { Dimensions, Platform, StyleSheet } from "react-native";
 import { Color } from "../../common/util/enum";
 
 const styles = StyleSheet.create({
@@ -19,9 +19,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: Color.white,
         borderRadius: 10,
-        shadowRadius: 20,
-        shadowOpacity: 5,
-        elevation: 5,
+        shadowRadius: 5,
+        shadowOpacity: 0.3,
+        shadowOffset: {
+            width: 1,
+            height:1
+        },
+        elevation: Platform.OS==='android' ? 5 :0,
         marginTop: 5,
         marginBottom:10,
     },
@@ -34,7 +38,8 @@ const styles = StyleSheet.create({
         borderBottomColor: Color["medium-gray"]
     },
     titleSmall: {
-        fontSize: Dimensions.get('window').width *6/100-6,
+        fontSize:Platform.OS==='android' ? Dimensions.get('window').height *2.5 /100 : Dimensions.get('window').height*1.8/100,
+        // fontSize: Dimensions.get('window').width *6/100-6,
         fontWeight: 'bold',
         color:Color.black
     },
@@ -63,7 +68,8 @@ const styles = StyleSheet.create({
         marginVertical: 2,
     },
     titleTiny: {
-        fontSize: Dimensions.get('window').width *6/100-8,
+        fontSize:Platform.OS==='android' ? Dimensions.get('window').height *2.2 /100 : Dimensions.get('window').height*1.5/100,
+        // fontSize: Dimensions.get('window').width *6/100-8,
         fontWeight: 'bold',
         color:Color.black
     },
@@ -75,9 +81,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: Color.white,
         borderRadius: 10,
-        shadowRadius: 20,
-        shadowOpacity: 5,
-        elevation: 5,
+        shadowRadius: 5,
+        shadowOpacity: 0.3,
+        shadowOffset: {
+            width: 1,
+            height:1
+        },
+        elevation: Platform.OS==='android' ? 5 :0,
         paddingHorizontal: 5,
         marginTop: 5,
         marginBottom:10
@@ -112,7 +122,8 @@ const styles = StyleSheet.create({
         justifyContent:'center'
     },
     badgeText: {
-        fontSize: 10,
+        fontSize: Platform.OS === 'android' ? Dimensions.get('window').height * 1.5 / 100 : Dimensions.get('window').height * 1.1 / 100,
+        //fontSize:10
         fontWeight: 'bold',
         color:Color.white
     }

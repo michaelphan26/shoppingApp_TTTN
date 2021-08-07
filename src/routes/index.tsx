@@ -8,6 +8,8 @@ import Register from '../app/auth/register';
 import Product from '../app/product';
 import Cart from '../app/cart';
 import ChangePassword from '../app/auth/changePassword';
+import Receipt from '../app/receipt';
+import ReceiptDetail from '../app/receipt-detail';
 
 const Route = () => {
   return (
@@ -24,6 +26,12 @@ const Route = () => {
             key="changePassword"
             hideNavBar={true}
             component={ChangePassword}
+          />
+          <Scene key="receipt" hideNavBar={true} component={Receipt} />
+          <Scene
+            key="receiptDetail"
+            hideNavBar={true}
+            component={ReceiptDetail}
           />
         </Scene>
       </Stack>

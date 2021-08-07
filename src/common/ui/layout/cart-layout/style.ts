@@ -1,4 +1,4 @@
-import { StyleSheet, Dimensions } from "react-native"
+import { StyleSheet, Dimensions, Platform } from "react-native"
 import { Color } from "../../../util/enum"
 
 const styles = StyleSheet.create({
@@ -10,20 +10,26 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: Color.white,
         borderRadius: 10,
-        shadowRadius: 20,
-        shadowOpacity: 5,
-        elevation: 5,
+        shadowRadius: 5,
+        shadowOpacity: 0.3,
+        shadowOffset: {
+            width: 1,
+            height:1
+        },
+        elevation: Platform.OS==='android' ? 5 :0,
         paddingHorizontal: 5,
         marginTop: 5,
         marginBottom: 10
+        
     },
     imageRound: {
         width: '20%',
         height: '90%',
-        borderRadius:Dimensions.get('window').height * 10 / 100,
+        borderRadius: Dimensions.get('window').height * 10 / 100,
     },
     titleTiny: {
-        fontSize: Dimensions.get('window').width *6/100-8,
+        fontSize:Platform.OS==='android' ? Dimensions.get('window').height *2.2 /100 : Dimensions.get('window').height*1.5/100,
+        //fontSize:Dimensions.get('window').width*6/100-8,
         fontWeight: 'bold',
         color:Color.black
     },
@@ -31,7 +37,7 @@ const styles = StyleSheet.create({
         height: '95%',
         width: '60%',
         paddingHorizontal: 5,
-        justifyContent:'center'
+        justifyContent: 'center',
     },
     buttonContainer: {
         flexDirection:'row',
@@ -77,7 +83,8 @@ const styles = StyleSheet.create({
         alignItems:'center'
     },
     quantityText: {
-        fontSize: 16,
+        fontSize: Platform.OS === 'android' ? Dimensions.get('window').height * 2.5 / 100 : Dimensions.get('window').height * 1.8 / 100,
+        // fontSize:Dimensions.get('window').width*6/100-6
         fontWeight: 'bold',
         color:Color.black
     }

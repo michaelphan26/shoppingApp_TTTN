@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { Dimensions, Platform, StyleSheet } from "react-native";
 import { Color } from "../../../common/util/enum";
 
 const styles = StyleSheet.create({
@@ -9,7 +9,8 @@ const styles = StyleSheet.create({
     successText: {
         alignSelf: 'center',
         marginVertical: 20,
-        fontSize: 20,
+        fontSize:Platform.OS==='android' ? Dimensions.get('window').height *2.5 /100 : Dimensions.get('window').height*1.8/100,
+        // fontSize: 20,
         fontWeight: 'bold',
         color:Color.black
     }

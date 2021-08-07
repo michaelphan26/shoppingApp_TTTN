@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
         paddingTop:Platform.OS==='android' ? StatusBar.currentHeight : 0
     },
     title: {
-        fontSize: 24,
+        fontSize: Platform.OS==='android' ? Dimensions.get('window').height *5 /100 : Dimensions.get('window').height*3/100,
         fontWeight: 'bold',
         alignSelf: 'center',
         paddingVertical: 10
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         shadowRadius: 20,
         shadowOpacity: 5,
-        elevation: 5,
+        elevation: Platform.OS === 'android' ? 5 : 0,
         marginTop: 5,
         marginBottom:10,
     },
@@ -50,7 +50,8 @@ const styles = StyleSheet.create({
         borderBottomColor: Color["medium-gray"]
     },
     titleSmall: {
-        fontSize: Dimensions.get('window').width *6/100-6,
+        fontSize:Platform.OS==='android' ? Dimensions.get('window').height *2.5 /100 : Dimensions.get('window').height*1.5/100,
+        // fontSize: Dimensions.get('window').width *6/100-6,
         fontWeight: 'bold',
         color:Color.black
     },
@@ -62,14 +63,18 @@ const styles = StyleSheet.create({
     },
     itemContainer: {
         height: '90%',
-        width:Dimensions.get('window').width * 32/100,
+        width:Platform.OS==='android' ? Dimensions.get('window').width * 32/100 : Dimensions.get('window').width*38/100,
         borderRadius: 20,
         backgroundColor: Color.white,
         alignItems: 'center',
         justifyContent: 'center',
-        elevation: 5,
-        shadowRadius: 20,
-        shadowOpacity: 1,
+        shadowRadius: 5,
+        shadowOpacity: 0.3,
+        shadowOffset: {
+            width: 1,
+            height:1
+        },
+        elevation: Platform.OS==='android' ? 5 :0,
         marginHorizontal: 5,
         marginVertical:7,
     },
@@ -79,7 +84,8 @@ const styles = StyleSheet.create({
         marginVertical: 2,
     },
     titleTiny: {
-        fontSize: Dimensions.get('window').width *6/100-8,
+        fontSize:Platform.OS==='android' ? Dimensions.get('window').height *2.2 /100 : Dimensions.get('window').height*1.5/100,
+        // fontSize: Dimensions.get('window').width *6/100-8,
         fontWeight: 'bold',
         color:Color.black
     },
@@ -93,7 +99,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         shadowRadius: 20,
         shadowOpacity: 5,
-        elevation: 5,
+        elevation: Platform.OS === 'android' ? 5 : 0,
         paddingHorizontal: 5,
         marginTop: 5,
         marginBottom:10

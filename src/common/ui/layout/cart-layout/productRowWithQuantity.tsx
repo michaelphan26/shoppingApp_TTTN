@@ -9,7 +9,11 @@ import {
 import numeral from 'numeral';
 import CartWithDiscardContainer from './cartWithDiscardContainer';
 import styles from './style';
-import { CartItem, ProductItem } from '../../../util/common';
+import {
+  CartItem,
+  getProductDetailFromAPI,
+  ProductItem,
+} from '../../../util/common';
 import axios from 'axios';
 import { useEffect } from 'react';
 import { api_url } from '../../../util/constant';
@@ -28,17 +32,15 @@ const ProductRowWithQuantity = (props: Props) => {
   const [product, setProduct] = useState<ProductItem>({} as ProductItem);
   const dispatch = useDispatch();
 
+  const getProductDetail = async () => {
+    const productDetail = await getProductDetailFromAPI(props.item.id_product);
+    if (typeof productDetail !== 'string') {
+      setProduct(productDetail);
+    }
+  };
+
   useEffect(() => {
-    axios({
-      url: `/product/product-detail/${props.item.id_product}`,
-      baseURL: `${api_url}`,
-      method: 'get',
-      responseType: 'json',
-    }).then((res) => {
-      if (res.data['code'] === 200) {
-        setProduct(res.data['data']);
-      }
-    });
+    getProductDetail();
   }, []);
 
   const handleIncreaseQuantity = async () => {

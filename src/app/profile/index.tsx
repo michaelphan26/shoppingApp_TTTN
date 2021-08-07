@@ -130,7 +130,9 @@ const Profile = (props: Props) => {
     Actions.push('changePassword');
   };
 
-  const handleReceiptList = () => {};
+  const handleReceiptList = () => {
+    Actions.push('receipt');
+  };
 
   return (
     <AuthLayoutContainer>

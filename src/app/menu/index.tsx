@@ -43,12 +43,19 @@ const Menu = (props: Props) => {
     }
   };
 
+  const handleAdminPress = async () => {
+    if (account.role_name.toLowerCase() === 'admin') {
+      Actions.push('adminMenu');
+    }
+  };
+
   return (
-    <MainLayout>
+    <MainLayout title="Xin chào">
       <HeadComponent
         onTextChange={handleTextChange}
         search={search}
         profilePressed={handleProfilePress}
+        adminPressed={handleAdminPress}
         isAdmin={account.role_name.toLowerCase() === 'admin' ? true : false}
       />
       <BodyComponent searchText={search} />

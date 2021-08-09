@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Alert, ScrollView, Text, View } from 'react-native';
+import { Alert, FlatList, ScrollView, Text, View } from 'react-native';
 import SquareItemView from '../../../common/ui/layout/main-layout/components/squareItemView';
 import CategoryRowContainer from './categoryRowContainer';
 import { api_url } from '../../../common/util/constant';
@@ -81,19 +81,13 @@ const BodyComponent = (props: Props) => {
   }, []);
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false} style={styles.scrollView}>
-      {!props.searchText
-        ? categoryList.map((item: CategoryItem) => {
-            return (
-              <CategoryRowContainer
-                categoryItem={item}
-                key={item._id}
-                productPressed={handleProductPressed}
-              />
-            );
-          })
-        : productList
-            .filter((item: ProductItem) => {
+    <FlatList
+      showsVerticalScrollIndicator={false}
+      style={styles.scrollView}
+      data={
+        !props.searchText
+          ? categoryList
+          : productList.filter((item: ProductItem) => {
               return (
                 item.name
                   .toLowerCase()
@@ -103,17 +97,68 @@ const BodyComponent = (props: Props) => {
                   .startsWith(props.searchText.trim().toLowerCase())
               );
             })
-            .map((item: ProductItem) => {
+      }
+      renderItem={
+        !props.searchText
+          ? (item: CategoryItem) => {
+              return (
+                <CategoryRowContainer
+                  categoryItem={item.item}
+                  key={item.item._id}
+                  productPressed={handleProductPressed}
+                />
+              );
+            }
+          : (item: ProductItem) => {
               return (
                 <ProductRowContainer
-                  item={item}
-                  key={item._id}
+                  item={item.item}
+                  key={item.item._id}
                   addToCart={handleAddToCart}
                   productPressed={handleSearchPressed}
                 />
               );
-            })}
-    </ScrollView>
+            }
+      }
+      keyExtractor={
+        !props.searchText
+          ? (item: CategoryItem) => item._id
+          : (item: ProductItem) => item._id
+      }
+    />
+
+    //   {!props.searchText
+    //     ? categoryList.map((item: CategoryItem) => {
+    //         return (
+    //           <CategoryRowContainer
+    //             categoryItem={item}
+    //             key={item._id}
+    //             productPressed={handleProductPressed}
+    //           />
+    //         );
+    //       })
+    //     : productList
+    //         .filter((item: ProductItem) => {
+    //           return (
+    //             item.name
+    //               .toLowerCase()
+    //               .startsWith(props.searchText.trim().toLowerCase()) ||
+    //             item.brand
+    //               .toLowerCase()
+    //               .startsWith(props.searchText.trim().toLowerCase())
+    //           );
+    //         })
+    //         .map((item: ProductItem) => {
+    //           return (
+    //             <ProductRowContainer
+    //               item={item}
+    //               key={item._id}
+    //               addToCart={handleAddToCart}
+    //               productPressed={handleSearchPressed}
+    //             />
+    //           );
+    //         })}
+    // </ScrollView>
   );
 };
 

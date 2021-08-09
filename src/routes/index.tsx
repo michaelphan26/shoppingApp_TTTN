@@ -10,6 +10,7 @@ import Cart from '../app/cart';
 import ChangePassword from '../app/auth/changePassword';
 import Receipt from '../app/receipt';
 import ReceiptDetail from '../app/receipt-detail';
+import AdminMenu from '../app/admin/menu';
 
 const Route = () => {
   return (
@@ -33,6 +34,8 @@ const Route = () => {
             hideNavBar={true}
             component={ReceiptDetail}
           />
+
+          <Scene key="adminMenu" hideNavBar={true} component={AdminMenu} />
         </Scene>
       </Stack>
     </Router>

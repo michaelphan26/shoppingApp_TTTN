@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { ReactNode } from 'react';
-import { Alert, Text, View } from 'react-native';
+import { Alert, FlatList, Text, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { api_url } from '../../../common/util/constant';
 import styles from '../style';
@@ -18,7 +18,7 @@ interface Props {
   // children: ReactNode;
 }
 const CategoryRowContainer = (props: Props) => {
-  const [productlist, setProductList] = useState([] as any);
+  const [productList, setProductList] = useState([] as any);
 
   const getProductListByCategory = async () => {
     const productListByCategory = await getProductByCategoryFromAPI(
@@ -40,7 +40,23 @@ const CategoryRowContainer = (props: Props) => {
       <View style={styles.titleContainer}>
         <Text style={styles.titleSmall}>{props.categoryItem.name}</Text>
       </View>
-      <ScrollView
+      <FlatList
+        style={styles.bodyContainer}
+        data={productList}
+        renderItem={(item: ProductItem) => {
+          return (
+            <SquareItemView
+              key={item.item._id}
+              item={item.item}
+              productPressed={(item) =>
+                props.productPressed(item, props.categoryItem.name)
+              }
+            />
+          );
+        }}
+        keyExtractor={(item) => item._id}
+      />
+      {/* <ScrollView
         style={styles.bodyContainer}
         horizontal={true}
         showsHorizontalScrollIndicator={false}
@@ -56,7 +72,7 @@ const CategoryRowContainer = (props: Props) => {
             />
           );
         })}
-      </ScrollView>
+      </ScrollView> */}
     </View>
   );
 };

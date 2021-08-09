@@ -10,6 +10,7 @@ import { Actions } from 'react-native-router-flux';
 interface Props {
   onTextChange: (search: string) => void;
   profilePressed: () => void;
+  adminPressed: () => void;
   search: string;
   isAdmin: boolean;
 }
@@ -33,7 +34,7 @@ const HeadComponent = (props: Props) => {
         <Entypo name="user" size={22} color={Color.black} />
       </TouchableWithoutFeedback>
       {props.isAdmin ? (
-        <TouchableWithoutFeedback onPress={() => {}}>
+        <TouchableWithoutFeedback onPress={() => props.adminPressed()}>
           <Entypo name="database" size={25} color={Color.black} />
         </TouchableWithoutFeedback>
       ) : (

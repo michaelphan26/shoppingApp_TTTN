@@ -9,7 +9,6 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { Actions } from 'react-native-router-flux';
 import { useDispatch, useSelector } from 'react-redux';
 import PinkButton from '../../common/ui/base/button/pinkButton';
-import ProductLayout from '../../common/ui/layout/product-layout';
 import {
   addReceiptAPI,
   CartItem,
@@ -26,6 +25,7 @@ import ProductRowWithQuantity from '../../common/ui/layout/cart-layout/productRo
 import { emptyCart } from '../../models/cartReducer';
 import BlueButton from '../../common/ui/base/button/blueButton';
 import PinkRoundedButton from '../../common/ui/base/button/pinkRoundedButton';
+import CartLayout from '../../common/ui/layout/cart-layout';
 
 interface Props {}
 const Cart = (props: Props) => {
@@ -98,7 +98,15 @@ const Cart = (props: Props) => {
   }, [cart]);
 
   return (
-    <ProductLayout title="Giỏ hàng" backPressed={() => Actions.pop()}>
+    <CartLayout
+      title="Giỏ hàng"
+      backPressed={() => {
+        Actions.pop();
+        setTimeout(() => {
+          Actions.refresh({ key: Math.random() });
+        }, 10);
+      }}
+    >
       <View style={styles.productContainer}>
         <ScrollView
           showsVerticalScrollIndicator={false}
@@ -122,7 +130,7 @@ const Cart = (props: Props) => {
         </Text>
         <BlueButton title="Xác nhận" pressed={handleConfirmPressed} />
       </View>
-    </ProductLayout>
+    </CartLayout>
   );
 };
 

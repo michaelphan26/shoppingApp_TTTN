@@ -25,7 +25,8 @@ const styles = StyleSheet.create({
         paddingHorizontal: 5,
         fontSize: Platform.OS === 'android' ? Dimensions.get('window').height * 2.5 / 100 : Dimensions.get('window').height * 1.8 / 100,
         // fontSize: 16,
-        fontWeight:'bold'
+        fontWeight: 'bold',
+        color:Color.black
     },
     passwordInput: {
         width: '80%',

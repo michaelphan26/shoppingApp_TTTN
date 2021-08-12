@@ -1,7 +1,6 @@
 import React from 'react';
 import { Router, Scene, Stack } from 'react-native-router-flux';
 import Menu from '../app/menu';
-import { Entypo } from 'react-native-vector-icons';
 import Profile from '../app/profile';
 import Login from '../app/auth/login';
 import Register from '../app/auth/register';
@@ -11,6 +10,14 @@ import ChangePassword from '../app/auth/changePassword';
 import Receipt from '../app/receipt';
 import ReceiptDetail from '../app/receipt-detail';
 import AdminMenu from '../app/admin/menu';
+import AdminProduct from '../app/admin/product';
+import AdminCategory from '../app/admin/category';
+import AdminCompany from '../app/admin/company';
+import AdminIOProduct from '../app/admin/ioProduct';
+import AdminIOType from '../app/admin/ioType';
+import AdminReceipt from '../app/admin/receipt';
+import AdminReceiptType from '../app/admin/receiptType';
+import AdminRole from '../app/admin/role';
 
 const Route = () => {
   return (
@@ -36,6 +43,38 @@ const Route = () => {
           />
 
           <Scene key="adminMenu" hideNavBar={true} component={AdminMenu} />
+          <Scene
+            key="adminAccount"
+            hideNavBar={true}
+            component={AdminProduct}
+          />
+          <Scene
+            key="adminCategory"
+            hideNavBar={true}
+            component={AdminCategory}
+          />
+          <Scene
+            key="adminCompany"
+            hideNavBar={true}
+            component={AdminCompany}
+          />
+          <Scene
+            key="adminIOProduct"
+            hideNavBar={true}
+            component={AdminIOProduct}
+          />
+          <Scene key="adminIOType" hideNavBar={true} component={AdminIOType} />
+          <Scene
+            key="adminReceipt"
+            hideNavBar={true}
+            component={AdminReceipt}
+          />
+          <Scene
+            key="adminReceiptType"
+            hideNavBar={true}
+            component={AdminReceiptType}
+          />
+          <Scene key="adminRole" hideNavBar={true} component={AdminRole} />
         </Scene>
       </Stack>
     </Router>

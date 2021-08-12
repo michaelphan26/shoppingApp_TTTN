@@ -19,7 +19,7 @@ const HeadComponent = (props: Props) => {
     <View style={styles.boxContainer}>
       <NormalTextInput
         iconName="search"
-        placeholderText="Search..."
+        placeholderText="Tìm kiếm..."
         onTextChange={(text) => props.onTextChange(text)}
         value={props.search}
         editable={true}

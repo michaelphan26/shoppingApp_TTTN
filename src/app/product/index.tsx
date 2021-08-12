@@ -1,7 +1,5 @@
 import React, { useEffect } from 'react';
 import { Image, ScrollView, Text, View } from 'react-native';
-import HeaderComponent from '../../common/ui/layout/product-layout/components/headerComponent';
-import ProductLayout from '../../common/ui/layout/product-layout';
 import { ProductItem } from '../../common/util/common';
 import styles from './style';
 import numeral from 'numeral';
@@ -11,7 +9,8 @@ import { addToCart, loadCart } from '../../models/cartReducer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { api_url } from '../../common/util/constant';
-import BottomComponent from '../../common/ui/layout/product-layout/components/bottomComponent';
+import BottomComponent from '../../common/ui/layout/product-layout/bottomComponent';
+import MainLayout from '../../common/ui/layout/main-layout';
 
 interface Props {
   item: ProductItem;
@@ -22,8 +21,10 @@ const Product = (props: Props) => {
 
   const handleBackPressed = () => {
     Actions.pop();
+    setTimeout(() => {
+      Actions.refresh({ key: Math.random() });
+    }, 10);
   };
-
   const handleAddToCartPressed = async () => {
     const token = await AsyncStorage.getItem('@token');
     console.log(token);
@@ -41,7 +42,7 @@ const Product = (props: Props) => {
   };
 
   return (
-    <ProductLayout title="Thông tin sản phẩm" backPressed={() => Actions.pop()}>
+    <MainLayout title="Thông tin sản phẩm">
       <View style={styles.body}>
         <ScrollView style={styles.scrollView}>
           <View style={styles.detailContainer}>
@@ -71,7 +72,7 @@ const Product = (props: Props) => {
           addToCartPressed={handleAddToCartPressed}
         />
       </View>
-    </ProductLayout>
+    </MainLayout>
   );
 };
 

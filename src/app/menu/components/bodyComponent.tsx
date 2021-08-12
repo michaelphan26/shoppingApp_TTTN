@@ -6,7 +6,6 @@ import CategoryRowContainer from './categoryRowContainer';
 import { api_url } from '../../../common/util/constant';
 import styles from '../style';
 import ProductRowContainer from '../../../common/ui/layout/main-layout/components/productRowContainer';
-import ProductRowItem from '../../../common/ui/layout/main-layout/components/productRowContainer';
 import {
   CategoryItem,
   getCategoryListFromAPI,

@@ -1,10 +1,25 @@
 import React from 'react';
-import { View } from 'react-native';
+import { Text, TouchableWithoutFeedback, View } from 'react-native';
+import { SummaryInterface } from '../../../common/util/common';
 import styles from './style';
 
-interface Props {}
+interface Props {
+  item: SummaryInterface;
+  itemPressed: (item: SummaryInterface) => void;
+}
 const DetailCard = (props: Props) => {
-  return <View style={styles.detailContainer}></View>;
+  return (
+    <TouchableWithoutFeedback onPress={() => props.itemPressed(props.item)}>
+      <View style={styles.detailContainer}>
+        <Text style={styles.title}>{props.item.title}</Text>
+        {props.item.count === 0 ? (
+          <Text style={styles.countPink}>{props.item.count}</Text>
+        ) : (
+          <Text style={styles.countBlue}>{props.item.count}</Text>
+        )}
+      </View>
+    </TouchableWithoutFeedback>
+  );
 };
 
 export default DetailCard;

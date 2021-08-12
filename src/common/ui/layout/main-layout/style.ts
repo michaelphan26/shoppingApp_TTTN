@@ -50,8 +50,7 @@ const styles = StyleSheet.create({
         borderBottomColor: Color["medium-gray"]
     },
     titleSmall: {
-        fontSize:Platform.OS==='android' ? Dimensions.get('window').height *2.5 /100 : Dimensions.get('window').height*1.5/100,
-        // fontSize: Dimensions.get('window').width *6/100-6,
+        fontSize:Platform.OS==='android' ? Dimensions.get('window').height *2.5 /100 : Dimensions.get('window').height*1.7/100,        // fontSize: Dimensions.get('window').width *6/100-6,
         fontWeight: 'bold',
         color:Color.black
     },
@@ -97,9 +96,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: Color.white,
         borderRadius: 10,
-        shadowRadius: 20,
-        shadowOpacity: 5,
-        elevation: Platform.OS === 'android' ? 5 : 0,
+        shadowRadius: 5,
+        shadowOpacity: 0.3,
+        shadowOffset: {
+            width: 1,
+            height:1
+        },
+        elevation: Platform.OS==='android' ? 5 :0,
         paddingHorizontal: 5,
         marginTop: 5,
         marginBottom:10

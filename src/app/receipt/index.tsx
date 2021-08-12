@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import { Actions } from 'react-native-router-flux';
-import ProductLayout from '../../common/ui/layout/product-layout';
-import ReceiptBottomComponent from '../../common/ui/layout/product-layout/components/receiptBottomComponent';
+import CartLayout from '../../common/ui/layout/cart-layout';
+import ReceiptBottomComponent from '../../common/ui/layout/product-layout/receiptBottomComponent';
 import ReceiptRowContainer from '../../common/ui/layout/receipt-layout/receiptRowContainer';
 import {
   getReceiptListFromAPI,
@@ -31,7 +31,15 @@ const Receipt = () => {
   };
 
   return (
-    <ProductLayout title="Danh sách hóa đơn" backPressed={() => Actions.pop()}>
+    <CartLayout
+      title="Danh sách hóa đơn"
+      backPressed={() => {
+        Actions.pop();
+        setTimeout(() => {
+          Actions.refresh({ key: Math.random() });
+        }, 10);
+      }}
+    >
       <View style={styles.body}>
         <ScrollView
           style={styles.scrollView}
@@ -48,7 +56,7 @@ const Receipt = () => {
           })}
         </ScrollView>
       </View>
-    </ProductLayout>
+    </CartLayout>
   );
 };
 

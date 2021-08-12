@@ -38,8 +38,7 @@ const styles = StyleSheet.create({
         borderBottomColor: Color["medium-gray"]
     },
     titleSmall: {
-        fontSize:Platform.OS==='android' ? Dimensions.get('window').height *2.5 /100 : Dimensions.get('window').height*1.8/100,
-        // fontSize: Dimensions.get('window').width *6/100-6,
+fontSize:Platform.OS==='android' ? Dimensions.get('window').height *2.5 /100 : Dimensions.get('window').height*1.7/100,        // fontSize: Dimensions.get('window').width *6/100-6,
         fontWeight: 'bold',
         color:Color.black
     },

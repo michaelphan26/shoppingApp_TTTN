@@ -1,10 +1,10 @@
 import React from 'react';
 import { TouchableHighlight, View } from 'react-native';
 import { FontAwesome, Entypo } from 'react-native-vector-icons';
-import { Color } from '../../../../util/enum';
-import BlueRoundedButton from '../../../base/button/blueRoundedButton';
-import PinkRoundedButton from '../../../base/button/pinkRoundedButton';
-import styles from '../style';
+import { Color } from '../../../util/enum';
+import BlueRoundedButton from '../../base/button/blueRoundedButton';
+import PinkRoundedButton from '../../base/button/pinkRoundedButton';
+import styles from './style';
 
 interface Props {
   backPressed: () => void;

@@ -2,10 +2,7 @@ import React, { useEffect } from 'react';
 import { useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import { Actions } from 'react-native-router-flux';
-import ProductLayout from '../../common/ui/layout/product-layout';
 import {
-  CartItem,
-  getProductDetail,
   getReceiptDetailFromAPI,
   getReceiptListFromAPI,
   getUserInfoFromAPI,
@@ -16,6 +13,7 @@ import {
 import styles from './style';
 import numeral from 'numeral';
 import ProductRowNoQuantity from '../../common/ui/layout/cart-layout/productRowNoQuantity';
+import CartLayout from '../../common/ui/layout/cart-layout';
 
 interface Props {
   receipt: ReceiptInterface;
@@ -62,7 +60,15 @@ const ReceiptDetail = (props: Props) => {
   }, []);
 
   return (
-    <ProductLayout title="Thông tin hóa đơn" backPressed={() => Actions.pop()}>
+    <CartLayout
+      title="Thông tin hóa đơn"
+      backPressed={() => {
+        Actions.pop();
+        setTimeout(() => {
+          Actions.refresh({ key: Math.random() });
+        }, 10);
+      }}
+    >
       <View style={styles.productContainer}>
         <ScrollView
           showsVerticalScrollIndicator={false}
@@ -86,7 +92,7 @@ const ReceiptDetail = (props: Props) => {
           {numeral(props.receipt.total).format('0,0')}đ
         </Text>
       </View>
-    </ProductLayout>
+    </CartLayout>
   );
 };
 

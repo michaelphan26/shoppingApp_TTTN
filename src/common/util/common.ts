@@ -59,6 +59,11 @@ export interface ReceiptDetailInterface{
   quantity: number
 }
 
+export interface SummaryInterface{
+  id:string,
+  title: string,
+  count:number
+}
 
 export const getCartFromAPI = async ()=>{
   const token = await AsyncStorage.getItem("@token");
@@ -287,4 +292,49 @@ export async function getProductDetailFromAPI(_id:string) {
   })
 
   return productDetail;
+}
+
+export async function addCategory(name: string) {
+  const token = await AsyncStorage.getItem("@token")
+  let code:number=0
+  await axios({
+    url: 'category/add-category',
+    baseURL: `${api_url}`,
+    method: 'post',
+    headers: {
+      "x-auth-token":token
+    },
+    data: {
+      "name":name
+    }
+  }).then(res => {
+    code = res.data['code'] as number;
+    return code
+  })
+    .catch(err => {
+      code = err.response.data['code'] as number
+      return code
+    })
+  return code
+}
+
+export async function deleteCategory(item: CategoryItem) {
+  const token = await AsyncStorage.getItem("@token")
+  let code:number=0
+  await axios({
+    url: `category/delete-category/${item._id}`,
+    baseURL: `${api_url}`,
+    method: 'delete',
+    headers: {
+      "x-auth-token":token
+    },
+  }).then(res => {
+    code = res.data['code'] as number;
+    return code
+  })
+    .catch(err => {
+      code = err.response.data['code'] as number
+      return code
+    })
+  return code
 }

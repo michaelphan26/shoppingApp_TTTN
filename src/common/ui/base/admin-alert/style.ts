@@ -3,7 +3,7 @@ import { Color } from "../../../util/enum";
 
 const styles = StyleSheet.create({
     centeredView: {
-        flex:1,
+        flex: 1,
         width: Dimensions.get('window').width,
         alignItems: 'center',
         alignSelf: 'center',
@@ -12,7 +12,6 @@ const styles = StyleSheet.create({
     },
     modal: {
         width: '80%',
-        height:'30%',
         margin: 10,
         backgroundColor: Color.white,
         borderRadius: 10,
@@ -32,8 +31,8 @@ const styles = StyleSheet.create({
         color: Color.black,
     },
     bodyContainer: {
-        flex: 1,
         justifyContent: 'center',
+        marginBottom:20,
     },
     text: {
         fontSize:Platform.OS==='android' ? Dimensions.get('window').height *3.2 /100 : Dimensions.get('window').height*2.2/100,
@@ -49,9 +48,10 @@ const styles = StyleSheet.create({
     },
     bottomContainer: {
         width: '100%',
-        height:'30%',
+        height:'10%',
         flexDirection: 'row',
         justifyContent: 'space-around',
+        alignItems: 'center',
     }
 })
 

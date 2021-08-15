@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, TouchableWithoutFeedback, View } from 'react-native';
+import { FlatList, Text, TouchableWithoutFeedback, View } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import SearchRow from '../../../common/ui/base/searchRow';
 import { NormalTextInput } from '../../../common/ui/base/textInput';
@@ -10,25 +10,27 @@ import AdminAlert from '../../../common/ui/base/admin-alert/adminAlert';
 import { Color } from '../../../common/util/enum';
 import { useState } from 'react';
 import {
-  addCategory,
-  CategoryItem,
-  deleteCategory,
+  addJustName,
+  JustNameItem,
+  deleteJustName,
+  editJustName,
   getCategoryListFromAPI,
+  initialJustNameItem,
+  addCategoryUrl,
+  editCategoryUrl,
+  deleteCategoryUrl,
 } from '../../../common/util/common';
 import { useEffect } from 'react';
 import { CustomAlert } from '../../../common/ui/base/admin-alert';
 
 interface Props {}
-const initialItem: CategoryItem = {
-  _id: '',
-  name: '',
-};
+
 const AdminCategory = (props: Props) => {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [modalDeleteVisible, setModalDeleteVisible] = useState<boolean>(false);
   const [action, setAction] = useState<string>('Add');
   const [categoryList, setCategoryList] = useState([] as any);
-  const [editItem, setEditItem] = useState<CategoryItem>(initialItem);
+  const [editItem, setEditItem] = useState<JustNameItem>(initialJustNameItem);
   const [searchText, setSearchText] = useState<string>('');
   const [name, setName] = useState<string>('');
 
@@ -50,22 +52,23 @@ const AdminCategory = (props: Props) => {
     setAction('Add');
   };
 
-  const handleEditPressed = (item: CategoryItem) => {
+  const handleEditPressed = (item: JustNameItem) => {
     setModalVisible(true);
     setAction('Edit');
     setEditItem(item);
+    setName(item.name);
   };
 
   const handleCloseModal = () => {
     setName('');
     setModalVisible(false);
     setModalDeleteVisible(false);
-    setEditItem(initialItem);
+    setEditItem(initialJustNameItem);
   };
 
   const handleAddCategory = async () => {
     if (name.trim().length !== 0) {
-      const code = await addCategory(name.trim());
+      const code = await addJustName(addCategoryUrl, name.trim());
       //Toast
       if (code === 200) {
         handleCloseModal();
@@ -78,15 +81,29 @@ const AdminCategory = (props: Props) => {
     }
   };
 
-  const handleSaveCategory = () => {};
+  const handleSaveCategory = async () => {
+    if (name.trim().length !== 0) {
+      editItem.name = name.trim();
+      const code = await editJustName(editCategoryUrl, editItem);
+      //Toast
+      if (code === 200) {
+        handleCloseModal();
+        Actions.refresh({ key: Math.random() });
+      } else {
+        console.log(code);
+      }
+    } else {
+      //Toast err
+    }
+  };
 
-  const handleDeletePressed = (item: CategoryItem) => {
+  const handleDeletePressed = (item: JustNameItem) => {
     setModalDeleteVisible(true);
     setEditItem(item);
   };
 
   const handleDeleteCategory = async () => {
-    const code = await deleteCategory(editItem);
+    const code = await deleteJustName(deleteCategoryUrl, editItem);
     //Toast
     if (code === 200) {
       console.log('200');
@@ -95,6 +112,20 @@ const AdminCategory = (props: Props) => {
     } else {
       console.log(code);
     }
+  };
+
+  const alertBody = () => {
+    return (
+      <View>
+        <Text style={styles.text}>Tên:</Text>
+        <NormalTextInput
+          placeholderText="Tên"
+          onTextChange={(text) => setName(text)}
+          value={name}
+          editable={true}
+        />
+      </View>
+    );
   };
 
   return (
@@ -122,9 +153,9 @@ const AdminCategory = (props: Props) => {
             okTitle="Thêm"
             onCancelPressed={handleCloseModal}
             onOkPressed={handleAddCategory}
-            name={name}
-            nameChange={(nameChange) => setName(nameChange)}
-          />
+          >
+            {alertBody()}
+          </AdminAlert>
         ) : (
           <AdminAlert
             alertVisible={modalVisible}
@@ -132,9 +163,9 @@ const AdminCategory = (props: Props) => {
             okTitle="Lưu"
             onCancelPressed={handleCloseModal}
             onOkPressed={handleSaveCategory}
-            name={name}
-            nameChange={(nameChange) => setName(nameChange)}
-          />
+          >
+            {alertBody()}
+          </AdminAlert>
         )}
         <CustomAlert
           alertVisible={modalDeleteVisible}
@@ -149,11 +180,11 @@ const AdminCategory = (props: Props) => {
       </View>
 
       <FlatList
-        data={categoryList.filter((item: CategoryItem) =>
+        data={categoryList.filter((item: JustNameItem) =>
           item.name.toLowerCase().startsWith(searchText.trim().toLowerCase())
         )}
         style={styles.listContainer}
-        renderItem={(item: CategoryItem) => {
+        renderItem={(item: JustNameItem) => {
           return (
             <SearchRow
               item={item.item}
@@ -162,7 +193,7 @@ const AdminCategory = (props: Props) => {
             />
           );
         }}
-        keyExtractor={(item: CategoryItem) => item._id}
+        keyExtractor={(item: JustNameItem) => item._id}
       />
     </CartLayout>
   );

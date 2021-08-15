@@ -8,7 +8,7 @@ import {
   PasswordTextInput,
 } from '../../../common/ui/base/textInput';
 import AuthLayoutContainer from '../../../common/ui/layout/auth-Layout/layoutContainer';
-import { emailReg, phoneReg } from '../../../common/util/common';
+import { emailReg, phoneReg, RegisterInfo } from '../../../common/util/common';
 import {
   LargeTextTouchable,
   SmallTextTouchable,
@@ -21,13 +21,6 @@ import { useDispatch } from 'react-redux';
 import { accountLogin } from '../../../models/accountReducer';
 import { LargeCardView } from '../../../common/ui/layout/auth-Layout';
 
-interface RegisterInfo {
-  email: '';
-  password: '';
-  name: '';
-  phone: '';
-  address: '';
-}
 const Register = () => {
   const {
     control,

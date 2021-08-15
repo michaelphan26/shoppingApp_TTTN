@@ -2,12 +2,12 @@ import React from 'react';
 import { Text, TouchableWithoutFeedback, View } from 'react-native';
 import styles from './style';
 import { Entypo } from 'react-native-vector-icons';
-import { CategoryItem } from '../../../util/common';
+import { JustNameItem } from '../../../util/common';
 
 interface Props {
-  item: CategoryItem;
-  onEditPressed: (item: CategoryItem) => void;
-  onDeletePressed: (item: CategoryItem) => void;
+  item: JustNameItem;
+  onEditPressed: (item: JustNameItem) => void;
+  onDeletePressed: (item: JustNameItem) => void;
 }
 const SearchRow = (props: Props) => {
   return (

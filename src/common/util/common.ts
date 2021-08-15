@@ -6,6 +6,32 @@ export const emailReg = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".
 
 export const phoneReg = /((09|03|07|08|05)+([0-9]{8})\b)/g;
 
+export interface RegisterInfo {
+  email: '';
+  password: '';
+  name: '';
+  phone: '';
+  address: '';
+}
+
+export interface UserInterface{
+  email: '';
+  password: '';
+  name: '';
+  phone: '';
+  address: '';
+  id_role: '';
+}
+
+export const initialUserInterface: UserInterface={
+  email: '',
+  password: '',
+  name: '',
+  phone: '',
+  address: '',
+  id_role: ''
+}
+
 export interface ProductItem{
     _id: string;
     name: string;
@@ -19,7 +45,7 @@ export interface ProductItem{
     status:boolean
 }
 
-export interface CategoryItem{
+export interface JustNameItem{
     _id: string;
     name:string
 }
@@ -64,6 +90,39 @@ export interface SummaryInterface{
   title: string,
   count:number
 }
+
+export interface UserItem{
+  _id:string,
+  email: string,
+  id_role:string,
+  id_userInfo:string
+}
+
+export interface UserDetailItem{
+  _id:string,
+  name:string,
+  phone:string,
+  address:string,
+  joinDate:string
+}
+
+export const initialJustNameItem: JustNameItem = {
+  _id: '',
+  name: '',
+};
+
+export const addCategoryUrl = 'category/add-category/';
+export const editCategoryUrl = 'category/edit-category/';
+export const deleteCategoryUrl = 'category/delete-category/';
+export const addReceiptTypeUrl = 'receipt-type/add-receipt-type/';
+export const editReceiptTypeUrl = 'receipt-type/edit-receipt-type/';
+export const deleteReceiptTypeUrl = 'receipt-type/delete-receipt-type/';
+export const addIOTypeUrl = 'io-type/add-io-type/';
+export const editIOTypeUrl = 'io-type/edit-io-type/';
+export const deleteIOTypeUrl = 'io-type/delete-io-type/';
+export const addRoleUrl = 'role/add-role/';
+export const editRoleUrl = 'role/edit-role/';
+export const deleteRoleUrl = 'role/delete-role/';
 
 export const getCartFromAPI = async ()=>{
   const token = await AsyncStorage.getItem("@token");
@@ -144,6 +203,31 @@ export async function getUserInfoFromAPI() {
     const msg = "No token";
     return msg;
       }
+}
+
+export async function getUserInfoByIDFromAPI(_id: string) {
+  const token = await AsyncStorage.getItem('@token');
+    let userInfo = {} as UserDetailItem;
+    await axios({
+      url: `admin/account-detail/${_id}`,
+      baseURL: `${api_url}`,
+      method: 'get',
+      headers: {
+        'x-auth-token': token,
+      },
+    })
+      .then((res) => {
+        if (res.data['code'] === 200) {
+          userInfo=res.data['data']
+        }
+        else {
+          return res.data['message'] as string;
+        }
+      })
+      .catch((err) => {
+        return err.response.data['message'] as string
+      });
+    return userInfo;
 }
 
 export async function getCategoryNameFromAPI(product:ProductItem){
@@ -252,8 +336,31 @@ export async function getReceiptListFromAPI() {
   return receiptList;
 }
 
+export async function getReceiptListAdminFromAPI() {
+  const token = await AsyncStorage.getItem("@token");
+  let receiptList = [] as any;
+  await axios({
+    url: 'admin/receipt-list',
+    baseURL: `${api_url}`,
+    method: 'get',
+    headers: {
+      "x-auth-token":token
+    },
+    responseType:'json',
+  }).then(res => {
+    if (res.data['code'] === 200) {
+      receiptList = res.data['data'] as ReceiptInterface;
+    }
+    else return res.data['message']
+  }).catch(err => {
+    return err.response.data['message'];
+  })
+
+  return receiptList;
+}
+
 export async function getReceiptDetailFromAPI(_id:string){
-const token = await AsyncStorage.getItem("@token");
+  const token = await AsyncStorage.getItem("@token");
   let receiptDetailList = [] as any;
   await axios({
     url: `receipt/receipt-detail/${_id}`,
@@ -294,11 +401,11 @@ export async function getProductDetailFromAPI(_id:string) {
   return productDetail;
 }
 
-export async function addCategory(name: string) {
+export async function addJustName(url:string, name: string) {
   const token = await AsyncStorage.getItem("@token")
   let code:number=0
   await axios({
-    url: 'category/add-category',
+    url: `${url}`,
     baseURL: `${api_url}`,
     method: 'post',
     headers: {
@@ -318,11 +425,11 @@ export async function addCategory(name: string) {
   return code
 }
 
-export async function deleteCategory(item: CategoryItem) {
+export async function deleteJustName(url:string, item:JustNameItem) {
   const token = await AsyncStorage.getItem("@token")
   let code:number=0
   await axios({
-    url: `category/delete-category/${item._id}`,
+    url: `${url}${item._id}`,
     baseURL: `${api_url}`,
     method: 'delete',
     headers: {
@@ -336,5 +443,165 @@ export async function deleteCategory(item: CategoryItem) {
       code = err.response.data['code'] as number
       return code
     })
+  return code
+}
+
+export async function editJustName(url:string,item: JustNameItem) {
+  const token = await AsyncStorage.getItem('@token')
+  let code: number = 0
+  await axios({
+    url: `${url}${item._id}`,
+    baseURL: `${api_url}`,
+    method: 'put',
+    headers: {
+      "x-auth-token":token
+    },
+    data: {
+      "name":item.name
+    }
+  }).then(res => {
+    code = res.data['code'] as number;
+    return code;
+  })
+    .catch(err => {
+      code = err.response.data['code'] as number
+      return code
+    })
+  return code
+}
+
+export async function getReceiptTypeFromAPI() {
+  const token = await AsyncStorage.getItem("@token");
+  let receiptTypeList = [] as any;
+  await axios({
+    url: `receipt-type/get-list`,
+    baseURL: `${api_url}`,
+    method: 'get',
+    headers: {
+      "x-auth-token":token
+    },
+    responseType:'json',
+  }).then(res => {
+    if (res.data['code'] === 200) {
+      receiptTypeList = res.data['data'];
+    }
+    else return res.data['message']
+  }).catch(err => {
+    return err.response.data['message'];
+  })
+
+  return receiptTypeList;
+}
+
+export async function getIOTypeFromAPI() {
+  const token = await AsyncStorage.getItem("@token");
+  let IOTypeList = [] as any;
+  await axios({
+    url: `io-type/get-list`,
+    baseURL: `${api_url}`,
+    method: 'get',
+    headers: {
+      "x-auth-token":token
+    },
+    responseType:'json',
+  }).then(res => {
+    if (res.data['code'] === 200) {
+      IOTypeList = res.data['data'];
+    }
+    else return res.data['message']
+  }).catch(err => {
+    return err.response.data['message'];
+  })
+
+  return IOTypeList;
+}
+
+export async function getRoleFromAPI() {
+  const token = await AsyncStorage.getItem("@token");
+  let roleList = [] as any;
+  await axios({
+    url: `role/get-list`,
+    baseURL: `${api_url}`,
+    method: 'get',
+    headers: {
+      "x-auth-token":token
+    },
+    responseType:'json',
+  }).then(res => {
+    if (res.data['code'] === 200) {
+      roleList = res.data['data'];
+    }
+    else return res.data['message']
+  }).catch(err => {
+    return err.response.data['message'];
+  })
+
+  return roleList;
+}
+
+export async function getRoleInfoFromAPI(_id:string) {
+  const token = await AsyncStorage.getItem("@token");
+  let roleInfo = {} as JustNameItem
+  await axios({
+    url: `role/role-info/${_id}`,
+    baseURL: `${api_url}`,
+    method: 'get',
+    headers: {
+      "x-auth-token":token
+    },
+    responseType:'json',
+  }).then(res => {
+    if (res.data['code'] === 200) {
+      roleInfo = res.data['data'];
+    }
+    else return res.data['message']
+  }).catch(err => {
+    return err.response.data['message'];
+  })
+
+  return roleInfo;
+}
+
+export async function getUserListFromAPI() {
+  const token = await AsyncStorage.getItem("@token");
+  let userList = [] as any;
+  await axios({
+    url: `admin/account-list`,
+    baseURL: `${api_url}`,
+    method: 'get',
+    headers: {
+      "x-auth-token":token
+    },
+    responseType:'json',
+  }).then(res => {
+    if (res.data['code'] === 200) {
+      userList = res.data['data'];
+    }
+    else return res.data['message']
+  }).catch(err => {
+    return err.response.data['message'];
+  })
+
+  return userList;
+}
+
+export async function addUserToAPI(userInfo:UserInterface) {
+  const token = await AsyncStorage.getItem("@token");
+  let code:number=0
+  await axios({
+    url: `admin/add-account`,
+    baseURL: `${api_url}`,
+    method: 'post',
+    headers: {
+      "x-auth-token":token
+    },
+    responseType: 'json',
+    data:userInfo
+  }).then(res => {
+    console.log(res.data)
+    return res.data['code']
+  }).catch(err => {
+    return err.response.data['code'];
+  })
   return code
 }

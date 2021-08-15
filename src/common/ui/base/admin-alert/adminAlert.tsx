@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import {
   Dimensions,
   KeyboardAvoidingView,
@@ -19,8 +19,7 @@ interface Props {
   okTitle: string;
   onOkPressed: () => void;
   onCancelPressed: () => void;
-  name: string;
-  nameChange: (textChange: string) => void;
+  children: ReactNode;
 }
 const AdminAlert = (props: Props) => {
   return (
@@ -33,15 +32,7 @@ const AdminAlert = (props: Props) => {
         >
           <View style={styles.modal}>
             <Text style={styles.modalTitle}>{props.title}</Text>
-            <View style={styles.bodyContainer}>
-              <Text style={styles.text}>Tên:</Text>
-              <NormalTextInput
-                placeholderText="Tên"
-                onTextChange={(text) => props.nameChange(text)}
-                value={props.name}
-                editable={true}
-              />
-            </View>
+            <View style={styles.bodyContainer}>{props.children}</View>
             <View style={styles.bottomContainer}>
               <BlueButton
                 title={props.okTitle}

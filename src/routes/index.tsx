@@ -18,6 +18,7 @@ import AdminIOType from '../app/admin/ioType';
 import AdminReceipt from '../app/admin/receipt';
 import AdminReceiptType from '../app/admin/receiptType';
 import AdminRole from '../app/admin/role';
+import AdminUser from '../app/admin/user';
 
 const Route = () => {
   return (
@@ -43,15 +44,16 @@ const Route = () => {
           />
 
           <Scene key="adminMenu" hideNavBar={true} component={AdminMenu} />
-          <Scene
-            key="adminAccount"
-            hideNavBar={true}
-            component={AdminProduct}
-          />
+          <Scene key="adminAccount" hideNavBar={true} component={AdminUser} />
           <Scene
             key="adminCategory"
             hideNavBar={true}
             component={AdminCategory}
+          />
+          <Scene
+            key="adminProduct"
+            hideNavBar={true}
+            component={AdminProduct}
           />
           <Scene
             key="adminCompany"

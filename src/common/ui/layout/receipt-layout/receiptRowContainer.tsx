@@ -27,11 +27,11 @@ const ReceiptRowContainer = (props: Props) => {
     <TouchableWithoutFeedback>
       <View style={styles.receiptContainer}>
         <View style={styles.detailContainer}>
-          <Text style={styles.titleTiny}>{props.receipt.date}</Text>
+          <Text style={styles.titleTiny}>{props.receipt.email}</Text>
           <Text style={styles.titleTiny}>
             {numeral(1000000).format('0,0')}đ
           </Text>
-          <Text style={styles.titleTiny}>{props.receipt.email}</Text>
+          <Text style={styles.titleTiny}>{props.receipt.date}</Text>
         </View>
         <TouchableWithoutFeedback
           onPress={() => props.onDetailPressed(props.receipt)}

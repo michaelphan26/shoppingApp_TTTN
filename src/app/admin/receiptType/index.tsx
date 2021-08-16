@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, TouchableWithoutFeedback, View } from 'react-native';
+import { FlatList, Text, TouchableWithoutFeedback, View } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import SearchRow from '../../../common/ui/base/searchRow';
 import { NormalTextInput } from '../../../common/ui/base/textInput';

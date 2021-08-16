@@ -8,6 +8,7 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 import { BlueButton } from '../button';
 import PinkButton from '../button/pinkButton';
 import { NormalTextInput } from '../textInput';
@@ -24,25 +25,28 @@ interface Props {
 const AdminAlert = (props: Props) => {
   return (
     <Modal transparent={true} animationType="fade" visible={props.alertVisible}>
-      <TouchableWithoutFeedback onPress={() => props.onCancelPressed()}>
-        <KeyboardAvoidingView
-          style={styles.centeredView}
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          keyboardVerticalOffset={(-Dimensions.get('window').height * 20) / 100}
-        >
-          <View style={styles.modal}>
-            <Text style={styles.modalTitle}>{props.title}</Text>
-            <View style={styles.bodyContainer}>{props.children}</View>
-            <View style={styles.bottomContainer}>
-              <BlueButton
-                title={props.okTitle}
-                pressed={() => props.onOkPressed()}
-              />
-              <PinkButton title="Hủy" pressed={() => props.onCancelPressed()} />
-            </View>
+      <KeyboardAvoidingView
+        style={styles.centeredView}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={(-Dimensions.get('window').height * 20) / 100}
+      >
+        <View style={styles.modal}>
+          <Text style={styles.modalTitle}>{props.title}</Text>
+          <ScrollView
+            style={styles.bodyContainer}
+            showsVerticalScrollIndicator={false}
+          >
+            <View style={{ alignItems: 'center' }}>{props.children}</View>
+          </ScrollView>
+          <View style={styles.bottomContainer}>
+            <BlueButton
+              title={props.okTitle}
+              pressed={() => props.onOkPressed()}
+            />
+            <PinkButton title="Hủy" pressed={() => props.onCancelPressed()} />
           </View>
-        </KeyboardAvoidingView>
-      </TouchableWithoutFeedback>
+        </View>
+      </KeyboardAvoidingView>
     </Modal>
   );
 };

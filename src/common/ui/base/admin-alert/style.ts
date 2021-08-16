@@ -12,6 +12,7 @@ const styles = StyleSheet.create({
     },
     modal: {
         width: '80%',
+        maxHeight:Dimensions.get('window').height * 90 /100,
         margin: 10,
         backgroundColor: Color.white,
         borderRadius: 10,
@@ -31,8 +32,8 @@ const styles = StyleSheet.create({
         color: Color.black,
     },
     bodyContainer: {
-        justifyContent: 'center',
-        marginBottom:20,
+        width: Dimensions.get('window').width*80/100,
+        marginVertical: 20,
     },
     text: {
         fontSize:Platform.OS==='android' ? Dimensions.get('window').height *3.2 /100 : Dimensions.get('window').height*2.2/100,
@@ -44,7 +45,8 @@ const styles = StyleSheet.create({
         fontSize:Platform.OS==='android' ? Dimensions.get('window').height *2.5 /100 : Dimensions.get('window').height*1.7/100,
         fontWeight: 'bold',
         color: Color.black,
-        alignSelf:'flex-start'
+        alignSelf: 'flex-start',
+        marginVertical:20,
     },
     bottomContainer: {
         width: '100%',
@@ -52,6 +54,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center',
+        marginBottom: 20,
     }
 })
 

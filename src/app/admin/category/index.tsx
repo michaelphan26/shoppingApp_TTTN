@@ -116,15 +116,12 @@ const AdminCategory = (props: Props) => {
 
   const alertBody = () => {
     return (
-      <View>
-        <Text style={styles.text}>Tên:</Text>
-        <NormalTextInput
-          placeholderText="Tên"
-          onTextChange={(text) => setName(text)}
-          value={name}
-          editable={true}
-        />
-      </View>
+      <NormalTextInput
+        placeholderText="Tên"
+        onTextChange={(text) => setName(text)}
+        value={name}
+        editable={true}
+      />
     );
   };
 

@@ -54,6 +54,11 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         fontWeight:'bold'
     },
+    image: {
+        width: Dimensions.get('window').height * 40 / 100,
+        height:Dimensions.get('window').height * 40 / 100,
+        alignSelf:'center'
+    }
 })
 
 export default styles

@@ -24,6 +24,8 @@ import {
   RegisterInfo,
   UserItem,
   initialUserInterface,
+  UserDetailItem,
+  editUserAPI,
 } from '../../../common/util/common';
 import styles from '../category/style';
 import { Entypo } from 'react-native-vector-icons';
@@ -43,6 +45,7 @@ const AdminUser = (props: Props) => {
   const [action, setAction] = useState<string>('Add');
   const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
   const [user, setUser] = useState<UserInterface>(initialUserInterface);
+  const [_id, set_id] = useState<string>('');
   const {
     control,
     handleSubmit,
@@ -85,12 +88,29 @@ const AdminUser = (props: Props) => {
     setModalVisible(true);
   };
 
-  const handleEditPressed = () => {
+  const handleEditPressed = (
+    userItem: UserItem,
+    userDetail: UserDetailItem,
+    id_role: string
+  ) => {
+    set_id(userItem._id);
     setAction('Edit');
+    const editUser = {
+      email: userItem.email,
+      password: '',
+      name: userDetail.name,
+      phone: userDetail.phone,
+      address: userDetail.address,
+      id_role: id_role,
+    };
+    reset(editUser);
+    setUser(editUser);
     setModalVisible(true);
   };
 
   const handleCloseModal = () => {
+    reset(initialUserInterface);
+    setUser(initialUserInterface);
     setModalVisible(false);
   };
 
@@ -101,12 +121,21 @@ const AdminUser = (props: Props) => {
   const handleAddAccount = async (info: UserInterface) => {
     const code = await addUserToAPI(info);
     if (code === 200) {
-      reset(initialUserInterface);
+      handleCloseModal();
       Actions.refresh({ key: Math.random() });
     }
     //Toast code
   };
-  const handleSaveAccount = () => {};
+  const handleSaveAccount = async (info: UserInterface) => {
+    delete info.email;
+    delete info.password;
+    const code = await editUserAPI(_id, info);
+    if (code === 200) {
+      handleCloseModal();
+      Actions.refresh({ key: Math.random() });
+    }
+    //Toast code
+  };
 
   const alertBody = () => {
     return (
@@ -119,11 +148,11 @@ const AdminUser = (props: Props) => {
               iconName="at"
               onTextChange={onChange}
               value={value}
-              editable={true}
+              editable={action === 'Add' ? true : false}
             />
           )}
           rules={{ required: true, pattern: emailReg }}
-          defaultValue={user?.email}
+          defaultValue={action === 'Add' ? '' : user.email}
           name="email"
         />
         {errors.email && <SmallText title="Email không đúng định dạng" />}
@@ -138,11 +167,16 @@ const AdminUser = (props: Props) => {
               onVisibleChange={handlePasswordVisibleChange}
               secure={passwordVisible}
               value={value}
+              editable={action === 'Add' ? true : false}
             />
           )}
-          rules={{ required: true, minLength: 8, maxLength: 30 }}
+          rules={
+            action === 'Add'
+              ? { required: true, minLength: 8, maxLength: 30 }
+              : {}
+          }
           name="password"
-          defaultValue={user?.password}
+          defaultValue={action === 'Add' ? '' : user.password}
         />
         {errors.password && (
           <SmallText title="Mật khẩu có độ dài từ 8-30 kí tự" />
@@ -161,7 +195,7 @@ const AdminUser = (props: Props) => {
           )}
           rules={{ required: true, minLength: 2, maxLength: 50 }}
           name="name"
-          defaultValue={user?.name}
+          defaultValue={action === 'Add' ? '' : user.name}
         />
         {errors.name && <SmallText title="Tên không đúng" />}
 
@@ -183,7 +217,7 @@ const AdminUser = (props: Props) => {
             pattern: phoneReg,
           }}
           name="phone"
-          defaultValue={user?.phone}
+          defaultValue={action === 'Add' ? '' : user.phone}
         />
         {errors.phone && <SmallText title="SĐT không đúng" />}
 
@@ -200,7 +234,7 @@ const AdminUser = (props: Props) => {
           )}
           rules={{ required: true, minLength: 5, maxLength: 100 }}
           name="address"
-          defaultValue={user?.address}
+          defaultValue={action === 'Add' ? '' : user.address}
         />
         {errors.address && <SmallText title="Địa chỉ không đúng" />}
 
@@ -215,6 +249,7 @@ const AdminUser = (props: Props) => {
                   label: 'Chọn chức vụ',
                   value: '',
                 }}
+                value={value}
                 items={roleList}
                 useNativeAndroidPickerStyle={false}
               />
@@ -222,7 +257,7 @@ const AdminUser = (props: Props) => {
           )}
           rules={{ required: true }}
           name="id_role"
-          defaultValue={user?.id_role}
+          defaultValue={action === 'Add' ? '' : user.id_role}
         />
         {errors.id_role && <SmallText title="Chưa chọn chức vụ" />}
       </View>
@@ -263,7 +298,7 @@ const AdminUser = (props: Props) => {
             title="Chỉnh sửa tài khoản"
             okTitle="Lưu"
             onCancelPressed={handleCloseModal}
-            onOkPressed={handleSaveAccount}
+            onOkPressed={handleSubmit(handleSaveAccount)}
           >
             {alertBody()}
           </AdminAlert>

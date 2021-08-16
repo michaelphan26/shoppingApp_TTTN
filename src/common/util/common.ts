@@ -7,20 +7,20 @@ export const emailReg = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".
 export const phoneReg = /((09|03|07|08|05)+([0-9]{8})\b)/g;
 
 export interface RegisterInfo {
-  email: '';
-  password: '';
-  name: '';
-  phone: '';
-  address: '';
+  email: string;
+  password: string;
+  name: string;
+  phone: string;
+  address: string;
 }
 
 export interface UserInterface{
-  email: '';
-  password: '';
-  name: '';
-  phone: '';
-  address: '';
-  id_role: '';
+  email: string;
+  password: string;
+  name: string;
+  phone: string;
+  address: string;
+  id_role: string;
 }
 
 export const initialUserInterface: UserInterface={
@@ -43,6 +43,19 @@ export interface ProductItem{
     image: string;
     discount: number;
     status:boolean
+}
+
+export const initialProductItem: ProductItem={
+    _id: '',
+    name: '',
+    brand: '',
+    id_category: '',
+    price: 0,
+    description: '',
+  stock: 0,
+    image: '',
+    discount: 0,
+    status:true,
 }
 
 export interface JustNameItem{
@@ -98,6 +111,14 @@ export interface UserItem{
   id_userInfo:string
 }
 
+export const initialUserDetailItem : UserDetailItem={
+  _id:'',
+  name:'',
+  phone:'',
+  address:'',
+  joinDate:''
+}
+
 export interface UserDetailItem{
   _id:string,
   name:string,
@@ -111,6 +132,22 @@ export const initialJustNameItem: JustNameItem = {
   name: '',
 };
 
+export interface CompanyInterface{
+  _id:string,
+  name:string,
+  phone:string,
+  address:string,
+  tax_number:string
+}
+
+export const initialCompanyItem: CompanyInterface = {
+  _id:'',
+  name:'',
+  phone:'',
+  address:'',
+  tax_number:''
+}
+
 export const addCategoryUrl = 'category/add-category/';
 export const editCategoryUrl = 'category/edit-category/';
 export const deleteCategoryUrl = 'category/delete-category/';
@@ -123,6 +160,9 @@ export const deleteIOTypeUrl = 'io-type/delete-io-type/';
 export const addRoleUrl = 'role/add-role/';
 export const editRoleUrl = 'role/edit-role/';
 export const deleteRoleUrl = 'role/delete-role/';
+export const addCompanyUrl = 'company/add-company/';
+export const editCompanyUrl = 'company/edit-company/';
+export const deleteCompanyUrl = 'company/delete-company/';
 
 export const getCartFromAPI = async ()=>{
   const token = await AsyncStorage.getItem("@token");
@@ -599,9 +639,113 @@ export async function addUserToAPI(userInfo:UserInterface) {
     data:userInfo
   }).then(res => {
     console.log(res.data)
-    return res.data['code']
+    code=res.data['code']
   }).catch(err => {
-    return err.response.data['code'];
+    code= err.response.data['code'];
   })
+  return code
+}
+
+export async function editUserAPI(_id:string,userInfo:UserInterface) {
+  const token = await AsyncStorage.getItem("@token");
+  let code:number=0
+  await axios({
+    url: `admin/edit-account/${_id}`,
+    baseURL: `${api_url}`,
+    method: 'put',
+    headers: {
+      "x-auth-token":token
+    },
+    responseType: 'json',
+    data:userInfo
+  }).then(res => {
+    console.log(res.data)
+    code=res.data['code']
+  }).catch(err => {
+    code= err.response.data['code'];
+  })
+  return code
+}
+
+export async function getCompanyListFromAPI() {
+  const token = await AsyncStorage.getItem("@token")
+  let companyList=[] as any
+  await axios({
+    url: 'company/get-list',
+    baseURL: `${api_url}`,
+    headers: {
+      "x-auth-token":token
+    },
+    responseType:'json'
+  }).then(res => {
+    if (res.data['code'] = 200)
+      companyList = res.data['data']
+    else return res.data['message']
+  }).catch(err =>{
+    return err.response['data']
+  })
+  return companyList
+}
+
+export async function addCompanyToAPI(companyInfo:CompanyInterface) {
+  const token = await AsyncStorage.getItem("@token");
+  let code:number=0
+  await axios({
+    url: `${addCompanyUrl}`,
+    baseURL: `${api_url}`,
+    method: 'post',
+    headers: {
+      "x-auth-token":token
+    },
+    responseType: 'json',
+    data:companyInfo
+  }).then(res => {
+    console.log(res.data)
+    code=res.data['code']
+  }).catch(err => {
+    code= err.response.data['code'];
+  })
+  return code
+}
+
+export async function editCompanyAPI(_id:string,companyInfo:CompanyInterface) {
+  const token = await AsyncStorage.getItem("@token");
+  let code:number=0
+  await axios({
+    url: `${editCompanyUrl}${_id}`,
+    baseURL: `${api_url}`,
+    method: 'put',
+    headers: {
+      "x-auth-token":token
+    },
+    responseType: 'json',
+    data:companyInfo
+  }).then(res => {
+    console.log(res.data)
+    code=res.data['code']
+  }).catch(err => {
+    code= err.response.data['code'];
+  })
+  return code
+}
+
+export async function deleteCompany(_id:string) {
+  const token = await AsyncStorage.getItem("@token")
+  let code:number=0
+  await axios({
+    url: `${deleteCompanyUrl}${_id}`,
+    baseURL: `${api_url}`,
+    method: 'delete',
+    headers: {
+      "x-auth-token":token
+    },
+  }).then(res => {
+    code = res.data['code'] as number;
+    return code
+  })
+    .catch(err => {
+      code = err.response.data['code'] as number
+      return code
+    })
   return code
 }

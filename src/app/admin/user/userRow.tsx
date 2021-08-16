@@ -4,6 +4,8 @@ import styles from '../../../common/ui/base/searchRow/style';
 import {
   getRoleInfoFromAPI,
   getUserInfoByIDFromAPI,
+  initialJustNameItem,
+  initialUserDetailItem,
   JustNameItem,
   UserDetailItem,
   UserItem,
@@ -14,12 +16,17 @@ import { useEffect } from 'react';
 
 interface Props {
   item: UserItem;
-  onEditPressed: (account: UserItem) => void;
-  onDeletePressed: (account: UserItem) => void;
+  onEditPressed: (
+    userItem: UserItem,
+    userDetail: UserDetailItem,
+    id_role: string
+  ) => void;
 }
 const UserRow = (props: Props) => {
-  const [userDetail, setUserDetail] = useState<UserDetailItem>();
-  const [roleInfo, setRoleInfo] = useState<JustNameItem>();
+  const [userDetail, setUserDetail] = useState<UserDetailItem>(
+    initialUserDetailItem
+  );
+  const [roleInfo, setRoleInfo] = useState<JustNameItem>(initialJustNameItem);
 
   async function getUserDetail() {
     const userDetailFromAPI = await getUserInfoByIDFromAPI(props.item._id);
@@ -54,14 +61,11 @@ const UserRow = (props: Props) => {
 
       <View style={styles.buttonContainer}>
         <TouchableWithoutFeedback
-          onPress={() => props.onEditPressed(props.item)}
+          onPress={() =>
+            props.onEditPressed(props.item, userDetail, roleInfo?._id)
+          }
         >
           <Entypo name="edit" size={25} />
-        </TouchableWithoutFeedback>
-        <TouchableWithoutFeedback
-          onPress={() => props.onDeletePressed(props.item)}
-        >
-          <Entypo name="trash" size={25} />
         </TouchableWithoutFeedback>
       </View>
     </View>

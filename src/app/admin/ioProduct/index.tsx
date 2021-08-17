@@ -16,10 +16,13 @@ import {
   addProductAPI,
   editProductAPI,
   getCategoryListFromAPI,
+  getCompanyListFromAPI,
   getIOTypeFromAPI,
   getProductListFromAPI,
+  initialIOProductItem,
   initialJustNameItem,
   initialProductItem,
+  ioProductItem,
   ProductItem,
 } from '../../../common/util/common';
 import { Color } from '../../../common/util/enum';
@@ -32,6 +35,8 @@ import NumberTextInput from '../../../common/ui/base/textInput/numberTextInput';
 import RNPickerSelect from 'react-native-picker-select';
 import { BlueButton } from '../../../common/ui/base/button';
 import * as ImagePicker from 'expo-image-picker';
+import IOProductSelect from './ioProductSelect';
+import { SegmentedControlIOSComponent } from 'react-native';
 
 interface Props {}
 const AdminIOProduct = (props: Props) => {
@@ -41,6 +46,8 @@ const AdminIOProduct = (props: Props) => {
   const [productList, setProductList] = useState([] as any);
   const [io, setIO] = useState({ label: '', value: '' });
   const [ioTypeList, setIOTypeList] = useState([] as any);
+  const [ioProductList, setIOProductList] = useState([] as any);
+  const [companyList, setCompanyList] = useState([] as any);
   const [searchText, setSearchText] = useState<string>('');
   const [product, setProduct] = useState<ProductItem>(initialProductItem);
   const [imageBase64, setImageBase64] = useState<string | undefined>('');
@@ -51,13 +58,28 @@ const AdminIOProduct = (props: Props) => {
     reset,
   } = useForm({ reValidateMode: 'onSubmit' });
 
+  async function getCompanyList() {
+    const companyListFromAPI = await getCompanyListFromAPI();
+    let tempList = [] as any;
+    for (const index in companyListFromAPI) {
+      tempList.push({
+        label: companyListFromAPI[index].name,
+        value: companyListFromAPI[index]._id,
+      });
+    }
+    setCompanyList(tempList);
+  }
+
   async function getProductList() {
     const productListFromAPI = await getProductListFromAPI();
-    if (typeof productListFromAPI != 'string') {
-      setProductList(productListFromAPI);
-    } else {
-      //Toast
+    let tempList = [] as any;
+    for (const index in productListFromAPI) {
+      tempList.push({
+        label: productListFromAPI[index].name,
+        value: productListFromAPI[index]._id,
+      });
     }
+    setProductList(tempList);
   }
 
   async function getIOTypeList() {
@@ -75,6 +97,7 @@ const AdminIOProduct = (props: Props) => {
   useEffect(() => {
     getProductList();
     getIOTypeList();
+    getCompanyList();
   }, []);
 
   const handleAddPressed = () => {
@@ -105,16 +128,75 @@ const AdminIOProduct = (props: Props) => {
     setImageBase64('');
   };
 
-  const handleAddProduct = async (info: ProductItem) => {};
+  const handleAddIOProduct = () => {
+    console.log(ioProductList);
+  };
 
   const handleSaveProduct = async (info: ProductItem) => {};
 
-  const handleDeletePressed = (item: ProductItem) => {
-    // setModalDeleteVisible(true);
-    // setEditItem(item);
+  const handleDeleteProduct = async () => {};
+
+  const handleAddIOProductItem = () => {
+    setIOProductList([...ioProductList, initialIOProductItem]);
   };
 
-  const handleDeleteProduct = async () => {};
+  const handleValueChange = (index: number, value: string, type: string) => {
+    switch (type) {
+      case 'product': {
+        setIOProductList(
+          ioProductList.map((item: ioProductItem, itemIndex: number) =>
+            itemIndex !== index
+              ? item
+              : {
+                  ...item,
+                  id_product: value,
+                }
+          )
+        );
+        break;
+      }
+      case 'company': {
+        setIOProductList(
+          ioProductList.map((item: ioProductItem, itemIndex: number) =>
+            itemIndex !== index
+              ? item
+              : {
+                  ...item,
+                  id_company: value,
+                }
+          )
+        );
+        break;
+      }
+      case 'price': {
+        setIOProductList(
+          ioProductList.map((item: ioProductItem, itemIndex: number) =>
+            itemIndex !== index
+              ? item
+              : {
+                  ...item,
+                  price: value,
+                }
+          )
+        );
+        break;
+      }
+      case 'quantity': {
+        setIOProductList(
+          ioProductList.map((item: ioProductItem, itemIndex: number) =>
+            itemIndex !== index
+              ? item
+              : {
+                  ...item,
+                  quantity: value,
+                }
+          )
+        );
+        break;
+      }
+    }
+    console.log(ioProductList);
+  };
 
   const alertBody = () => {
     return (
@@ -133,7 +215,23 @@ const AdminIOProduct = (props: Props) => {
           />
         </View>
 
-        <BlueButton title="Thêm chi tiết" />
+        <FlatList
+          data={ioProductList}
+          style={styles.listContainer}
+          renderItem={({ item, index }) => (
+            <IOProductSelect
+              index={index}
+              item={item}
+              productList={productList}
+              companyList={companyList}
+              handleValueChange={handleValueChange}
+            />
+          )}
+          keyExtractor={(index) => index}
+          extraData={ioProductList}
+        />
+
+        <BlueButton title="Thêm chi tiết" pressed={handleAddIOProductItem} />
       </View>
     );
   };
@@ -162,7 +260,7 @@ const AdminIOProduct = (props: Props) => {
             title="Nhập xuất"
             okTitle="Thêm"
             onCancelPressed={handleCloseModal}
-            onOkPressed={handleSubmit(handleAddProduct)}
+            onOkPressed={handleAddIOProduct}
           >
             {alertBody()}
           </AdminAlert>
@@ -189,7 +287,7 @@ const AdminIOProduct = (props: Props) => {
         </TouchableWithoutFeedback>
       </View>
 
-      <FlatList
+      {/* <FlatList
         data={productList.filter(
           (item: ProductItem) =>
             item.name
@@ -207,7 +305,7 @@ const AdminIOProduct = (props: Props) => {
           );
         }}
         keyExtractor={(item: ProductItem) => item._id}
-      />
+      /> */}
     </CartLayout>
   );
 };

@@ -146,6 +146,20 @@ export const initialCompanyItem: CompanyInterface = {
   tax_number:''
 }
 
+export interface ioProductItem{
+  id_product: string,
+  id_company: string,
+  price: number,
+  quantity:number
+}
+
+export const initialIOProductItem: ioProductItem = {
+  id_product: '',
+  id_company: '',
+  price: 0,
+  quantity:0
+}
+
 export const addCategoryUrl = 'category/add-category/';
 export const editCategoryUrl = 'category/edit-category/';
 export const deleteCategoryUrl = 'category/delete-category/';

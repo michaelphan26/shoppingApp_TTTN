@@ -31,6 +31,7 @@ const styles = StyleSheet.create({
             width: 1,
             height:1
         },
+        alignSelf:'center',
         elevation: Platform.OS==='android' ? 5 :0,
         marginVertical: 20,
     },

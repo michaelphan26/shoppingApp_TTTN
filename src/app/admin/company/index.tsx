@@ -97,6 +97,7 @@ const AdminCompany = (props: Props) => {
   };
 
   const handleAddCompany = async (info: CompanyInterface) => {
+    delete info._id;
     console.log(info);
     const code = await addCompanyToAPI(info);
     if (code === 200) {

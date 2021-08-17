@@ -36,6 +36,9 @@ const ProductRowItemNoCart = (props: Props) => {
         <Text style={styles.titleTiny}>
           {numeral(props.item.price).format('0,0')}đ
         </Text>
+        <Text style={styles.titleTiny}>
+          {props.item.status ? 'Đang kinh doanh' : 'Ngừng kinh doanh'}
+        </Text>
       </View>
       <View style={styles.buttonContainer}>
         <TouchableWithoutFeedback
@@ -43,11 +46,11 @@ const ProductRowItemNoCart = (props: Props) => {
         >
           <Entypo name="edit" size={25} />
         </TouchableWithoutFeedback>
-        <TouchableWithoutFeedback
+        {/* <TouchableWithoutFeedback
           onPress={() => props.onDeletePressed(props.item)}
         >
           <Entypo name="trash" size={25} />
-        </TouchableWithoutFeedback>
+        </TouchableWithoutFeedback> */}
       </View>
     </View>
   );

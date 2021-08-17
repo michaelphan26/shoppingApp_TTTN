@@ -46,7 +46,6 @@ const CategoryRowContainer = (props: Props) => {
         renderItem={(item: ProductItem) => {
           return (
             <SquareItemView
-              key={item.item._id}
               item={item.item}
               productPressed={(item) =>
                 props.productPressed(item, props.categoryItem.name)

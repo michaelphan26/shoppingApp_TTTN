@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
         fontSize:Platform.OS==='android' ? Dimensions.get('window').height *2.5 /100 : Dimensions.get('window').height*1.7/100,
         fontWeight: 'bold',
         color: Color.black,
-        alignSelf: 'flex-start',
+        alignSelf: 'center',
         marginVertical:20,
     },
     bottomContainer: {

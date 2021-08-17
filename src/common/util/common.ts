@@ -33,29 +33,27 @@ export const initialUserInterface: UserInterface={
 }
 
 export interface ProductItem{
-    _id: string;
-    name: string;
-    brand: string;
-    id_category: string;
-    price: number;
-    description: string;
-  stock: number;
-    image: string;
-    discount: number;
-    status:boolean
+  _id: string;
+  name: string;
+  brand: string;
+  id_category: string;
+  price: number;
+  description: string;
+  image: string;
+  discount: number;
+  status:boolean
 }
 
 export const initialProductItem: ProductItem={
-    _id: '',
-    name: '',
-    brand: '',
-    id_category: '',
-    price: 0,
-    description: '',
-  stock: 0,
-    image: '',
-    discount: 0,
-    status:true,
+  _id: '',
+  name: '',
+  brand: '',
+  id_category: '',
+  price: 0,
+  description: '',
+  image: '',
+  discount: 0,
+  status:true,
 }
 
 export interface JustNameItem{
@@ -163,6 +161,9 @@ export const deleteRoleUrl = 'role/delete-role/';
 export const addCompanyUrl = 'company/add-company/';
 export const editCompanyUrl = 'company/edit-company/';
 export const deleteCompanyUrl = 'company/delete-company/';
+export const addProductUrl = 'admin/add-product/';
+export const editProductUrl = 'admin/edit-product/';
+export const deleteProductUrl = 'admin/delete-product/';
 
 export const getCartFromAPI = async ()=>{
   const token = await AsyncStorage.getItem("@token");
@@ -747,5 +748,47 @@ export async function deleteCompany(_id:string) {
       code = err.response.data['code'] as number
       return code
     })
+  return code
+}
+
+export async function addProductAPI(productInfo: ProductItem) {
+  const token = await AsyncStorage.getItem("@token");
+  let code:number=0
+  await axios({
+    url: `${addProductUrl}`,
+    baseURL: `${api_url}`,
+    method: 'post',
+    headers: {
+      "x-auth-token":token
+    },
+    responseType: 'json',
+    data:productInfo
+  }).then(res => {
+    console.log(res.data)
+    code=res.data['code']
+  }).catch(err => {
+    code= err.response.data['code'];
+  })
+  return code
+}
+
+export async function editProductAPI(productInfo: ProductItem,_id:string) {
+  const token = await AsyncStorage.getItem("@token");
+  let code:number=0
+  await axios({
+    url: `${editProductUrl}${_id}`,
+    baseURL: `${api_url}`,
+    method: 'put',
+    headers: {
+      "x-auth-token":token
+    },
+    responseType: 'json',
+    data:productInfo
+  }).then(res => {
+    console.log(res.data)
+    code=res.data['code']
+  }).catch(err => {
+    code= err.response.data['code'];
+  })
   return code
 }

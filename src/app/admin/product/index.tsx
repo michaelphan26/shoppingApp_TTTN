@@ -13,6 +13,8 @@ import CartLayout from '../../../common/ui/layout/cart-layout';
 import MainLayout from '../../../common/ui/layout/main-layout';
 import ProductRowItemNoCart from '../../../common/ui/layout/main-layout/components/productRowContainerNoCart';
 import {
+  addProductAPI,
+  editProductAPI,
   getCategoryListFromAPI,
   getProductListFromAPI,
   initialProductItem,
@@ -39,6 +41,10 @@ const AdminProduct = (props: Props) => {
   const [searchText, setSearchText] = useState<string>('');
   const [product, setProduct] = useState<ProductItem>(initialProductItem);
   const [imageBase64, setImageBase64] = useState<string | undefined>('');
+  const statusList = [
+    { label: 'Đang kinh doanh', value: true },
+    { label: 'Ngừng kinh doanh', value: false },
+  ];
   const {
     control,
     handleSubmit,
@@ -93,42 +99,44 @@ const AdminProduct = (props: Props) => {
       discount: item.discount.toString(),
       id_category: item.id_category,
     });
+    setImageBase64(item.image);
   };
 
   const handleCloseModal = () => {
     setModalVisible(false);
     setModalDeleteVisible(false);
+    setProduct(initialProductItem);
+    reset(initialProductItem);
+    setImageBase64('');
   };
 
-  const handleAddCategory = async () => {
-    // if (name.trim().length !== 0) {
-    //   const code = await addJustName(addCategoryUrl, name.trim());
-    //   //Toast
-    //   if (code === 200) {
-    //     handleCloseModal();
-    //     Actions.refresh({ key: Math.random() });
-    //   } else {
-    //     console.log(code);
-    //   }
-    // } else {
-    //   //Toast err
-    // }
+  const handleAddProduct = async (info: ProductItem) => {
+    if (imageBase64 !== '') {
+      info.image = imageBase64;
+      console.log(info);
+      const code = await addProductAPI(info);
+      //Toast
+      if (code === 200) {
+        handleCloseModal();
+        Actions.refresh({ key: Math.random() });
+      } else {
+        console.log(code);
+      }
+    } else {
+      //Toast err
+    }
   };
 
-  const handleSaveCategory = async () => {
-    // if (name.trim().length !== 0) {
-    //   editItem.name = name.trim();
-    //   const code = await editJustName(editCategoryUrl, editItem);
-    //   //Toast
-    //   if (code === 200) {
-    //     handleCloseModal();
-    //     Actions.refresh({ key: Math.random() });
-    //   } else {
-    //     console.log(code);
-    //   }
-    // } else {
-    //   //Toast err
-    // }
+  const handleSaveProduct = async (info: ProductItem) => {
+    info.image = imageBase64;
+    const code = await editProductAPI(info, product._id);
+    //Toast
+    if (code === 200) {
+      handleCloseModal();
+      Actions.refresh({ key: Math.random() });
+    } else {
+      console.log(code);
+    }
   };
 
   const handleDeletePressed = (item: ProductItem) => {
@@ -136,7 +144,7 @@ const AdminProduct = (props: Props) => {
     // setEditItem(item);
   };
 
-  const handleDeleteCategory = async () => {
+  const handleDeleteProduct = async () => {
     //   const code = await deleteJustName(deleteCategoryUrl, editItem);
     //   //Toast
     //   if (code === 200) {
@@ -156,7 +164,6 @@ const AdminProduct = (props: Props) => {
       aspect: [4, 3],
     });
     if (!result.cancelled) setImageBase64(result.base64);
-    console.log(imageBase64);
   };
 
   const alertBody = () => {
@@ -190,7 +197,7 @@ const AdminProduct = (props: Props) => {
               editable={true}
             />
           )}
-          rules={{ required: true, minLength: 5, maxLength: 100 }}
+          rules={{ required: true, minLength: 2, maxLength: 100 }}
           name="brand"
           defaultValue={action === 'Add' ? '' : product.brand}
         />
@@ -233,7 +240,7 @@ const AdminProduct = (props: Props) => {
         <Controller
           control={control}
           render={({ field: { onChange, value } }) => (
-            <NormalTextInput
+            <NumberTextInput
               placeholderText="Giảm giá"
               iconName="home"
               onTextChange={onChange}
@@ -241,7 +248,7 @@ const AdminProduct = (props: Props) => {
               editable={true}
             />
           )}
-          rules={{ required: true, minLength: 5, maxLength: 100 }}
+          rules={{ required: true, min: 0, max: 100 }}
           name="discount"
           defaultValue={action === 'Add' ? '' : product.discount}
         />
@@ -270,16 +277,35 @@ const AdminProduct = (props: Props) => {
         />
         {errors.id_category && <SmallText title="Chưa chọn danh mục" />}
 
+        <Controller
+          control={control}
+          render={({ field: { onChange, value } }) => (
+            <TouchableHighlight style={styles.pickerContainer}>
+              <RNPickerSelect
+                style={styles}
+                onValueChange={onChange}
+                placeholder={{
+                  label: 'Chọn trạng thái',
+                  value: '',
+                }}
+                value={value}
+                items={statusList}
+                useNativeAndroidPickerStyle={false}
+              />
+            </TouchableHighlight>
+          )}
+          rules={{ required: true }}
+          name="status"
+          defaultValue={action === 'Add' ? '' : product.status}
+        />
+        {errors.status && <SmallText title="Chưa chọn trạng thái" />}
+
         <BlueButton title="Chọn hình ảnh" pressed={pickImage} />
-        {typeof imageBase64 === 'string' ? (
-          <Image
-            source={{ uri: `data:image/jpeg;base64,${imageBase64}` }}
-            style={styles.image}
-            resizeMode="contain"
-          />
-        ) : (
-          <> </>
-        )}
+        <Image
+          source={{ uri: `data:image/jpeg;base64,${imageBase64}` }}
+          style={styles.image}
+          resizeMode="contain"
+        />
       </View>
     );
   };
@@ -308,7 +334,7 @@ const AdminProduct = (props: Props) => {
             title="Thêm sản phẩm"
             okTitle="Thêm"
             onCancelPressed={handleCloseModal}
-            onOkPressed={handleAddCategory}
+            onOkPressed={handleSubmit(handleAddProduct)}
           >
             {alertBody()}
           </AdminAlert>
@@ -318,7 +344,7 @@ const AdminProduct = (props: Props) => {
             title="Chỉnh sửa sản phẩm"
             okTitle="Lưu"
             onCancelPressed={handleCloseModal}
-            onOkPressed={handleSaveCategory}
+            onOkPressed={handleSubmit(handleSaveProduct)}
           >
             {alertBody()}
           </AdminAlert>
@@ -328,7 +354,7 @@ const AdminProduct = (props: Props) => {
           title="Xóa sản phẩm"
           okTitle="Xóa"
           onCancelPressed={handleCloseModal}
-          onOkPressed={handleDeleteCategory}
+          onOkPressed={handleDeleteProduct}
         />
         <TouchableWithoutFeedback onPress={handleAddPressed}>
           <Entypo name="plus" size={30} color={Color.black} />

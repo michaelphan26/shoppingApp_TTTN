@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, Text, TouchableWithoutFeedback, View } from 'react-native';
+import { FlatList, TouchableWithoutFeedback, View } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import SearchRow from '../../../common/ui/base/searchRow';
 import { NormalTextInput } from '../../../common/ui/base/textInput';
@@ -22,6 +22,7 @@ import {
 } from '../../../common/util/common';
 import { useEffect } from 'react';
 import { CustomAlert } from '../../../common/ui/base/admin-alert';
+import Toast from 'react-native-simple-toast';
 
 interface Props {}
 
@@ -40,6 +41,11 @@ const AdminRole = (props: Props) => {
       setRoleList(roleListFromAPI);
     } else {
       //Toast
+      Toast.showWithGravity(
+        'Không thể lấy danh sách chức vụ',
+        Toast.SHORT,
+        Toast.CENTER
+      );
     }
   }
 
@@ -73,11 +79,26 @@ const AdminRole = (props: Props) => {
       if (code === 200) {
         handleCloseModal();
         Actions.refresh({ key: Math.random() });
+        Toast.showWithGravity(
+          'Thêm chức vụ thành công',
+          Toast.SHORT,
+          Toast.CENTER
+        );
       } else {
         console.log(code);
+        Toast.showWithGravity(
+          'Không thể thêm chức vụ',
+          Toast.SHORT,
+          Toast.CENTER
+        );
       }
     } else {
       //Toast err
+      Toast.showWithGravity(
+        'Tên không được để trống',
+        Toast.SHORT,
+        Toast.CENTER
+      );
     }
   };
 
@@ -89,11 +110,26 @@ const AdminRole = (props: Props) => {
       if (code === 200) {
         handleCloseModal();
         Actions.refresh({ key: Math.random() });
+        Toast.showWithGravity(
+          'Chỉnh sửa chức vụ thành công',
+          Toast.SHORT,
+          Toast.CENTER
+        );
       } else {
         console.log(code);
+        Toast.showWithGravity(
+          'Không thể chỉnh sửa chức vụ',
+          Toast.SHORT,
+          Toast.CENTER
+        );
       }
     } else {
       //Toast err
+      Toast.showWithGravity(
+        'Tên không được để trống',
+        Toast.SHORT,
+        Toast.CENTER
+      );
     }
   };
 
@@ -109,22 +145,24 @@ const AdminRole = (props: Props) => {
       console.log('200');
       handleCloseModal();
       Actions.refresh({ key: Math.random() });
+      Toast.showWithGravity(
+        'Xóa chức vụ thành công',
+        Toast.SHORT,
+        Toast.CENTER
+      );
     } else {
-      console.log(code);
+      Toast.showWithGravity('Không thể xóa chức vụ', Toast.SHORT, Toast.CENTER);
     }
   };
 
   const alertBody = () => {
     return (
-      <View>
-        <Text style={styles.text}>Tên:</Text>
-        <NormalTextInput
-          placeholderText="Tên"
-          onTextChange={(text) => setName(text)}
-          value={name}
-          editable={true}
-        />
-      </View>
+      <NormalTextInput
+        placeholderText="Tên"
+        onTextChange={(text) => setName(text)}
+        value={name}
+        editable={true}
+      />
     );
   };
 

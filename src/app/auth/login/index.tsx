@@ -1,11 +1,10 @@
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Alert, Text, View } from 'react-native';
+import { Alert } from 'react-native';
 import {
   NormalTextInput,
   PasswordTextInput,
 } from '../../../common/ui/base/textInput';
-import styles from '../../../common/ui/base/textInput/style';
 import { SmallText } from '../../../common/ui/base/errorText';
 import { LargeTextTouchable } from '../../../common/ui/base/touchableText';
 import AuthLayoutContainer from '../../../common/ui/layout/auth-Layout/layoutContainer';
@@ -19,7 +18,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { accountLogin } from '../../../models/accountReducer';
 import {
   addReceiptAPI,
-  CartInterface,
   emailReg,
   getCartFromAPI,
 } from '../../../common/util/common';
@@ -27,6 +25,7 @@ import { SmallCardView } from '../../../common/ui/layout/auth-Layout';
 import { BlueButton } from '../../../common/ui/base/button';
 import { loadCart } from '../../../models/cartReducer';
 import { RootState } from '../../../models/store';
+import Toast from 'react-native-simple-toast';
 
 interface LoginInfo {
   email: string;
@@ -71,23 +70,37 @@ const Login = () => {
               dispatch(loadCart(cartFromAPI));
             } else {
               //Toast
+              Toast.showWithGravity(
+                'Không thể lấy giỏ hàng',
+                Toast.SHORT,
+                Toast.BOTTOM
+              );
             }
           } else {
             await addReceiptAPI(cart);
           }
           Actions.pop();
           Actions.push('profile');
+          Toast.showWithGravity(
+            'Đăng nhập thành công',
+            Toast.SHORT,
+            Toast.CENTER
+          );
         } else {
           //Toast res.data['message']
+          Toast.showWithGravity(
+            'Đăng nhập không thành công',
+            Toast.SHORT,
+            Toast.CENTER
+          );
         }
       })
       .catch((err) =>
-        Alert.alert('Lỗi đăng nhập', err.response.data['message'], [
-          {
-            text: 'OK',
-            style: 'cancel',
-          },
-        ])
+        Toast.showWithGravity(
+          'Đăng nhập không thành công',
+          Toast.SHORT,
+          Toast.CENTER
+        )
       );
   };
 
@@ -130,6 +143,7 @@ const Login = () => {
               onTextChange={onChange}
               onVisibleChange={handleChangeVisible}
               value={value}
+              editable={true}
             />
           )}
           name="password"

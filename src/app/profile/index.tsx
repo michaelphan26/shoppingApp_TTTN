@@ -4,7 +4,7 @@ import React from 'react';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Alert, Text, View } from 'react-native';
+import { Alert, View } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { useDispatch, useSelector } from 'react-redux';
 import { BlueButton } from '../../common/ui/base/button';
@@ -12,16 +12,14 @@ import PinkButton from '../../common/ui/base/button/pinkButton';
 import { LargeCardView } from '../../common/ui/layout/auth-Layout';
 import { SmallText } from '../../common/ui/base/errorText';
 import { NormalTextInput } from '../../common/ui/base/textInput';
-import {
-  LargeTextTouchable,
-  SmallTextTouchable,
-} from '../../common/ui/base/touchableText';
+import { LargeTextTouchable } from '../../common/ui/base/touchableText';
 import AuthLayoutContainer from '../../common/ui/layout/auth-Layout/layoutContainer';
 import { api_url } from '../../common/util/constant';
 import { accountLogout } from '../../models/accountReducer';
 import { RootState } from '../../models/store';
 import styles from './styles';
 import { getUserInfoFromAPI, UserInfo } from '../../common/util/common';
+import Toast from 'react-native-simple-toast';
 
 interface Props {}
 
@@ -56,9 +54,19 @@ const Profile = (props: Props) => {
         setUserInfo(userInfoFromAPI);
       } else {
         //Toast cannot get info
+        Toast.showWithGravity(
+          'Không thể lấy thông tin tài khoản',
+          Toast.SHORT,
+          Toast.CENTER
+        );
       }
     } else {
       //Toast string
+      Toast.showWithGravity(
+        'Không thể lấy thông tin tài khoản',
+        Toast.SHORT,
+        Toast.CENTER
+      );
     }
   }
 
@@ -110,13 +118,11 @@ const Profile = (props: Props) => {
         }
       })
       .catch((err) =>
-        Alert.alert('Lỗi', err.response.data['message'], [
-          {
-            text: 'OK',
-            onPress: () => cancelEdit(),
-            style: 'cancel',
-          },
-        ])
+        Toast.showWithGravity(
+          'Không thể chỉnh sửa thông tin tài khoản',
+          Toast.SHORT,
+          Toast.CENTER
+        )
       );
   };
 
@@ -124,6 +130,7 @@ const Profile = (props: Props) => {
     dispatch(accountLogout({}));
     await AsyncStorage.setItem('@token', '');
     Actions.push('menu');
+    Toast.showWithGravity('Đăng xuất thành công', Toast.SHORT, Toast.CENTER);
   };
 
   const handleChangePassword = () => {

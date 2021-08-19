@@ -1,14 +1,12 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Image, ScrollView, Text, View } from 'react-native';
 import { ProductItem } from '../../common/util/common';
 import styles from './style';
 import numeral from 'numeral';
 import { Actions } from 'react-native-router-flux';
 import { useDispatch } from 'react-redux';
-import { addToCart, loadCart } from '../../models/cartReducer';
+import { addToCart } from '../../models/cartReducer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios from 'axios';
-import { api_url } from '../../common/util/constant';
 import BottomComponent from '../../common/ui/layout/product-layout/bottomComponent';
 import MainLayout from '../../common/ui/layout/main-layout';
 

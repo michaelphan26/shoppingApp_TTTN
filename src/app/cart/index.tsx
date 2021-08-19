@@ -3,29 +3,25 @@ import axios from 'axios';
 import React from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
-import { Alert } from 'react-native';
 import { Text, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Actions } from 'react-native-router-flux';
 import { useDispatch, useSelector } from 'react-redux';
-import PinkButton from '../../common/ui/base/button/pinkButton';
 import {
   addReceiptAPI,
   CartItem,
   getUserInfoFromAPI,
-  ProductItem,
   UserInfo,
 } from '../../common/util/common';
 import { api_url } from '../../common/util/constant';
 import { RootState } from '../../models/store';
 import styles from './style';
 import numeral from 'numeral';
-import ProductRowItem from '../../common/ui/layout/main-layout/components/productRowContainer';
 import ProductRowWithQuantity from '../../common/ui/layout/cart-layout/productRowWithQuantity';
 import { emptyCart } from '../../models/cartReducer';
 import BlueButton from '../../common/ui/base/button/blueButton';
-import PinkRoundedButton from '../../common/ui/base/button/pinkRoundedButton';
 import CartLayout from '../../common/ui/layout/cart-layout';
+import Toast from 'react-native-simple-toast';
 
 interface Props {}
 const Cart = (props: Props) => {
@@ -40,18 +36,26 @@ const Cart = (props: Props) => {
 
   async function getUserInfo() {
     const userResponse: UserInfo | string = await getUserInfoFromAPI();
-    if (typeof userResponse === 'string') {
-      //Toast string
-    } else {
+    if (typeof userResponse !== 'string') {
       if (Object.keys(userResponse).length !== 0) {
         setUserInfo(userResponse);
       }
+    } else {
+      Toast.showWithGravity(
+        'Không thể lấy thông tin tài khoản',
+        Toast.SHORT,
+        Toast.CENTER
+      );
     }
   }
 
   const handleConfirmPressed = async () => {
     if (cart.productList.length === 0) {
-      //Toast loi
+      Toast.showWithGravity(
+        'Giỏ hàng hiện đang trống',
+        Toast.SHORT,
+        Toast.CENTER
+      );
       return;
     }
 
@@ -70,17 +74,29 @@ const Cart = (props: Props) => {
           if (res.data['code'] === 200) {
             dispatch(emptyCart({}));
             Actions.push('menu');
+            Toast.showWithGravity(
+              'Xác nhận đơn hàng thành công',
+              Toast.SHORT,
+              Toast.CENTER
+            );
           } else {
-            //Toast res.data['message']
+            Toast.showWithGravity(
+              'Xác nhận đơn hàng thất bại',
+              Toast.SHORT,
+              Toast.CENTER
+            );
           }
         })
         .catch((err) => {
-          //Toast
-          console.log(err);
-          console.log(err.response.data['message']);
+          Toast.showWithGravity(
+            'Không thể xác nhận đơn hàng',
+            Toast.SHORT,
+            Toast.CENTER
+          );
         });
     } else {
       Actions.push('login');
+      Toast.showWithGravity('Vui lòng đăng nhập', Toast.SHORT, Toast.CENTER);
     }
   };
 

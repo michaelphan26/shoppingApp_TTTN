@@ -1,19 +1,16 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { ReactNode } from 'react';
-import { Alert, FlatList, Text, View } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
-import { api_url } from '../../../common/util/constant';
+import { FlatList, Text, View } from 'react-native';
 import styles from '../style';
 import SquareItemView from '../../../common/ui/layout/main-layout/components/squareItemView';
 import {
-  CategoryItem,
+  JustNameItem,
   getProductByCategoryFromAPI,
   ProductItem,
 } from '../../../common/util/common';
+import Toast from 'react-native-simple-toast';
 
 interface Props {
-  categoryItem: CategoryItem;
+  categoryItem: JustNameItem;
   productPressed: (item: ProductItem, categoryName: string) => void;
   // children: ReactNode;
 }
@@ -27,7 +24,12 @@ const CategoryRowContainer = (props: Props) => {
     if (typeof getProductByCategoryFromAPI !== 'string') {
       setProductList(productListByCategory);
     } else {
-      //Toast string
+      //Toast
+      Toast.showWithGravity(
+        'Không thể lấy danh sách sản phẩm',
+        Toast.SHORT,
+        Toast.CENTER
+      );
     }
   };
 

@@ -1,9 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Alert, FlatList, ScrollView, Text, View } from 'react-native';
-import SquareItemView from '../../../common/ui/layout/main-layout/components/squareItemView';
+import { Alert, FlatList } from 'react-native';
 import CategoryRowContainer from './categoryRowContainer';
-import { api_url } from '../../../common/util/constant';
 import styles from '../style';
 import ProductRowContainer from '../../../common/ui/layout/main-layout/components/productRowContainer';
 import {
@@ -17,6 +15,7 @@ import { Actions } from 'react-native-router-flux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch } from 'react-redux';
 import { addToCart } from '../../../models/cartReducer';
+import Toast from 'react-native-simple-toast';
 
 interface Props {
   searchText: string;
@@ -32,6 +31,11 @@ const BodyComponent = (props: Props) => {
       setProductList(productListFromAPI);
     } else {
       //Toast string
+      Toast.showWithGravity(
+        'Không thể lấy danh sách sản phẩm',
+        Toast.SHORT,
+        Toast.CENTER
+      );
     }
   };
 
@@ -40,7 +44,12 @@ const BodyComponent = (props: Props) => {
     if (typeof categoryListFromAPI !== 'string') {
       setCategoryList(categoryListFromAPI);
     } else {
-      //Toast string
+      //Toast
+      Toast.showWithGravity(
+        'Không thể lấy danh sách danh mục',
+        Toast.SHORT,
+        Toast.CENTER
+      );
     }
   };
 

@@ -1,17 +1,18 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 import NumberTextInput from '../../../common/ui/base/textInput/numberTextInput';
 import styles from './style';
 import categoryStyles from '../category/style';
 import RNPickerSelect from 'react-native-picker-select';
-import { ioProductItem } from '../../../common/util/common';
+import { ioProductDetailItem } from '../../../common/util/common';
 
 interface Props {
   index: number;
-  item: ioProductItem;
+  item: ioProductDetailItem;
   productList: [];
   companyList: [];
   handleValueChange: (index: number, value: string, type: string) => void;
+  disable: boolean;
 }
 const IOProductSelect = (props: Props) => {
   return (
@@ -29,6 +30,7 @@ const IOProductSelect = (props: Props) => {
           value={props.item.id_product}
           items={props.productList}
           useNativeAndroidPickerStyle={false}
+          disabled={props.disable}
         />
       </View>
       <View style={categoryStyles.pickerContainer}>
@@ -44,25 +46,26 @@ const IOProductSelect = (props: Props) => {
           value={props.item.id_company}
           items={props.companyList}
           useNativeAndroidPickerStyle={false}
+          disabled={props.disable}
         />
       </View>
       <NumberTextInput
         placeholderText="Giá"
-        iconName="home"
+        iconName="tag"
         onTextChange={(value) =>
           props.handleValueChange(props.index, value, 'price')
         }
         value={props.item.price.toString()}
-        editable={true}
+        editable={!props.disable}
       />
       <NumberTextInput
         placeholderText="Số lượng"
-        iconName="home"
+        iconName="info-circle"
         onTextChange={(value) =>
           props.handleValueChange(props.index, value, 'quantity')
         }
         value={props.item.quantity.toString()}
-        editable={true}
+        editable={!props.disable}
       />
     </View>
   );

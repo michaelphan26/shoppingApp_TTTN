@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, Text, TouchableWithoutFeedback, View } from 'react-native';
+import { FlatList, TouchableWithoutFeedback, View } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import SearchRow from '../../../common/ui/base/searchRow';
 import { NormalTextInput } from '../../../common/ui/base/textInput';
@@ -22,9 +22,9 @@ import {
 } from '../../../common/util/common';
 import { useEffect } from 'react';
 import { CustomAlert } from '../../../common/ui/base/admin-alert';
+import Toast from 'react-native-simple-toast';
 
 interface Props {}
-
 const AdminCategory = (props: Props) => {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [modalDeleteVisible, setModalDeleteVisible] = useState<boolean>(false);
@@ -40,6 +40,11 @@ const AdminCategory = (props: Props) => {
       setCategoryList(categoryListFromAPI);
     } else {
       //Toast
+      Toast.showWithGravity(
+        'Không thể lấy danh sách danh mục',
+        Toast.SHORT,
+        Toast.CENTER
+      );
     }
   }
 
@@ -73,11 +78,25 @@ const AdminCategory = (props: Props) => {
       if (code === 200) {
         handleCloseModal();
         Actions.refresh({ key: Math.random() });
+        Toast.showWithGravity(
+          'Thêm danh mục thành công',
+          Toast.SHORT,
+          Toast.CENTER
+        );
       } else {
-        console.log(code);
+        Toast.showWithGravity(
+          'Không thể thêm danh mục',
+          Toast.SHORT,
+          Toast.CENTER
+        );
       }
     } else {
       //Toast err
+      Toast.showWithGravity(
+        'Tên không được để trống',
+        Toast.SHORT,
+        Toast.CENTER
+      );
     }
   };
 
@@ -90,10 +109,19 @@ const AdminCategory = (props: Props) => {
         handleCloseModal();
         Actions.refresh({ key: Math.random() });
       } else {
-        console.log(code);
+        Toast.showWithGravity(
+          'Không thể chỉnh sửa danh mục',
+          Toast.SHORT,
+          Toast.CENTER
+        );
       }
     } else {
       //Toast err
+      Toast.showWithGravity(
+        'Tên không được để trống',
+        Toast.SHORT,
+        Toast.CENTER
+      );
     }
   };
 
@@ -109,8 +137,17 @@ const AdminCategory = (props: Props) => {
       console.log('200');
       handleCloseModal();
       Actions.refresh({ key: Math.random() });
+      Toast.showWithGravity(
+        'Xóa danh mục thành công',
+        Toast.SHORT,
+        Toast.CENTER
+      );
     } else {
-      console.log(code);
+      Toast.showWithGravity(
+        'Không thể xóa danh mục',
+        Toast.SHORT,
+        Toast.CENTER
+      );
     }
   };
 

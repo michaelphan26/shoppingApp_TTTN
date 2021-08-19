@@ -19,6 +19,7 @@ import AdminReceipt from '../app/admin/receipt';
 import AdminReceiptType from '../app/admin/receiptType';
 import AdminRole from '../app/admin/role';
 import AdminUser from '../app/admin/user';
+import AdminIOProductDetail from '../app/admin/ioProductDetail';
 
 const Route = () => {
   return (
@@ -64,6 +65,11 @@ const Route = () => {
             key="adminIOProduct"
             hideNavBar={true}
             component={AdminIOProduct}
+          />
+          <Scene
+            key="adminIOProductDetail"
+            hideNavBar={true}
+            component={AdminIOProductDetail}
           />
           <Scene key="adminIOType" hideNavBar={true} component={AdminIOType} />
           <Scene

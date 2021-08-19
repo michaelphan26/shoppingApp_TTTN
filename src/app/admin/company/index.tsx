@@ -1,31 +1,12 @@
 import React, { useState } from 'react';
 import { useEffect } from 'react';
-import {
-  FlatList,
-  Text,
-  TouchableHighlight,
-  TouchableWithoutFeedback,
-  View,
-} from 'react-native';
+import { FlatList, TouchableWithoutFeedback, View } from 'react-native';
 import { Actions } from 'react-native-router-flux';
-import {
-  NormalTextInput,
-  PasswordTextInput,
-} from '../../../common/ui/base/textInput';
+import { NormalTextInput } from '../../../common/ui/base/textInput';
 import CartLayout from '../../../common/ui/layout/cart-layout';
 import {
-  UserInterface,
-  addUserToAPI,
-  emailReg,
-  getRoleFromAPI,
   getCompanyListFromAPI,
-  JustNameItem,
   phoneReg,
-  RegisterInfo,
-  UserItem,
-  initialUserInterface,
-  UserDetailItem,
-  editUserAPI,
   initialCompanyItem,
   CompanyInterface,
   addCompanyToAPI,
@@ -35,12 +16,11 @@ import {
 import styles from '../category/style';
 import { Entypo } from 'react-native-vector-icons';
 import { Color } from '../../../common/util/enum';
-import UserRow from './userRow';
 import { AdminAlert, CustomAlert } from '../../../common/ui/base/admin-alert';
 import { Controller, useForm } from 'react-hook-form';
 import { SmallText } from '../../../common/ui/base/errorText';
-import RNPickerSelect from 'react-native-picker-select';
 import CompanyRow from './companyRow';
+import Toast from 'react-native-simple-toast';
 
 interface Props {}
 const AdminCompany = (props: Props) => {
@@ -63,6 +43,11 @@ const AdminCompany = (props: Props) => {
       setCompanyList(companyListFromAPI);
     } else {
       //Toast
+      Toast.showWithGravity(
+        'Không thể lấy danh sách đối tác',
+        Toast.SHORT,
+        Toast.CENTER
+      );
     }
   }
 
@@ -103,17 +88,38 @@ const AdminCompany = (props: Props) => {
     if (code === 200) {
       handleCloseModal();
       Actions.refresh({ key: Math.random() });
+      Toast.showWithGravity(
+        'Không thể thêm đối tác',
+        Toast.SHORT,
+        Toast.CENTER
+      );
+    } else {
+      Toast.showWithGravity(
+        'Không thể thêm đối tác',
+        Toast.SHORT,
+        Toast.CENTER
+      );
     }
-    //Toast code
   };
+
   const handleSaveCompany = async (info: CompanyInterface) => {
     delete info._id;
     const code = await editCompanyAPI(company._id, info);
     if (code === 200) {
       handleCloseModal();
       Actions.refresh({ key: Math.random() });
+      Toast.showWithGravity(
+        'Chỉnh sửa thông tin đối tác thành công',
+        Toast.SHORT,
+        Toast.CENTER
+      );
     }
     //Toast code
+    Toast.showWithGravity(
+      'Không thể chỉnh sửa thông tin đối tác',
+      Toast.SHORT,
+      Toast.CENTER
+    );
   };
 
   const handleDeletePressed = (companyItem: CompanyInterface) => {
@@ -121,15 +127,21 @@ const AdminCompany = (props: Props) => {
     setCompany(companyItem);
   };
 
-  const handleDeleteCategory = async () => {
+  const handleDeleteCompany = async () => {
     const code = await deleteCompany(company._id);
     //Toast
     if (code === 200) {
       console.log('200');
       handleCloseModal();
       Actions.refresh({ key: Math.random() });
+      Toast.showWithGravity(
+        'Xóa đối tác thành công',
+        Toast.SHORT,
+        Toast.CENTER
+      );
     } else {
       console.log(code);
+      Toast.showWithGravity('Không thể xóa đối tác', Toast.SHORT, Toast.CENTER);
     }
   };
 
@@ -256,7 +268,7 @@ const AdminCompany = (props: Props) => {
           title="Xóa danh mục"
           okTitle="Xóa"
           onCancelPressed={handleCloseModal}
-          onOkPressed={handleDeleteCategory}
+          onOkPressed={handleDeleteCompany}
         />
         <TouchableWithoutFeedback onPress={handleAddPressed}>
           <Entypo name="plus" size={30} color={Color.black} />

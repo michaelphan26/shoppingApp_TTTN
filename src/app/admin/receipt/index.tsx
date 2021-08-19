@@ -10,6 +10,7 @@ import {
   ReceiptInterface,
 } from '../../../common/util/common';
 import styles from '../category/style';
+import Toast from 'react-native-simple-toast';
 
 interface Props {}
 const AdminReceipt = (props: Props) => {
@@ -22,6 +23,11 @@ const AdminReceipt = (props: Props) => {
       setReceiptList(receiptListFromAPI);
     } else {
       //Toast
+      Toast.showWithGravity(
+        'Không thể lấy danh sách hóa đơn',
+        Toast.SHORT,
+        Toast.CENTER
+      );
     }
   };
 

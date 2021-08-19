@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Controller, useForm, useFormState } from 'react-hook-form';
-import { Alert, View } from 'react-native';
-import Button, { BlueButton } from '../../../common/ui/base/button';
+import { Controller, useForm } from 'react-hook-form';
+import { Alert } from 'react-native';
+import { BlueButton } from '../../../common/ui/base/button';
 import { SmallText } from '../../../common/ui/base/errorText';
 import {
   NormalTextInput,
@@ -9,10 +9,7 @@ import {
 } from '../../../common/ui/base/textInput';
 import AuthLayoutContainer from '../../../common/ui/layout/auth-Layout/layoutContainer';
 import { emailReg, phoneReg, RegisterInfo } from '../../../common/util/common';
-import {
-  LargeTextTouchable,
-  SmallTextTouchable,
-} from '../../../common/ui/base/touchableText';
+import { LargeTextTouchable } from '../../../common/ui/base/touchableText';
 import { Actions } from 'react-native-router-flux';
 import axios from 'axios';
 import { api_url } from '../../../common/util/constant';
@@ -20,6 +17,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch } from 'react-redux';
 import { accountLogin } from '../../../models/accountReducer';
 import { LargeCardView } from '../../../common/ui/layout/auth-Layout';
+import Toast from 'react-native-simple-toast';
 
 const Register = () => {
   const {
@@ -47,17 +45,17 @@ const Register = () => {
           await AsyncStorage.setItem('@token', res.headers['x-auth-token']);
           dispatch(accountLogin(res.data['data']));
           Actions.push('menu');
+          Toast.showWithGravity(
+            'Đăng ký thành công',
+            Toast.SHORT,
+            Toast.CENTER
+          );
         } else {
-          //Toast res.data['message']
+          Toast.showWithGravity('Đăng ký thất bại', Toast.SHORT, Toast.CENTER);
         }
       })
       .catch((err) =>
-        Alert.alert('Lỗi đăng ký', err.response.data['message'], [
-          {
-            text: 'OK',
-            style: 'cancel',
-          },
-        ])
+        Toast.showWithGravity('Đăng ký thất bại', Toast.SHORT, Toast.CENTER)
       );
   };
 
@@ -95,6 +93,7 @@ const Register = () => {
               onVisibleChange={handleVisibleChange}
               secure={visible}
               value={value}
+              editable={true}
             />
           )}
           rules={{ required: true, minLength: 8, maxLength: 30 }}

@@ -146,38 +146,62 @@ export const initialCompanyItem: CompanyInterface = {
   tax_number:''
 }
 
-export interface ioProductItem{
+export interface ioProductDetailItem{
   id_product: string,
   id_company: string,
   price: number,
   quantity:number
 }
 
-export const initialIOProductItem: ioProductItem = {
+export const initialIOProductDetailItem: ioProductDetailItem = {
   id_product: '',
   id_company: '',
   price: 0,
   quantity:0
 }
 
-export const addCategoryUrl = 'category/add-category/';
-export const editCategoryUrl = 'category/edit-category/';
-export const deleteCategoryUrl = 'category/delete-category/';
-export const addReceiptTypeUrl = 'receipt-type/add-receipt-type/';
-export const editReceiptTypeUrl = 'receipt-type/edit-receipt-type/';
-export const deleteReceiptTypeUrl = 'receipt-type/delete-receipt-type/';
-export const addIOTypeUrl = 'io-type/add-io-type/';
-export const editIOTypeUrl = 'io-type/edit-io-type/';
-export const deleteIOTypeUrl = 'io-type/delete-io-type/';
-export const addRoleUrl = 'role/add-role/';
-export const editRoleUrl = 'role/edit-role/';
-export const deleteRoleUrl = 'role/delete-role/';
-export const addCompanyUrl = 'company/add-company/';
-export const editCompanyUrl = 'company/edit-company/';
-export const deleteCompanyUrl = 'company/delete-company/';
+export interface pickerInterface{
+  label: string,
+  value:string
+}
+
+export const initialPickerItem: pickerInterface = {
+  label: '',
+  value:''
+}
+
+export interface ioProductInterface{
+  _id: string,
+  date: string,
+  id_ioType:string
+}
+
+export const initialIOProduct: ioProductInterface = {
+  _id: '',
+  date: '',
+  id_ioType:''
+}
+
+export const addCategoryUrl = 'admin/add-category/';
+export const editCategoryUrl = 'admin/edit-category/';
+export const deleteCategoryUrl = 'admin/delete-category/';
+export const addReceiptTypeUrl = 'admin/add-receipt-type/';
+export const editReceiptTypeUrl = 'admin/edit-receipt-type/';
+export const deleteReceiptTypeUrl = 'admin/delete-receipt-type/';
+export const addIOTypeUrl = 'admin/add-io-type/';
+export const editIOTypeUrl = 'admin/edit-io-type/';
+export const deleteIOTypeUrl = 'admin/delete-io-type/';
+export const addRoleUrl = 'admin/add-role/';
+export const editRoleUrl = 'admin/edit-role/';
+export const deleteRoleUrl = 'admin/delete-role/';
+export const getCompanyUrl = 'company/';
+export const addCompanyUrl = 'admin/add-company/';
+export const editCompanyUrl = 'admin/edit-company/';
+export const deleteCompanyUrl = 'admin/delete-company/';
 export const addProductUrl = 'admin/add-product/';
 export const editProductUrl = 'admin/edit-product/';
 export const deleteProductUrl = 'admin/delete-product/';
+export const addIOProductUrl = 'admin/add-io/';
 
 export const getCartFromAPI = async ()=>{
   const token = await AsyncStorage.getItem("@token");
@@ -805,4 +829,88 @@ export async function editProductAPI(productInfo: ProductItem,_id:string) {
     code= err.response.data['code'];
   })
   return code
+}
+
+export async function addIOProductAPI(ioProductDetailList: [], id_ioType: string) {
+  const token = await AsyncStorage.getItem("@token");
+  let code:number=0
+  await axios({
+    url: `${addIOProductUrl}`,
+    baseURL: `${api_url}`,
+    method: 'post',
+    headers: {
+      "x-auth-token":token
+    },
+    responseType: 'json',
+    data: {
+      id_ioType: id_ioType,
+      productList:ioProductDetailList
+    }
+  }).then(res => {
+    console.log(res.data)
+    code=res.data['code']
+  }).catch(err => {
+    code= err.response.data['code'];
+  })
+  return code
+}
+
+export async function getIOProductListFromAPI() {
+  const token = await AsyncStorage.getItem("@token")
+  let ioProductList=[] as any
+  await axios({
+    url: 'io-product/io-list',
+    baseURL: `${api_url}`,
+    headers: {
+      "x-auth-token":token
+    },
+    responseType:'json'
+  }).then(res => {
+    if (res.data['code'] = 200)
+      ioProductList = res.data['data']
+    else return res.data['message']
+  }).catch(err =>{
+    return err.response['data']
+  })
+  return ioProductList
+}
+
+export async function getIOProductDetailFromAPI(ioProductID:string) {
+  const token = await AsyncStorage.getItem("@token")
+  let ioDetailList=[] as any
+  await axios({
+    url: `io-detail/${ioProductID}`,
+    baseURL: `${api_url}`,
+    headers: {
+      "x-auth-token":token
+    },
+    responseType:'json'
+  }).then(res => {
+    if (res.data['code'] = 200)
+      ioDetailList = res.data['data']
+    else return res.data['message']
+  }).catch(err =>{
+    return err.response['data']
+  })
+  return ioDetailList
+}
+
+export async function getCompanyDetailFromAPI(id_company:string) {
+  const token = await AsyncStorage.getItem("@token")
+  let companyDetail={} as CompanyInterface
+  await axios({
+    url: `${getCompanyUrl}${id_company}`,
+    baseURL: `${api_url}`,
+    headers: {
+      "x-auth-token":token
+    },
+    responseType:'json'
+  }).then(res => {
+    if (res.data['code'] = 200)
+      companyDetail = res.data['data']
+    else return res.data['message']
+  }).catch(err =>{
+    return err.response['data']
+  })
+  return companyDetail
 }

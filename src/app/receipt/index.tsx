@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import CartLayout from '../../common/ui/layout/cart-layout';
-import ReceiptBottomComponent from '../../common/ui/layout/product-layout/receiptBottomComponent';
 import ReceiptRowContainer from '../../common/ui/layout/receipt-layout/receiptRowContainer';
 import {
   getReceiptListFromAPI,
   ReceiptInterface,
 } from '../../common/util/common';
 import styles from './style';
+import Toast from 'react-native-simple-toast';
 
 const Receipt = () => {
   const [receiptList, setReceiptList] = useState([] as any);
@@ -19,6 +19,11 @@ const Receipt = () => {
       setReceiptList(receiptListFromAPI);
     } else {
       //Toast
+      Toast.showWithGravity(
+        'Không thể lấy danh sách hóa đơn',
+        Toast.SHORT,
+        Toast.CENTER
+      );
     }
   };
 

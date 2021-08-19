@@ -1,19 +1,8 @@
 import React from 'react';
 import { Text, TouchableWithoutFeedback, View } from 'react-native';
 import styles from '../../../common/ui/base/searchRow/style';
-import {
-  CompanyInterface,
-  getRoleInfoFromAPI,
-  getUserInfoByIDFromAPI,
-  initialJustNameItem,
-  initialUserDetailItem,
-  JustNameItem,
-  UserDetailItem,
-  UserItem,
-} from '../../../common/util/common';
+import { CompanyInterface } from '../../../common/util/common';
 import { Entypo } from 'react-native-vector-icons';
-import { useState } from 'react';
-import { useEffect } from 'react';
 
 interface Props {
   item: CompanyInterface;

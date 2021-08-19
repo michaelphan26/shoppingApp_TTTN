@@ -4,7 +4,6 @@ import { ScrollView, Text, View } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import {
   getReceiptDetailFromAPI,
-  getReceiptListFromAPI,
   getUserInfoFromAPI,
   ReceiptDetailInterface,
   ReceiptInterface,
@@ -14,6 +13,7 @@ import styles from './style';
 import numeral from 'numeral';
 import ProductRowNoQuantity from '../../common/ui/layout/cart-layout/productRowNoQuantity';
 import CartLayout from '../../common/ui/layout/cart-layout';
+import Toast from 'react-native-simple-toast';
 
 interface Props {
   receipt: ReceiptInterface;
@@ -38,6 +38,11 @@ const ReceiptDetail = (props: Props) => {
       setUserInfo(userInfoFromAPI);
     } else {
       //Toast string
+      Toast.showWithGravity(
+        'Không thể lấy thông tin tài khoản',
+        Toast.SHORT,
+        Toast.CENTER
+      );
     }
   }
 
@@ -51,6 +56,11 @@ const ReceiptDetail = (props: Props) => {
       setReceiptDetail(receiptDetailFromAPI);
     } else {
       //Toast
+      Toast.showWithGravity(
+        'Không thể lấy thông tin hóa đơn',
+        Toast.SHORT,
+        Toast.CENTER
+      );
     }
   }
 

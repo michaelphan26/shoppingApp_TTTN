@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useEffect } from 'react';
 import {
   FlatList,
-  Text,
   TouchableHighlight,
   TouchableWithoutFeedback,
   View,
@@ -19,9 +18,7 @@ import {
   emailReg,
   getRoleFromAPI,
   getUserListFromAPI,
-  JustNameItem,
   phoneReg,
-  RegisterInfo,
   UserItem,
   initialUserInterface,
   UserDetailItem,
@@ -35,6 +32,7 @@ import { AdminAlert } from '../../../common/ui/base/admin-alert';
 import { Controller, useForm } from 'react-hook-form';
 import { SmallText } from '../../../common/ui/base/errorText';
 import RNPickerSelect from 'react-native-picker-select';
+import Toast from 'react-native-simple-toast';
 
 interface Props {}
 const AdminUser = (props: Props) => {
@@ -59,6 +57,11 @@ const AdminUser = (props: Props) => {
       setUserList(userListFromAPI);
     } else {
       //Toast
+      Toast.showWithGravity(
+        'Không thể lấy danh sách tài khoản',
+        Toast.SHORT,
+        Toast.CENTER
+      );
     }
   }
 
@@ -74,7 +77,11 @@ const AdminUser = (props: Props) => {
       }
       setRoleList(tempList);
     } else {
-      //Toast
+      Toast.showWithGravity(
+        'Không thể lấy danh sách chức vụ',
+        Toast.SHORT,
+        Toast.CENTER
+      );
     }
   }
 
@@ -123,6 +130,17 @@ const AdminUser = (props: Props) => {
     if (code === 200) {
       handleCloseModal();
       Actions.refresh({ key: Math.random() });
+      Toast.showWithGravity(
+        'Thêm tài khoản thành công',
+        Toast.SHORT,
+        Toast.CENTER
+      );
+    } else {
+      Toast.showWithGravity(
+        'Không thể thêm tài khoản',
+        Toast.SHORT,
+        Toast.CENTER
+      );
     }
     //Toast code
   };
@@ -133,8 +151,18 @@ const AdminUser = (props: Props) => {
     if (code === 200) {
       handleCloseModal();
       Actions.refresh({ key: Math.random() });
+      Toast.showWithGravity(
+        'Chỉnh sửa tài khoản thành công',
+        Toast.SHORT,
+        Toast.CENTER
+      );
+    } else {
+      Toast.showWithGravity(
+        'Không thể chỉnh sửa tài khoản',
+        Toast.SHORT,
+        Toast.CENTER
+      );
     }
-    //Toast code
   };
 
   const alertBody = () => {

@@ -1,201 +1,269 @@
 import React, { useEffect, useState } from 'react';
-import {
-  FlatList,
-  Image,
-  TouchableHighlight,
-  TouchableWithoutFeedback,
-  View,
-} from 'react-native';
+import { FlatList, Text, TouchableWithoutFeedback, View } from 'react-native';
 import { Actions } from 'react-native-router-flux';
-import { AdminAlert, CustomAlert } from '../../../common/ui/base/admin-alert';
-import { NormalTextInput } from '../../../common/ui/base/textInput';
+import { AdminAlert } from '../../../common/ui/base/admin-alert';
 import CartLayout from '../../../common/ui/layout/cart-layout';
-import MainLayout from '../../../common/ui/layout/main-layout';
-import ProductRowItemNoCart from '../../../common/ui/layout/main-layout/components/productRowContainerNoCart';
 import {
-  addProductAPI,
-  editProductAPI,
-  getCategoryListFromAPI,
+  addIOProductAPI,
   getCompanyListFromAPI,
+  getIOProductDetailFromAPI,
+  getIOProductListFromAPI,
   getIOTypeFromAPI,
   getProductListFromAPI,
-  initialIOProductItem,
-  initialJustNameItem,
-  initialProductItem,
-  ioProductItem,
-  ProductItem,
+  initialIOProductDetailItem,
+  ioProductDetailItem,
+  ioProductInterface,
 } from '../../../common/util/common';
 import { Color } from '../../../common/util/enum';
 import styles from '../category/style';
 import { Entypo } from 'react-native-vector-icons';
-import { Controller, useForm } from 'react-hook-form';
-import { SmallText } from '../../../common/ui/base/errorText';
-import { ScrollView } from 'react-native-gesture-handler';
-import NumberTextInput from '../../../common/ui/base/textInput/numberTextInput';
 import RNPickerSelect from 'react-native-picker-select';
 import { BlueButton } from '../../../common/ui/base/button';
-import * as ImagePicker from 'expo-image-picker';
 import IOProductSelect from './ioProductSelect';
-import { SegmentedControlIOSComponent } from 'react-native';
+import NumberTextInput from '../../../common/ui/base/textInput/numberTextInput';
+import IOProductRow from './ioProductRow';
+import DetailAlert from '../../../common/ui/base/admin-alert/detailAlert';
+import Toast from 'react-native-simple-toast';
 
 interface Props {}
 const AdminIOProduct = (props: Props) => {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const [modalDeleteVisible, setModalDeleteVisible] = useState<boolean>(false);
   const [action, setAction] = useState<string>('Add');
-  const [productList, setProductList] = useState([] as any);
-  const [io, setIO] = useState({ label: '', value: '' });
-  const [ioTypeList, setIOTypeList] = useState([] as any);
+
+  const [ioType, setIOType] = useState<string>('');
+  const [ioProductDetailList, setIOProductDetailList] = useState([] as any);
+
   const [ioProductList, setIOProductList] = useState([] as any);
+  const [ioTypeList, setIOTypeList] = useState([] as any);
+  const [productList, setProductList] = useState([] as any);
   const [companyList, setCompanyList] = useState([] as any);
   const [searchText, setSearchText] = useState<string>('');
-  const [product, setProduct] = useState<ProductItem>(initialProductItem);
-  const [imageBase64, setImageBase64] = useState<string | undefined>('');
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-    reset,
-  } = useForm({ reValidateMode: 'onSubmit' });
 
   async function getCompanyList() {
     const companyListFromAPI = await getCompanyListFromAPI();
-    let tempList = [] as any;
-    for (const index in companyListFromAPI) {
-      tempList.push({
-        label: companyListFromAPI[index].name,
-        value: companyListFromAPI[index]._id,
-      });
+    if (typeof companyListFromAPI !== 'string') {
+      let tempList = [] as any;
+      for (const index in companyListFromAPI) {
+        tempList.push({
+          label: companyListFromAPI[index].name,
+          value: companyListFromAPI[index]._id,
+        });
+      }
+      setCompanyList(tempList);
+    } else {
+      Toast.showWithGravity(
+        'Không thể lấy danh sách đối tác',
+        Toast.SHORT,
+        Toast.CENTER
+      );
     }
-    setCompanyList(tempList);
   }
 
   async function getProductList() {
     const productListFromAPI = await getProductListFromAPI();
-    let tempList = [] as any;
-    for (const index in productListFromAPI) {
-      tempList.push({
-        label: productListFromAPI[index].name,
-        value: productListFromAPI[index]._id,
-      });
+    if (typeof productListFromAPI !== 'string') {
+      let tempList = [] as any;
+      for (const index in productListFromAPI) {
+        tempList.push({
+          label: productListFromAPI[index].name,
+          value: productListFromAPI[index]._id,
+        });
+      }
+      setProductList(tempList);
+    } else {
+      Toast.showWithGravity(
+        'Không thể lấy danh sách sản phẩm',
+        Toast.SHORT,
+        Toast.CENTER
+      );
     }
-    setProductList(tempList);
   }
 
   async function getIOTypeList() {
     const ioTypeListFromAPI = await getIOTypeFromAPI();
-    let tempList = [] as any;
-    for (const index in ioTypeListFromAPI) {
-      tempList.push({
-        label: ioTypeListFromAPI[index].name,
-        value: ioTypeListFromAPI[index]._id,
-      });
+    if (typeof ioTypeListFromAPI !== 'string') {
+      let tempList = [] as any;
+      for (const index in ioTypeListFromAPI) {
+        tempList.push({
+          label: ioTypeListFromAPI[index].name,
+          value: ioTypeListFromAPI[index]._id,
+        });
+      }
+      setIOTypeList(tempList);
+    } else {
+      Toast.showWithGravity(
+        'Không thể lấy danh sách loại nhập xuất',
+        Toast.SHORT,
+        Toast.CENTER
+      );
     }
-    setIOTypeList(tempList);
+  }
+
+  async function getIOProductList() {
+    const ioProductListFromAPI = await getIOProductListFromAPI();
+    if (typeof ioProductListFromAPI !== 'string') {
+      setIOProductList(ioProductListFromAPI);
+    } else {
+      Toast.showWithGravity(
+        'Không thể lấy danh sách nhập xuất',
+        Toast.SHORT,
+        Toast.CENTER
+      );
+    }
   }
 
   useEffect(() => {
     getProductList();
     getIOTypeList();
     getCompanyList();
+    getIOProductList();
   }, []);
 
   const handleAddPressed = () => {
-    setModalVisible(true);
     setAction('Add');
+    setIOType('');
+    setIOProductDetailList([]);
+    setModalVisible(true);
   };
 
-  const handleEditPressed = (item: ProductItem) => {
-    setModalVisible(true);
-    setAction('Edit');
-    setProduct(item);
-    reset({
-      brand: item.brand,
-      name: item.name,
-      price: item.price.toString(),
-      description: item.description.toString(),
-      discount: item.discount.toString(),
-      id_category: item.id_category,
-    });
-    setImageBase64(item.image);
+  const handleDetailPressed = async (item: ioProductInterface) => {
+    setAction('View');
+    const ioProductDetailFromAPI = await getIOProductDetailFromAPI(item._id);
+    if (typeof ioProductDetailFromAPI !== 'string') {
+      Actions.push('adminIOProductDetail', {
+        ioProductDetailList: ioProductDetailFromAPI,
+        id_ioType: item.id_ioType,
+        date: item.date,
+      });
+    } else {
+      Toast.showWithGravity(
+        'Không thể lấy chi tiết nhập xuất',
+        Toast.SHORT,
+        Toast.CENTER
+      );
+    }
   };
 
   const handleCloseModal = () => {
+    setIOType('');
+    setIOProductDetailList([]);
     setModalVisible(false);
-    setModalDeleteVisible(false);
-    setProduct(initialProductItem);
-    reset(initialProductItem);
-    setImageBase64('');
   };
 
-  const handleAddIOProduct = () => {
-    console.log(ioProductList);
+  const handleAddIOProduct = async () => {
+    if (ioProductDetailList.length !== 0) {
+      let check = true;
+      for (const index in ioProductDetailList) {
+        if (
+          ioProductDetailList[index].idProduct === '' ||
+          ioProductDetailList[index].id_company === '' ||
+          ioProductDetailList[index].quantity < 1 ||
+          ioProductDetailList[index].price < 1001
+        ) {
+          check = false;
+          break;
+        }
+      }
+      if (check) {
+        const code = await addIOProductAPI(ioProductDetailList, ioType);
+        //Toast
+        if (code === 200) {
+          handleCloseModal();
+          Actions.refresh({ key: Math.random() });
+          Toast.showWithGravity(
+            'Thêm nhập xuất thành công',
+            Toast.SHORT,
+            Toast.CENTER
+          );
+        } else {
+          Toast.showWithGravity(
+            'Không thể thêm nhập xuất',
+            Toast.SHORT,
+            Toast.CENTER
+          );
+        }
+      } else {
+        Toast.showWithGravity(
+          'Danh sách không hợp lệ',
+          Toast.SHORT,
+          Toast.CENTER
+        );
+      }
+    } else {
+      Toast.showWithGravity(
+        'Danh sách sản phẩm không được để trống',
+        Toast.SHORT,
+        Toast.CENTER
+      );
+    }
   };
-
-  const handleSaveProduct = async (info: ProductItem) => {};
-
-  const handleDeleteProduct = async () => {};
 
   const handleAddIOProductItem = () => {
-    setIOProductList([...ioProductList, initialIOProductItem]);
+    setIOProductDetailList([
+      ...ioProductDetailList,
+      initialIOProductDetailItem,
+    ]);
   };
 
   const handleValueChange = (index: number, value: string, type: string) => {
     switch (type) {
       case 'product': {
-        setIOProductList(
-          ioProductList.map((item: ioProductItem, itemIndex: number) =>
-            itemIndex !== index
-              ? item
-              : {
-                  ...item,
-                  id_product: value,
-                }
+        setIOProductDetailList(
+          ioProductDetailList.map(
+            (item: ioProductDetailItem, itemIndex: number) =>
+              itemIndex !== index
+                ? item
+                : {
+                    ...item,
+                    id_product: value,
+                  }
           )
         );
         break;
       }
       case 'company': {
-        setIOProductList(
-          ioProductList.map((item: ioProductItem, itemIndex: number) =>
-            itemIndex !== index
-              ? item
-              : {
-                  ...item,
-                  id_company: value,
-                }
+        setIOProductDetailList(
+          ioProductDetailList.map(
+            (item: ioProductDetailItem, itemIndex: number) =>
+              itemIndex !== index
+                ? item
+                : {
+                    ...item,
+                    id_company: value,
+                  }
           )
         );
         break;
       }
       case 'price': {
-        setIOProductList(
-          ioProductList.map((item: ioProductItem, itemIndex: number) =>
-            itemIndex !== index
-              ? item
-              : {
-                  ...item,
-                  price: value,
-                }
+        setIOProductDetailList(
+          ioProductDetailList.map(
+            (item: ioProductDetailItem, itemIndex: number) =>
+              itemIndex !== index
+                ? item
+                : {
+                    ...item,
+                    price: value,
+                  }
           )
         );
         break;
       }
       case 'quantity': {
-        setIOProductList(
-          ioProductList.map((item: ioProductItem, itemIndex: number) =>
-            itemIndex !== index
-              ? item
-              : {
-                  ...item,
-                  quantity: value,
-                }
+        setIOProductDetailList(
+          ioProductDetailList.map(
+            (item: ioProductDetailItem, itemIndex: number) =>
+              itemIndex !== index
+                ? item
+                : {
+                    ...item,
+                    quantity: value,
+                  }
           )
         );
         break;
       }
     }
-    console.log(ioProductList);
   };
 
   const alertBody = () => {
@@ -204,34 +272,45 @@ const AdminIOProduct = (props: Props) => {
         <View style={styles.pickerContainer}>
           <RNPickerSelect
             style={styles}
-            onValueChange={(item) => setIO(item)}
+            onValueChange={(value) => {
+              setIOType(value);
+            }}
             placeholder={{
               label: 'Chọn trạng thái',
               value: '',
             }}
-            value={io}
+            value={ioType}
             items={ioTypeList}
+            disabled={action === 'View' ? true : false}
             useNativeAndroidPickerStyle={false}
           />
         </View>
 
         <FlatList
-          data={ioProductList}
+          data={ioProductDetailList}
           style={styles.listContainer}
           renderItem={({ item, index }) => (
             <IOProductSelect
+              key={item.id_product.toString() + item.id_company.toString()}
               index={index}
               item={item}
               productList={productList}
               companyList={companyList}
               handleValueChange={handleValueChange}
+              disable={action === 'View' ? true : false}
             />
           )}
-          keyExtractor={(index) => index}
-          extraData={ioProductList}
+          keyExtractor={(item) =>
+            item.id_product.toString() + item.id_company.toString()
+          }
+          extraData={ioProductDetailList}
         />
 
-        <BlueButton title="Thêm chi tiết" pressed={handleAddIOProductItem} />
+        {action === 'View' ? (
+          <Text></Text>
+        ) : (
+          <BlueButton title="Thêm chi tiết" pressed={handleAddIOProductItem} />
+        )}
       </View>
     );
   };
@@ -247,7 +326,7 @@ const AdminIOProduct = (props: Props) => {
       }}
     >
       <View style={styles.searchContainer}>
-        <NormalTextInput
+        <NumberTextInput
           iconName="search"
           placeholderText="Tìm kiếm..."
           onTextChange={(text) => setSearchText(text)}
@@ -265,47 +344,34 @@ const AdminIOProduct = (props: Props) => {
             {alertBody()}
           </AdminAlert>
         ) : (
-          <AdminAlert
+          <DetailAlert
             alertVisible={modalVisible}
-            title="Chỉnh sửa nhập xuất"
-            okTitle="Lưu"
+            title="Thông tin nhập xuất"
             onCancelPressed={handleCloseModal}
-            onOkPressed={handleSubmit(handleSaveProduct)}
           >
             {alertBody()}
-          </AdminAlert>
+          </DetailAlert>
         )}
-        <CustomAlert
-          alertVisible={modalDeleteVisible}
-          title="Xóa sản phẩm"
-          okTitle="Xóa"
-          onCancelPressed={handleCloseModal}
-          onOkPressed={handleDeleteProduct}
-        />
         <TouchableWithoutFeedback onPress={handleAddPressed}>
           <Entypo name="plus" size={30} color={Color.black} />
         </TouchableWithoutFeedback>
       </View>
 
-      {/* <FlatList
-        data={productList.filter(
-          (item: ProductItem) =>
-            item.name
-              .toLowerCase()
-              .startsWith(searchText.trim().toLowerCase()) ||
-            item.brand.toLowerCase().startsWith(searchText.trim().toLowerCase())
+      <FlatList
+        data={ioProductList.filter((item: ioProductInterface) =>
+          item.date.toLowerCase().startsWith(searchText.trim().toLowerCase())
         )}
         style={styles.listContainer}
-        renderItem={(item: ProductItem) => {
+        renderItem={(item: ioProductInterface) => {
           return (
-            <ProductRowItemNoCart
+            <IOProductRow
               item={item.item}
-              onEditPressed={handleEditPressed}
+              onDetailPressed={handleDetailPressed}
             />
           );
         }}
-        keyExtractor={(item: ProductItem) => item._id}
-      /> */}
+        keyExtractor={(item: ioProductInterface) => item._id}
+      />
     </CartLayout>
   );
 };

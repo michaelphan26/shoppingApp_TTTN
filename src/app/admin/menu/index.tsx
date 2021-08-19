@@ -1,10 +1,6 @@
 import React from 'react';
 import { Dimensions, FlatList, View } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
-import MainLayout from '../../../common/ui/layout/main-layout';
 import DetailCard from './detailCard';
-import styles from './style';
-import manageList from '../../../common/util/manageList.json';
 import { useState } from 'react';
 import axios from 'axios';
 import { api_url } from '../../../common/util/constant';
@@ -13,6 +9,7 @@ import { useEffect } from 'react';
 import { SummaryInterface } from '../../../common/util/common';
 import { Actions } from 'react-native-router-flux';
 import CartLayout from '../../../common/ui/layout/cart-layout';
+import Toast from 'react-native-simple-toast';
 
 interface Props {}
 const AdminMenu = (props: Props) => {
@@ -34,10 +31,19 @@ const AdminMenu = (props: Props) => {
           setSummaryObject(res.data['data']);
         } else {
           //Toast
+          Toast.showWithGravity(
+            'Không thể lấy thống kê',
+            Toast.SHORT,
+            Toast.CENTER
+          );
         }
       })
       .catch((err) => {
-        console.log(err.response['message']);
+        Toast.showWithGravity(
+          'Không thể lấy thống kê',
+          Toast.SHORT,
+          Toast.CENTER
+        );
       });
   }
 

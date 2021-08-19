@@ -7,10 +7,9 @@ import {
   View,
 } from 'react-native';
 import { Actions } from 'react-native-router-flux';
-import { AdminAlert, CustomAlert } from '../../../common/ui/base/admin-alert';
+import { AdminAlert } from '../../../common/ui/base/admin-alert';
 import { NormalTextInput } from '../../../common/ui/base/textInput';
 import CartLayout from '../../../common/ui/layout/cart-layout';
-import MainLayout from '../../../common/ui/layout/main-layout';
 import ProductRowItemNoCart from '../../../common/ui/layout/main-layout/components/productRowContainerNoCart';
 import {
   addProductAPI,
@@ -25,16 +24,15 @@ import styles from '../category/style';
 import { Entypo } from 'react-native-vector-icons';
 import { Controller, useForm } from 'react-hook-form';
 import { SmallText } from '../../../common/ui/base/errorText';
-import { ScrollView } from 'react-native-gesture-handler';
 import NumberTextInput from '../../../common/ui/base/textInput/numberTextInput';
 import RNPickerSelect from 'react-native-picker-select';
 import { BlueButton } from '../../../common/ui/base/button';
 import * as ImagePicker from 'expo-image-picker';
+import Toast from 'react-native-simple-toast';
 
 interface Props {}
 const AdminProduct = (props: Props) => {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const [modalDeleteVisible, setModalDeleteVisible] = useState<boolean>(false);
   const [action, setAction] = useState<string>('Add');
   const [productList, setProductList] = useState([] as any);
   const [categoryList, setCategoryList] = useState([] as any);
@@ -58,6 +56,11 @@ const AdminProduct = (props: Props) => {
       setProductList(productListFromAPI);
     } else {
       //Toast
+      Toast.showWithGravity(
+        'Không thể lấy danh sách sản phẩm',
+        Toast.SHORT,
+        Toast.CENTER
+      );
     }
   }
 
@@ -74,6 +77,11 @@ const AdminProduct = (props: Props) => {
       setCategoryList(tempList);
     } else {
       //Toast
+      Toast.showWithGravity(
+        'Không thể lấy danh sách danh mục',
+        Toast.SHORT,
+        Toast.CENTER
+      );
     }
   }
 
@@ -104,7 +112,6 @@ const AdminProduct = (props: Props) => {
 
   const handleCloseModal = () => {
     setModalVisible(false);
-    setModalDeleteVisible(false);
     setProduct(initialProductItem);
     reset(initialProductItem);
     setImageBase64('');
@@ -119,11 +126,25 @@ const AdminProduct = (props: Props) => {
       if (code === 200) {
         handleCloseModal();
         Actions.refresh({ key: Math.random() });
+        Toast.showWithGravity(
+          'Thêm sản phẩm thành công',
+          Toast.SHORT,
+          Toast.CENTER
+        );
       } else {
-        console.log(code);
+        Toast.showWithGravity(
+          'Không thể thêm sản phẩm',
+          Toast.SHORT,
+          Toast.CENTER
+        );
       }
     } else {
       //Toast err
+      Toast.showWithGravity(
+        'Không thể thêm sản phẩm',
+        Toast.SHORT,
+        Toast.CENTER
+      );
     }
   };
 
@@ -134,26 +155,18 @@ const AdminProduct = (props: Props) => {
     if (code === 200) {
       handleCloseModal();
       Actions.refresh({ key: Math.random() });
+      Toast.showWithGravity(
+        'Chỉnh sửa sản phẩm thành công',
+        Toast.SHORT,
+        Toast.CENTER
+      );
     } else {
-      console.log(code);
+      Toast.showWithGravity(
+        'Không thể chỉnh sửa sản phẩm',
+        Toast.SHORT,
+        Toast.CENTER
+      );
     }
-  };
-
-  const handleDeletePressed = (item: ProductItem) => {
-    // setModalDeleteVisible(true);
-    // setEditItem(item);
-  };
-
-  const handleDeleteProduct = async () => {
-    //   const code = await deleteJustName(deleteCategoryUrl, editItem);
-    //   //Toast
-    //   if (code === 200) {
-    //     console.log('200');
-    //     handleCloseModal();
-    //     Actions.refresh({ key: Math.random() });
-    //   } else {
-    //     console.log(code);
-    //   }
   };
 
   const pickImage = async () => {
@@ -208,7 +221,7 @@ const AdminProduct = (props: Props) => {
           render={({ field: { onChange, value } }) => (
             <NumberTextInput
               placeholderText="Giá"
-              iconName="home"
+              iconName="tag"
               onTextChange={onChange}
               value={value}
               editable={true}
@@ -225,7 +238,7 @@ const AdminProduct = (props: Props) => {
           render={({ field: { onChange, value } }) => (
             <NormalTextInput
               placeholderText="Mô tả"
-              iconName="home"
+              iconName="comment"
               onTextChange={onChange}
               value={value}
               editable={true}
@@ -242,7 +255,7 @@ const AdminProduct = (props: Props) => {
           render={({ field: { onChange, value } }) => (
             <NumberTextInput
               placeholderText="Giảm giá"
-              iconName="home"
+              iconName="percent"
               onTextChange={onChange}
               value={value}
               editable={true}
@@ -349,13 +362,6 @@ const AdminProduct = (props: Props) => {
             {alertBody()}
           </AdminAlert>
         )}
-        <CustomAlert
-          alertVisible={modalDeleteVisible}
-          title="Xóa sản phẩm"
-          okTitle="Xóa"
-          onCancelPressed={handleCloseModal}
-          onOkPressed={handleDeleteProduct}
-        />
         <TouchableWithoutFeedback onPress={handleAddPressed}>
           <Entypo name="plus" size={30} color={Color.black} />
         </TouchableWithoutFeedback>

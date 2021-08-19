@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Alert, Text, View } from 'react-native';
+import { Alert, Text } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { BlueButton } from '../../../common/ui/base/button';
 import { SmallText } from '../../../common/ui/base/errorText';
@@ -14,6 +14,7 @@ import { api_url } from '../../../common/util/constant';
 import { AntDesign } from 'react-native-vector-icons';
 import { Color } from '../../../common/util/enum';
 import styles from './style';
+import Toast from 'react-native-simple-toast';
 
 interface ChangePasswordInfo {
   oldPassword: string;
@@ -61,6 +62,11 @@ const ChangePassword = () => {
       .then((res) => {
         if (res.data['code'] === 200) {
           setChangeSuccess(true);
+          Toast.showWithGravity(
+            'Thay đổi mật khẩu thành công',
+            Toast.SHORT,
+            Toast.CENTER
+          );
         } else {
           Alert.alert('Lỗi thay đổi mật khẩu', res.data['message'], [
             {
@@ -72,7 +78,11 @@ const ChangePassword = () => {
       })
       .catch((err) => {
         //Toast err
-        console.log(err.response.data['data']);
+        Toast.showWithGravity(
+          'Không thể thay đổi mật khẩu',
+          Toast.SHORT,
+          Toast.CENTER
+        );
       });
   };
 
@@ -102,6 +112,7 @@ const ChangePassword = () => {
                   onVisibleChange={handleOldPasswordChange}
                   secure={oldPasswordVisible}
                   value={value}
+                  editable={true}
                 />
               )}
               name="oldPassword"
@@ -122,6 +133,7 @@ const ChangePassword = () => {
                   onVisibleChange={handleNewPasswordChange}
                   secure={newPasswordVisible}
                   value={value}
+                  editable={true}
                 />
               )}
               name="newPassword"
@@ -142,6 +154,7 @@ const ChangePassword = () => {
                   onVisibleChange={handleConfirmPasswordChange}
                   secure={confirmPasswordVisible}
                   value={value}
+                  editable={true}
                 />
               )}
               name="confirmPassword"

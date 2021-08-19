@@ -13,6 +13,7 @@ import {
 import { Entypo } from 'react-native-vector-icons';
 import { useState } from 'react';
 import { useEffect } from 'react';
+import Toast from 'react-native-simple-toast';
 
 interface Props {
   item: UserItem;
@@ -34,6 +35,11 @@ const UserRow = (props: Props) => {
       setUserDetail(userDetailFromAPI);
     } else {
       //Toast
+      Toast.showWithGravity(
+        'Không thể thông tin tài khoản',
+        Toast.SHORT,
+        Toast.CENTER
+      );
     }
   }
 
@@ -43,6 +49,11 @@ const UserRow = (props: Props) => {
       setRoleInfo(roleInfo);
     } else {
       //Toast
+      Toast.showWithGravity(
+        'Không thể lấy thông tin chức vụ',
+        Toast.SHORT,
+        Toast.CENTER
+      );
     }
   }
 

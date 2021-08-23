@@ -7,7 +7,7 @@ import {
   getProductByCategoryFromAPI,
   ProductItem,
 } from '../../../common/util/common';
-import Toast from 'react-native-simple-toast';
+import Toast from 'react-native-root-toast';
 
 interface Props {
   categoryItem: JustNameItem;
@@ -25,11 +25,12 @@ const CategoryRowContainer = (props: Props) => {
       setProductList(productListByCategory);
     } else {
       //Toast
-      Toast.showWithGravity(
-        'Không thể lấy danh sách sản phẩm',
-        Toast.SHORT,
-        Toast.CENTER
-      );
+      Toast.show('Không thể lấy danh sách sản phẩm', {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.BOTTOM,
+        shadow: true,
+        animation: true,
+      });
     }
   };
 
@@ -45,6 +46,8 @@ const CategoryRowContainer = (props: Props) => {
       <FlatList
         style={styles.bodyContainer}
         data={productList}
+        horizontal={true}
+        showsHorizontalScrollIndicator={false}
         renderItem={(item: ProductItem) => {
           return (
             <SquareItemView

@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
     receiptContainer: {
         flexDirection:'row',
         width: Dimensions.get('window').width * 98 / 100,
-        height: Dimensions.get('window').height * 10 / 100,
+        height: Dimensions.get('window').height * 13 / 100,
         alignSelf: 'center',
         alignItems: 'center',
         backgroundColor: Color.white,

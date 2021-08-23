@@ -19,7 +19,7 @@ import { accountLogout } from '../../models/accountReducer';
 import { RootState } from '../../models/store';
 import styles from './styles';
 import { getUserInfoFromAPI, UserInfo } from '../../common/util/common';
-import Toast from 'react-native-simple-toast';
+import Toast from 'react-native-root-toast';
 
 interface Props {}
 
@@ -54,19 +54,21 @@ const Profile = (props: Props) => {
         setUserInfo(userInfoFromAPI);
       } else {
         //Toast cannot get info
-        Toast.showWithGravity(
-          'Không thể lấy thông tin tài khoản',
-          Toast.SHORT,
-          Toast.CENTER
-        );
+        Toast.show('Không thể lấy thông tin tài khoản', {
+          duration: Toast.durations.SHORT,
+          position: Toast.positions.BOTTOM,
+          shadow: true,
+          animation: true,
+        });
       }
     } else {
       //Toast string
-      Toast.showWithGravity(
-        'Không thể lấy thông tin tài khoản',
-        Toast.SHORT,
-        Toast.CENTER
-      );
+      Toast.show('Không thể lấy thông tin tài khoản', {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.BOTTOM,
+        shadow: true,
+        animation: true,
+      });
     }
   }
 
@@ -75,13 +77,12 @@ const Profile = (props: Props) => {
     if (token) {
       return await getUserInfo();
     } else {
-      Alert.alert('Lỗi', 'Bạn chưa đăng nhập/đăng ký', [
-        {
-          text: 'OK',
-          style: 'cancel',
-          onPress: () => Actions.push('login'),
-        },
-      ]);
+      Toast.show('Bạn chưa đăng nhập/đăng ký', {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.BOTTOM,
+        shadow: true,
+        animation: true,
+      });
     }
   }
 
@@ -118,11 +119,12 @@ const Profile = (props: Props) => {
         }
       })
       .catch((err) =>
-        Toast.showWithGravity(
-          'Không thể chỉnh sửa thông tin tài khoản',
-          Toast.SHORT,
-          Toast.CENTER
-        )
+        Toast.show('Không thể chỉnh sửa thông tin tài khoản', {
+          duration: Toast.durations.SHORT,
+          position: Toast.positions.BOTTOM,
+          shadow: true,
+          animation: true,
+        })
       );
   };
 
@@ -130,7 +132,12 @@ const Profile = (props: Props) => {
     dispatch(accountLogout({}));
     await AsyncStorage.setItem('@token', '');
     Actions.push('menu');
-    Toast.showWithGravity('Đăng xuất thành công', Toast.SHORT, Toast.CENTER);
+    Toast.show('Đăng xuất thành công', {
+      duration: Toast.durations.SHORT,
+      position: Toast.positions.BOTTOM,
+      shadow: true,
+      animation: true,
+    });
   };
 
   const handleChangePassword = () => {

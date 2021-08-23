@@ -3,6 +3,7 @@ import { TouchableWithoutFeedback, View } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import styles from './style';
 import { FontAwesome5 } from 'react-native-vector-icons';
+import { Color } from '../../../util/enum';
 
 interface Props {
   placeholderText: string;
@@ -29,6 +30,7 @@ const PasswordTextInput = (props: Props) => {
         onChangeText={(text) => props.onTextChange(text)}
         value={props.value}
         editable={props.editable}
+        placeholderTextColor={Color['medium-gray']}
       />
       <TouchableWithoutFeedback onPress={() => props.onVisibleChange()}>
         <View style={styles.eyeContainer}>

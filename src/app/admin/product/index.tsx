@@ -28,7 +28,7 @@ import NumberTextInput from '../../../common/ui/base/textInput/numberTextInput';
 import RNPickerSelect from 'react-native-picker-select';
 import { BlueButton } from '../../../common/ui/base/button';
 import * as ImagePicker from 'expo-image-picker';
-import Toast from 'react-native-simple-toast';
+import Toast from 'react-native-root-toast';
 
 interface Props {}
 const AdminProduct = (props: Props) => {
@@ -56,11 +56,12 @@ const AdminProduct = (props: Props) => {
       setProductList(productListFromAPI);
     } else {
       //Toast
-      Toast.showWithGravity(
-        'Không thể lấy danh sách sản phẩm',
-        Toast.SHORT,
-        Toast.CENTER
-      );
+      Toast.show('Không thể lấy danh sách sản phẩm', {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.BOTTOM,
+        shadow: true,
+        animation: true,
+      });
     }
   }
 
@@ -77,11 +78,12 @@ const AdminProduct = (props: Props) => {
       setCategoryList(tempList);
     } else {
       //Toast
-      Toast.showWithGravity(
-        'Không thể lấy danh sách danh mục',
-        Toast.SHORT,
-        Toast.CENTER
-      );
+      Toast.show('Không thể lấy danh sách danh mục', {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.BOTTOM,
+        shadow: true,
+        animation: true,
+      });
     }
   }
 
@@ -93,6 +95,12 @@ const AdminProduct = (props: Props) => {
   const handleAddPressed = () => {
     setModalVisible(true);
     setAction('Add');
+    Toast.show('Chèn \\n để xuống dòng mô tả', {
+      duration: Toast.durations.SHORT,
+      position: Toast.positions.BOTTOM,
+      shadow: true,
+      animation: true,
+    });
   };
 
   const handleEditPressed = (item: ProductItem) => {
@@ -108,6 +116,12 @@ const AdminProduct = (props: Props) => {
       id_category: item.id_category,
     });
     setImageBase64(item.image);
+    Toast.show('Chèn \\n để xuống dòng mô tả', {
+      duration: Toast.durations.SHORT,
+      position: Toast.positions.BOTTOM,
+      shadow: true,
+      animation: true,
+    });
   };
 
   const handleCloseModal = () => {
@@ -120,31 +134,33 @@ const AdminProduct = (props: Props) => {
   const handleAddProduct = async (info: ProductItem) => {
     if (imageBase64 !== '') {
       info.image = imageBase64;
-      console.log(info);
       const code = await addProductAPI(info);
       //Toast
       if (code === 200) {
         handleCloseModal();
         Actions.refresh({ key: Math.random() });
-        Toast.showWithGravity(
-          'Thêm sản phẩm thành công',
-          Toast.SHORT,
-          Toast.CENTER
-        );
+        Toast.show('Thêm sản phẩm thành công', {
+          duration: Toast.durations.SHORT,
+          position: Toast.positions.BOTTOM,
+          shadow: true,
+          animation: true,
+        });
       } else {
-        Toast.showWithGravity(
-          'Không thể thêm sản phẩm',
-          Toast.SHORT,
-          Toast.CENTER
-        );
+        Toast.show('Không thể thêm sản phẩm', {
+          duration: Toast.durations.SHORT,
+          position: Toast.positions.BOTTOM,
+          shadow: true,
+          animation: true,
+        });
       }
     } else {
       //Toast err
-      Toast.showWithGravity(
-        'Không thể thêm sản phẩm',
-        Toast.SHORT,
-        Toast.CENTER
-      );
+      Toast.show('Không thể thêm sản phẩm', {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.BOTTOM,
+        shadow: true,
+        animation: true,
+      });
     }
   };
 
@@ -155,17 +171,19 @@ const AdminProduct = (props: Props) => {
     if (code === 200) {
       handleCloseModal();
       Actions.refresh({ key: Math.random() });
-      Toast.showWithGravity(
-        'Chỉnh sửa sản phẩm thành công',
-        Toast.SHORT,
-        Toast.CENTER
-      );
+      Toast.show('Chỉnh sửa sản phẩm thành công', {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.BOTTOM,
+        shadow: true,
+        animation: true,
+      });
     } else {
-      Toast.showWithGravity(
-        'Không thể chỉnh sửa sản phẩm',
-        Toast.SHORT,
-        Toast.CENTER
-      );
+      Toast.show('Không thể chỉnh sửa sản phẩm', {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.BOTTOM,
+        shadow: true,
+        animation: true,
+      });
     }
   };
 
@@ -181,7 +199,7 @@ const AdminProduct = (props: Props) => {
 
   const alertBody = () => {
     return (
-      <View>
+      <View style={{ alignItems: 'center' }}>
         <Controller
           control={control}
           render={({ field: { onChange, value } }) => (
@@ -244,7 +262,7 @@ const AdminProduct = (props: Props) => {
               editable={true}
             />
           )}
-          rules={{ required: true, minLength: 5, maxLength: 200 }}
+          rules={{ required: true, minLength: 5, maxLength: 500 }}
           name="description"
           defaultValue={action === 'Add' ? '' : product.description}
         />
@@ -381,6 +399,7 @@ const AdminProduct = (props: Props) => {
             <ProductRowItemNoCart
               item={item.item}
               onEditPressed={handleEditPressed}
+              onDeletePressed={() => {}}
             />
           );
         }}

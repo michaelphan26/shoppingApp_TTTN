@@ -15,6 +15,7 @@ const SquareItemView = (props: Props) => {
         <Image
           source={{ uri: `data:image/png;base64,${props.item.image}` }}
           style={styles.image}
+          resizeMode="contain"
         />
         <Text style={styles.titleSmall}>{props.item.name}</Text>
         <Text style={styles.titleTiny}>

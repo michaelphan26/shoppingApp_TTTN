@@ -14,7 +14,7 @@ import { api_url } from '../../../common/util/constant';
 import { AntDesign } from 'react-native-vector-icons';
 import { Color } from '../../../common/util/enum';
 import styles from './style';
-import Toast from 'react-native-simple-toast';
+import Toast from 'react-native-root-toast';
 
 interface ChangePasswordInfo {
   oldPassword: string;
@@ -62,27 +62,29 @@ const ChangePassword = () => {
       .then((res) => {
         if (res.data['code'] === 200) {
           setChangeSuccess(true);
-          Toast.showWithGravity(
-            'Thay đổi mật khẩu thành công',
-            Toast.SHORT,
-            Toast.CENTER
-          );
+          Toast.show('Thay đổi mật khẩu thành công', {
+            duration: Toast.durations.SHORT,
+            position: Toast.positions.BOTTOM,
+            shadow: true,
+            animation: true,
+          });
         } else {
-          Alert.alert('Lỗi thay đổi mật khẩu', res.data['message'], [
-            {
-              text: 'Ok',
-              style: 'cancel',
-            },
-          ]);
+          Toast.show('Lỗi thay đổi mật khẩu', {
+            duration: Toast.durations.SHORT,
+            position: Toast.positions.BOTTOM,
+            shadow: true,
+            animation: true,
+          });
         }
       })
       .catch((err) => {
         //Toast err
-        Toast.showWithGravity(
-          'Không thể thay đổi mật khẩu',
-          Toast.SHORT,
-          Toast.CENTER
-        );
+        Toast.show('Không thể thay đổi mật khẩu', {
+          duration: Toast.durations.SHORT,
+          position: Toast.positions.BOTTOM,
+          shadow: true,
+          animation: true,
+        });
       });
   };
 

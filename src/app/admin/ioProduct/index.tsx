@@ -23,7 +23,7 @@ import IOProductSelect from './ioProductSelect';
 import NumberTextInput from '../../../common/ui/base/textInput/numberTextInput';
 import IOProductRow from './ioProductRow';
 import DetailAlert from '../../../common/ui/base/admin-alert/detailAlert';
-import Toast from 'react-native-simple-toast';
+import Toast from 'react-native-root-toast';
 
 interface Props {}
 const AdminIOProduct = (props: Props) => {
@@ -51,11 +51,12 @@ const AdminIOProduct = (props: Props) => {
       }
       setCompanyList(tempList);
     } else {
-      Toast.showWithGravity(
-        'Không thể lấy danh sách đối tác',
-        Toast.SHORT,
-        Toast.CENTER
-      );
+      Toast.show('Không thể lấy danh sách đối tác', {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.BOTTOM,
+        shadow: true,
+        animation: true,
+      });
     }
   }
 
@@ -71,11 +72,12 @@ const AdminIOProduct = (props: Props) => {
       }
       setProductList(tempList);
     } else {
-      Toast.showWithGravity(
-        'Không thể lấy danh sách sản phẩm',
-        Toast.SHORT,
-        Toast.CENTER
-      );
+      Toast.show('Không thể lấy danh sách sản phẩm', {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.BOTTOM,
+        shadow: true,
+        animation: true,
+      });
     }
   }
 
@@ -91,11 +93,12 @@ const AdminIOProduct = (props: Props) => {
       }
       setIOTypeList(tempList);
     } else {
-      Toast.showWithGravity(
-        'Không thể lấy danh sách loại nhập xuất',
-        Toast.SHORT,
-        Toast.CENTER
-      );
+      Toast.show('Không thể lấy danh sách loại nhập xuất', {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.BOTTOM,
+        shadow: true,
+        animation: true,
+      });
     }
   }
 
@@ -104,11 +107,12 @@ const AdminIOProduct = (props: Props) => {
     if (typeof ioProductListFromAPI !== 'string') {
       setIOProductList(ioProductListFromAPI);
     } else {
-      Toast.showWithGravity(
-        'Không thể lấy danh sách nhập xuất',
-        Toast.SHORT,
-        Toast.CENTER
-      );
+      Toast.show('Không thể lấy danh sách nhập xuất', {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.BOTTOM,
+        shadow: true,
+        animation: true,
+      });
     }
   }
 
@@ -136,11 +140,12 @@ const AdminIOProduct = (props: Props) => {
         date: item.date,
       });
     } else {
-      Toast.showWithGravity(
-        'Không thể lấy chi tiết nhập xuất',
-        Toast.SHORT,
-        Toast.CENTER
-      );
+      Toast.show('Không thể lấy chi tiết nhập xuất', {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.BOTTOM,
+        shadow: true,
+        animation: true,
+      });
     }
   };
 
@@ -170,31 +175,35 @@ const AdminIOProduct = (props: Props) => {
         if (code === 200) {
           handleCloseModal();
           Actions.refresh({ key: Math.random() });
-          Toast.showWithGravity(
-            'Thêm nhập xuất thành công',
-            Toast.SHORT,
-            Toast.CENTER
-          );
+          Toast.show('Thêm nhập xuất thành công', {
+            duration: Toast.durations.SHORT,
+            position: Toast.positions.BOTTOM,
+            shadow: true,
+            animation: true,
+          });
         } else {
-          Toast.showWithGravity(
-            'Không thể thêm nhập xuất',
-            Toast.SHORT,
-            Toast.CENTER
-          );
+          Toast.show('Không thể thêm nhập xuất', {
+            duration: Toast.durations.SHORT,
+            position: Toast.positions.BOTTOM,
+            shadow: true,
+            animation: true,
+          });
         }
       } else {
-        Toast.showWithGravity(
-          'Danh sách không hợp lệ',
-          Toast.SHORT,
-          Toast.CENTER
-        );
+        Toast.show('Danh sách không hợp lệ', {
+          duration: Toast.durations.SHORT,
+          position: Toast.positions.BOTTOM,
+          shadow: true,
+          animation: true,
+        });
       }
     } else {
-      Toast.showWithGravity(
-        'Danh sách sản phẩm không được để trống',
-        Toast.SHORT,
-        Toast.CENTER
-      );
+      Toast.show('Danh sách sản phẩm không được để trống', {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.BOTTOM,
+        shadow: true,
+        animation: true,
+      });
     }
   };
 

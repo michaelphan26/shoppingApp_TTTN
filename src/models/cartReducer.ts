@@ -17,14 +17,11 @@ const CartReducer = createSlice({
                 existedItem.quantity = existedItem.quantity + 1
                 state.total=state.total+(addItem.price - (addItem.price*addItem.discount/100))
             }
-
-            const message = addReceiptAPI({ productList: state.productList, total: state.total })
-            console.log(message)
         },
         loadCart(state, action) {
             if (Object.keys(action.payload).length !== 0) {
                 state.productList = action.payload.productList;
-            state.total=action.payload.total
+                state.total=action.payload.total
             }
             
         },
@@ -56,8 +53,6 @@ const CartReducer = createSlice({
         removeFromCart(state, action) {
             state.productList=state.productList.filter((item:CartItem)=>item.id_product!==action.payload.id_product)
             state.total = state.total - (parseInt(action.payload.quantity) * parseInt(action.payload.price))
-            const message = addReceiptAPI({ productList: state.productList, total: state.total })
-            console.log(message)
         },
         emptyCart(state, action) {
             state.productList = [] as any;

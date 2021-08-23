@@ -1,11 +1,10 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Alert, FlatList } from 'react-native';
+import { FlatList } from 'react-native';
 import CategoryRowContainer from './categoryRowContainer';
 import styles from '../style';
 import ProductRowContainer from '../../../common/ui/layout/main-layout/components/productRowContainer';
 import {
-  CategoryItem,
+  JustNameItem,
   getCategoryListFromAPI,
   getCategoryNameFromAPI,
   getProductListFromAPI,
@@ -15,7 +14,7 @@ import { Actions } from 'react-native-router-flux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch } from 'react-redux';
 import { addToCart } from '../../../models/cartReducer';
-import Toast from 'react-native-simple-toast';
+import Toast from 'react-native-root-toast';
 
 interface Props {
   searchText: string;
@@ -31,11 +30,12 @@ const BodyComponent = (props: Props) => {
       setProductList(productListFromAPI);
     } else {
       //Toast string
-      Toast.showWithGravity(
-        'Không thể lấy danh sách sản phẩm',
-        Toast.SHORT,
-        Toast.CENTER
-      );
+      Toast.show('Không thể lấy danh sách sản phẩm', {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.BOTTOM,
+        shadow: true,
+        animation: true,
+      });
     }
   };
 
@@ -45,11 +45,12 @@ const BodyComponent = (props: Props) => {
       setCategoryList(categoryListFromAPI);
     } else {
       //Toast
-      Toast.showWithGravity(
-        'Không thể lấy danh sách danh mục',
-        Toast.SHORT,
-        Toast.CENTER
-      );
+      Toast.show('Không thể lấy danh sách danh mục', {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.BOTTOM,
+        shadow: true,
+        animation: true,
+      });
     }
   };
 
@@ -108,7 +109,7 @@ const BodyComponent = (props: Props) => {
       }
       renderItem={
         !props.searchText
-          ? (item: CategoryItem) => {
+          ? (item: JustNameItem) => {
               return (
                 <CategoryRowContainer
                   categoryItem={item.item}
@@ -130,7 +131,7 @@ const BodyComponent = (props: Props) => {
       }
       keyExtractor={
         !props.searchText
-          ? (item: CategoryItem) => item._id
+          ? (item: JustNameItem) => item._id
           : (item: ProductItem) => item._id
       }
     />

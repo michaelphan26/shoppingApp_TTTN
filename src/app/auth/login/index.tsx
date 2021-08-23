@@ -25,7 +25,7 @@ import { SmallCardView } from '../../../common/ui/layout/auth-Layout';
 import { BlueButton } from '../../../common/ui/base/button';
 import { loadCart } from '../../../models/cartReducer';
 import { RootState } from '../../../models/store';
-import Toast from 'react-native-simple-toast';
+import Toast from 'react-native-root-toast';
 
 interface LoginInfo {
   email: string;
@@ -40,10 +40,11 @@ const Login = () => {
   const [visible, setVisible] = useState<boolean>(false);
   const dispatch = useDispatch();
   const cart = useSelector((state: RootState) => state.cartReducer);
+  const account = useSelector((state: RootState) => state.accountReducer);
 
   async function checkToken() {
     const token = await AsyncStorage.getItem('@token');
-    if (token) {
+    if (token && account.email !== '') {
       Actions.push('menu');
     }
   }
@@ -70,37 +71,41 @@ const Login = () => {
               dispatch(loadCart(cartFromAPI));
             } else {
               //Toast
-              Toast.showWithGravity(
-                'Không thể lấy giỏ hàng',
-                Toast.SHORT,
-                Toast.BOTTOM
-              );
+              Toast.show('Không thể lấy giỏ hàng', {
+                duration: Toast.durations.SHORT,
+                position: Toast.positions.BOTTOM,
+                shadow: true,
+                animation: true,
+              });
             }
           } else {
             await addReceiptAPI(cart);
           }
           Actions.pop();
           Actions.push('profile');
-          Toast.showWithGravity(
-            'Đăng nhập thành công',
-            Toast.SHORT,
-            Toast.CENTER
-          );
+          Toast.show('Đăng nhập thành công', {
+            duration: Toast.durations.SHORT,
+            position: Toast.positions.BOTTOM,
+            shadow: true,
+            animation: true,
+          });
         } else {
           //Toast res.data['message']
-          Toast.showWithGravity(
-            'Đăng nhập không thành công',
-            Toast.SHORT,
-            Toast.CENTER
-          );
+          Toast.show('Đăng nhập không thành công', {
+            duration: Toast.durations.SHORT,
+            position: Toast.positions.BOTTOM,
+            shadow: true,
+            animation: true,
+          });
         }
       })
       .catch((err) =>
-        Toast.showWithGravity(
-          'Đăng nhập không thành công',
-          Toast.SHORT,
-          Toast.CENTER
-        )
+        Toast.show('Đăng nhập không thành công', {
+          duration: Toast.durations.SHORT,
+          position: Toast.positions.BOTTOM,
+          shadow: true,
+          animation: true,
+        })
       );
   };
 

@@ -13,7 +13,7 @@ import {
 import { Entypo } from 'react-native-vector-icons';
 import { useState } from 'react';
 import { useEffect } from 'react';
-import Toast from 'react-native-simple-toast';
+import Toast from 'react-native-root-toast';
 
 interface Props {
   item: UserItem;
@@ -35,11 +35,12 @@ const UserRow = (props: Props) => {
       setUserDetail(userDetailFromAPI);
     } else {
       //Toast
-      Toast.showWithGravity(
-        'Không thể thông tin tài khoản',
-        Toast.SHORT,
-        Toast.CENTER
-      );
+      Toast.show('Không thể thông tin tài khoản', {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.BOTTOM,
+        shadow: true,
+        animation: true,
+      });
     }
   }
 
@@ -49,11 +50,12 @@ const UserRow = (props: Props) => {
       setRoleInfo(roleInfo);
     } else {
       //Toast
-      Toast.showWithGravity(
-        'Không thể lấy thông tin chức vụ',
-        Toast.SHORT,
-        Toast.CENTER
-      );
+      Toast.show('Không thể lấy thông tin chức vụ', {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.BOTTOM,
+        shadow: true,
+        animation: true,
+      });
     }
   }
 

@@ -16,22 +16,44 @@ import numeral from 'numeral';
 import { FontAwesome, Entypo } from 'react-native-vector-icons';
 import CartIconContainer from './cartIconContainer';
 import { ProductItem } from '../../../../util/common';
-import { ReceiptInterface } from '../../../util/common';
+import {
+  getReceiptTypeByIDFromAPI,
+  initialJustNameItem,
+  JustNameItem,
+  ReceiptInterface,
+} from '../../../util/common';
 
 interface Props {
   receipt: ReceiptInterface;
   onDetailPressed: (receipt: ReceiptInterface) => void;
 }
 const ReceiptRowContainer = (props: Props) => {
+  const [receiptType, setReceiptType] =
+    useState<JustNameItem>(initialJustNameItem);
+
+  async function getReceiptType() {
+    const receiptTypeFromAPI = await getReceiptTypeByIDFromAPI(
+      props.receipt.id_receiptType
+    );
+    if (typeof receiptTypeFromAPI !== 'string') {
+      setReceiptType(receiptTypeFromAPI);
+    }
+  }
+
+  useEffect(() => {
+    getReceiptType();
+  }, []);
+
   return (
     <TouchableWithoutFeedback>
       <View style={styles.receiptContainer}>
         <View style={styles.detailContainer}>
           <Text style={styles.titleTiny}>{props.receipt.email}</Text>
           <Text style={styles.titleTiny}>
-            {numeral(1000000).format('0,0')}đ
+            {numeral(props.receipt.total).format('0,0')}đ
           </Text>
           <Text style={styles.titleTiny}>{props.receipt.date}</Text>
+          <Text style={styles.titleTiny}>Trạng thái: {receiptType.name}</Text>
         </View>
         <TouchableWithoutFeedback
           onPress={() => props.onDetailPressed(props.receipt)}

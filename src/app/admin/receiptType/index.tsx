@@ -22,7 +22,7 @@ import {
 } from '../../../common/util/common';
 import { useEffect } from 'react';
 import { CustomAlert } from '../../../common/ui/base/admin-alert';
-import Toast from 'react-native-simple-toast';
+import Toast from 'react-native-root-toast';
 
 interface Props {}
 
@@ -41,11 +41,12 @@ const AdminReceiptType = (props: Props) => {
       setReceiptTypeList(receiptTypeListFromAPI);
     } else {
       //Toast
-      Toast.showWithGravity(
-        'Không thể lấy danh sách loại hóa đơn',
-        Toast.SHORT,
-        Toast.CENTER
-      );
+      Toast.show('Không thể lấy danh sách loại hóa đơn', {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.BOTTOM,
+        shadow: true,
+        animation: true,
+      });
     }
   }
 
@@ -79,25 +80,28 @@ const AdminReceiptType = (props: Props) => {
       if (code === 200) {
         handleCloseModal();
         Actions.refresh({ key: Math.random() });
-        Toast.showWithGravity(
-          'Thêm loại hóa đơn thành công',
-          Toast.SHORT,
-          Toast.CENTER
-        );
+        Toast.show('Thêm loại hóa đơn thành công', {
+          duration: Toast.durations.SHORT,
+          position: Toast.positions.BOTTOM,
+          shadow: true,
+          animation: true,
+        });
       } else {
-        Toast.showWithGravity(
-          'Không thể thêm loại hóa đơn',
-          Toast.SHORT,
-          Toast.CENTER
-        );
+        Toast.show('Không thể thêm loại hóa đơn', {
+          duration: Toast.durations.SHORT,
+          position: Toast.positions.BOTTOM,
+          shadow: true,
+          animation: true,
+        });
       }
     } else {
       //Toast err
-      Toast.showWithGravity(
-        'Tên không được để trống',
-        Toast.SHORT,
-        Toast.CENTER
-      );
+      Toast.show('Tên không được để trống', {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.BOTTOM,
+        shadow: true,
+        animation: true,
+      });
     }
   };
 
@@ -109,24 +113,27 @@ const AdminReceiptType = (props: Props) => {
       if (code === 200) {
         handleCloseModal();
         Actions.refresh({ key: Math.random() });
-        Toast.showWithGravity(
-          'Chỉnh sửa loại hóa đơn thành công',
-          Toast.SHORT,
-          Toast.CENTER
-        );
+        Toast.show('Chỉnh sửa loại hóa đơn thành công', {
+          duration: Toast.durations.SHORT,
+          position: Toast.positions.BOTTOM,
+          shadow: true,
+          animation: true,
+        });
       } else {
-        Toast.showWithGravity(
-          'Không thể chỉnh sửa loại hóa đơn',
-          Toast.SHORT,
-          Toast.CENTER
-        );
+        Toast.show('Không thể chỉnh sửa loại hóa đơn', {
+          duration: Toast.durations.SHORT,
+          position: Toast.positions.BOTTOM,
+          shadow: true,
+          animation: true,
+        });
       }
     } else {
-      Toast.showWithGravity(
-        'Tên không được để trống',
-        Toast.SHORT,
-        Toast.CENTER
-      );
+      Toast.show('Tên không được để trống', {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.BOTTOM,
+        shadow: true,
+        animation: true,
+      });
     }
   };
 
@@ -142,17 +149,20 @@ const AdminReceiptType = (props: Props) => {
       console.log('200');
       handleCloseModal();
       Actions.refresh({ key: Math.random() });
-      Toast.showWithGravity(
-        'Xóa loại hóa đơn thành công',
-        Toast.SHORT,
-        Toast.CENTER
-      );
+      Toast.show('Xóa loại hóa đơn thành công', {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.BOTTOM,
+        shadow: true,
+        animation: true,
+      });
     } else {
-      Toast.showWithGravity(
-        'Không thể xóa loại hóa đơn',
-        Toast.SHORT,
-        Toast.CENTER
-      );
+      Toast.show('Không thể xóa loại hóa đơn', {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.BOTTOM,
+        shadow: true,
+        animation: true,
+      });
+      setModalDeleteVisible(false);
     }
   };
 

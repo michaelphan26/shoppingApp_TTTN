@@ -17,7 +17,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch } from 'react-redux';
 import { accountLogin } from '../../../models/accountReducer';
 import { LargeCardView } from '../../../common/ui/layout/auth-Layout';
-import Toast from 'react-native-simple-toast';
+import Toast from 'react-native-root-toast';
 
 const Register = () => {
   const {
@@ -45,17 +45,28 @@ const Register = () => {
           await AsyncStorage.setItem('@token', res.headers['x-auth-token']);
           dispatch(accountLogin(res.data['data']));
           Actions.push('menu');
-          Toast.showWithGravity(
-            'Đăng ký thành công',
-            Toast.SHORT,
-            Toast.CENTER
-          );
+          Toast.show('Đăng ký thành công', {
+            duration: Toast.durations.SHORT,
+            position: Toast.positions.BOTTOM,
+            shadow: true,
+            animation: true,
+          });
         } else {
-          Toast.showWithGravity('Đăng ký thất bại', Toast.SHORT, Toast.CENTER);
+          Toast.show('Đăng ký thất bại', {
+            duration: Toast.durations.SHORT,
+            position: Toast.positions.BOTTOM,
+            shadow: true,
+            animation: true,
+          });
         }
       })
       .catch((err) =>
-        Toast.showWithGravity('Đăng ký thất bại', Toast.SHORT, Toast.CENTER)
+        Toast.show('Đăng ký thất bại', {
+          duration: Toast.durations.SHORT,
+          position: Toast.positions.BOTTOM,
+          shadow: true,
+          animation: true,
+        })
       );
   };
 

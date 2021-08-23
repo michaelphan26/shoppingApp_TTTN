@@ -13,7 +13,7 @@ import styles from './style';
 import numeral from 'numeral';
 import ProductRowNoQuantity from '../../common/ui/layout/cart-layout/productRowNoQuantity';
 import CartLayout from '../../common/ui/layout/cart-layout';
-import Toast from 'react-native-simple-toast';
+import Toast from 'react-native-root-toast';
 
 interface Props {
   receipt: ReceiptInterface;
@@ -38,11 +38,12 @@ const ReceiptDetail = (props: Props) => {
       setUserInfo(userInfoFromAPI);
     } else {
       //Toast string
-      Toast.showWithGravity(
-        'Không thể lấy thông tin tài khoản',
-        Toast.SHORT,
-        Toast.CENTER
-      );
+      Toast.show('Không thể lấy thông tin tài khoản', {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.BOTTOM,
+        shadow: true,
+        animation: true,
+      });
     }
   }
 
@@ -56,11 +57,12 @@ const ReceiptDetail = (props: Props) => {
       setReceiptDetail(receiptDetailFromAPI);
     } else {
       //Toast
-      Toast.showWithGravity(
-        'Không thể lấy thông tin hóa đơn',
-        Toast.SHORT,
-        Toast.CENTER
-      );
+      Toast.show('Không thể lấy thông tin hóa đơn', {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.BOTTOM,
+        shadow: true,
+        animation: true,
+      });
     }
   }
 

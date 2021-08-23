@@ -234,7 +234,7 @@ export const getCartFromAPI = async ()=>{
 export async function addReceiptAPI(cart:CartInterface) {
   const token = await AsyncStorage.getItem("@token");
   if (token) {
-    axios({
+    await axios({
       url: 'receipt/add-receipt',
       baseURL: `${api_url}`,
       method: 'post',
@@ -572,6 +572,28 @@ export async function getReceiptTypeFromAPI() {
   return receiptTypeList;
 }
 
+export async function getReceiptTypeByIDFromAPI(_id:string) {
+  const token = await AsyncStorage.getItem("@token");
+  let receiptType = {} as JustNameItem;
+  await axios({
+    url: `admin/receipt-type/${_id}`,
+    baseURL: `${api_url}`,
+    method: 'get',
+    headers: {
+      "x-auth-token":token
+    },
+    responseType:'json',
+  }).then(res => {
+    if (res.data['code'] === 200) {
+      receiptType=res.data['data']
+    }
+    else return res.data['message']
+  }).catch(err => {
+    return err.response.data['message'];
+  })
+  return receiptType
+}
+
 export async function getIOTypeFromAPI() {
   const token = await AsyncStorage.getItem("@token");
   let IOTypeList = [] as any;
@@ -593,6 +615,28 @@ export async function getIOTypeFromAPI() {
   })
 
   return IOTypeList;
+}
+
+export async function getIOTypeByIDFromAPI(_id:string) {
+  const token = await AsyncStorage.getItem("@token");
+  let ioType = {} as JustNameItem;
+  await axios({
+    url: `admin/io-type/${_id}`,
+    baseURL: `${api_url}`,
+    method: 'get',
+    headers: {
+      "x-auth-token":token
+    },
+    responseType:'json',
+  }).then(res => {
+    if (res.data['code'] === 200) {
+      ioType=res.data['data']
+    }
+    else return res.data['message']
+  }).catch(err => {
+    return err.response.data['message'];
+  })
+  return ioType
 }
 
 export async function getRoleFromAPI() {
@@ -677,7 +721,6 @@ export async function addUserToAPI(userInfo:UserInterface) {
     responseType: 'json',
     data:userInfo
   }).then(res => {
-    console.log(res.data)
     code=res.data['code']
   }).catch(err => {
     code= err.response.data['code'];
@@ -698,7 +741,6 @@ export async function editUserAPI(_id:string,userInfo:UserInterface) {
     responseType: 'json',
     data:userInfo
   }).then(res => {
-    console.log(res.data)
     code=res.data['code']
   }).catch(err => {
     code= err.response.data['code'];
@@ -739,7 +781,6 @@ export async function addCompanyToAPI(companyInfo:CompanyInterface) {
     responseType: 'json',
     data:companyInfo
   }).then(res => {
-    console.log(res.data)
     code=res.data['code']
   }).catch(err => {
     code= err.response.data['code'];
@@ -760,7 +801,6 @@ export async function editCompanyAPI(_id:string,companyInfo:CompanyInterface) {
     responseType: 'json',
     data:companyInfo
   }).then(res => {
-    console.log(res.data)
     code=res.data['code']
   }).catch(err => {
     code= err.response.data['code'];
@@ -802,7 +842,6 @@ export async function addProductAPI(productInfo: ProductItem) {
     responseType: 'json',
     data:productInfo
   }).then(res => {
-    console.log(res.data)
     code=res.data['code']
   }).catch(err => {
     code= err.response.data['code'];
@@ -823,7 +862,6 @@ export async function editProductAPI(productInfo: ProductItem,_id:string) {
     responseType: 'json',
     data:productInfo
   }).then(res => {
-    console.log(res.data)
     code=res.data['code']
   }).catch(err => {
     code= err.response.data['code'];
@@ -847,7 +885,6 @@ export async function addIOProductAPI(ioProductDetailList: [], id_ioType: string
       productList:ioProductDetailList
     }
   }).then(res => {
-    console.log(res.data)
     code=res.data['code']
   }).catch(err => {
     code= err.response.data['code'];

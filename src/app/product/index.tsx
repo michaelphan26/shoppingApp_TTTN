@@ -1,14 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Image, ScrollView, Text, View } from 'react-native';
-import { ProductItem } from '../../common/util/common';
+import { addReceiptAPI, ProductItem } from '../../common/util/common';
 import styles from './style';
 import numeral from 'numeral';
 import { Actions } from 'react-native-router-flux';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../../models/cartReducer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import BottomComponent from '../../common/ui/layout/product-layout/bottomComponent';
 import MainLayout from '../../common/ui/layout/main-layout';
+import Toast from 'react-native-root-toast';
+import { RootState } from '../../models/store';
 
 interface Props {
   item: ProductItem;
@@ -16,6 +18,18 @@ interface Props {
 }
 const Product = (props: Props) => {
   const dispatch = useDispatch();
+  const cart = useSelector((state: RootState) => state.cartReducer);
+
+  async function pushToAPI() {
+    await addReceiptAPI({
+      productList: cart.productList,
+      total: cart.total,
+    });
+  }
+
+  useEffect(() => {
+    pushToAPI();
+  }, [cart]);
 
   const handleBackPressed = () => {
     Actions.pop();
@@ -24,19 +38,30 @@ const Product = (props: Props) => {
     }, 10);
   };
   const handleAddToCartPressed = async () => {
-    const token = await AsyncStorage.getItem('@token');
-    console.log(token);
-    dispatch(
-      addToCart({
-        cartItem: {
-          id_product: props.item._id,
-          price: props.item.price,
-          discount: props.item.discount,
-          quantity: 1,
-        },
-        token: token,
-      })
-    );
+    if (props.item.stock !== 0) {
+      const token = await AsyncStorage.getItem('@token');
+      dispatch(
+        addToCart({
+          cartItem: {
+            id_product: props.item._id,
+            price: props.item.price,
+            discount: props.item.discount,
+            quantity: 1,
+          },
+          token: token,
+        })
+      );
+      setTimeout(() => {
+        Actions.refresh({ key: Math.random() });
+      }, 10);
+    } else {
+      Toast.show('Sản phẩm đã bán hết', {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.BOTTOM,
+        shadow: true,
+        animation: true,
+      });
+    }
   };
 
   return (
@@ -60,7 +85,9 @@ const Product = (props: Props) => {
             </Text>
             <Text style={styles.text}>Giảm giá: {props.item.discount}%</Text>
             <Text style={styles.text}>Mô tả:</Text>
-            <Text style={styles.text}>{props.item.description}</Text>
+            <Text style={styles.text}>
+              {props.item.description.replace(/\\n/g, '\n')}
+            </Text>
           </View>
         </ScrollView>
       </View>

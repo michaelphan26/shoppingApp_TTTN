@@ -10,6 +10,7 @@ import numeral from 'numeral';
 import CartWithDiscardContainer from './cartWithDiscardContainer';
 import styles from './style';
 import {
+  addReceiptAPI,
   CartItem,
   getProductDetailFromAPI,
   ProductItem,
@@ -31,6 +32,7 @@ interface Props {
 const ProductRowWithQuantity = (props: Props) => {
   const [product, setProduct] = useState<ProductItem>({} as ProductItem);
   const dispatch = useDispatch();
+  const cart = useSelector((state: RootState) => state.cartReducer);
 
   const getProductDetail = async () => {
     const productDetail = await getProductDetailFromAPI(props.item.id_product);
@@ -53,6 +55,10 @@ const ProductRowWithQuantity = (props: Props) => {
         token: token,
       })
     );
+    await addReceiptAPI({
+      productList: cart.productList,
+      total: cart.total,
+    });
     // if (token !== null) {
     //   console.log('Push API');
     //   axios({
@@ -80,6 +86,10 @@ const ProductRowWithQuantity = (props: Props) => {
         token: token,
       })
     );
+    await addReceiptAPI({
+      productList: cart.productList,
+      total: cart.total,
+    });
     // if (token !== null) {
     //   console.log('Push API');
     //   axios({
@@ -97,8 +107,12 @@ const ProductRowWithQuantity = (props: Props) => {
     // }
   };
 
-  const handleRemoveFromCart = () => {
+  const handleRemoveFromCart = async () => {
     dispatch(removeFromCart(props.item));
+    await addReceiptAPI({
+      productList: cart.productList,
+      total: cart.total,
+    });
   };
 
   const getProduct = async (id_product: string): Promise<ProductItem> => {

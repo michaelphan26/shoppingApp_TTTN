@@ -10,7 +10,7 @@ import {
   ReceiptInterface,
 } from '../../../common/util/common';
 import styles from '../category/style';
-import Toast from 'react-native-simple-toast';
+import Toast from 'react-native-root-toast';
 
 interface Props {}
 const AdminReceipt = (props: Props) => {
@@ -23,11 +23,12 @@ const AdminReceipt = (props: Props) => {
       setReceiptList(receiptListFromAPI);
     } else {
       //Toast
-      Toast.showWithGravity(
-        'Không thể lấy danh sách hóa đơn',
-        Toast.SHORT,
-        Toast.CENTER
-      );
+      Toast.show('Không thể lấy danh sách hóa đơn', {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.BOTTOM,
+        shadow: true,
+        animation: true,
+      });
     }
   };
 
@@ -60,9 +61,7 @@ const AdminReceipt = (props: Props) => {
       </View>
 
       <FlatList
-        data={receiptList.filter((item: ReceiptInterface) =>
-          item.email.toLowerCase().startsWith(searchText.trim().toLowerCase())
-        )}
+        data={receiptList}
         style={styles.listContainer}
         renderItem={(item: ReceiptInterface) => {
           return (

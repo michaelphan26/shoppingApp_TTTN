@@ -8,7 +8,7 @@ import {
   ReceiptInterface,
 } from '../../common/util/common';
 import styles from './style';
-import Toast from 'react-native-simple-toast';
+import Toast from 'react-native-root-toast';
 
 const Receipt = () => {
   const [receiptList, setReceiptList] = useState([] as any);
@@ -19,11 +19,12 @@ const Receipt = () => {
       setReceiptList(receiptListFromAPI);
     } else {
       //Toast
-      Toast.showWithGravity(
-        'Không thể lấy danh sách hóa đơn',
-        Toast.SHORT,
-        Toast.CENTER
-      );
+      Toast.show('Không thể lấy danh sách hóa đơn', {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.BOTTOM,
+        shadow: true,
+        animation: true,
+      });
     }
   };
 

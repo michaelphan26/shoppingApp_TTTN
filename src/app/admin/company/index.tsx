@@ -20,7 +20,7 @@ import { AdminAlert, CustomAlert } from '../../../common/ui/base/admin-alert';
 import { Controller, useForm } from 'react-hook-form';
 import { SmallText } from '../../../common/ui/base/errorText';
 import CompanyRow from './companyRow';
-import Toast from 'react-native-simple-toast';
+import Toast from 'react-native-root-toast';
 
 interface Props {}
 const AdminCompany = (props: Props) => {
@@ -43,11 +43,12 @@ const AdminCompany = (props: Props) => {
       setCompanyList(companyListFromAPI);
     } else {
       //Toast
-      Toast.showWithGravity(
-        'Không thể lấy danh sách đối tác',
-        Toast.SHORT,
-        Toast.CENTER
-      );
+      Toast.show('Không thể lấy danh sách đối tác', {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.BOTTOM,
+        shadow: true,
+        animation: true,
+      });
     }
   }
 
@@ -83,22 +84,23 @@ const AdminCompany = (props: Props) => {
 
   const handleAddCompany = async (info: CompanyInterface) => {
     delete info._id;
-    console.log(info);
     const code = await addCompanyToAPI(info);
     if (code === 200) {
       handleCloseModal();
       Actions.refresh({ key: Math.random() });
-      Toast.showWithGravity(
-        'Không thể thêm đối tác',
-        Toast.SHORT,
-        Toast.CENTER
-      );
+      Toast.show('Không thể thêm đối tác', {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.BOTTOM,
+        shadow: true,
+        animation: true,
+      });
     } else {
-      Toast.showWithGravity(
-        'Không thể thêm đối tác',
-        Toast.SHORT,
-        Toast.CENTER
-      );
+      Toast.show('Không thể thêm đối tác', {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.BOTTOM,
+        shadow: true,
+        animation: true,
+      });
     }
   };
 
@@ -108,18 +110,20 @@ const AdminCompany = (props: Props) => {
     if (code === 200) {
       handleCloseModal();
       Actions.refresh({ key: Math.random() });
-      Toast.showWithGravity(
-        'Chỉnh sửa thông tin đối tác thành công',
-        Toast.SHORT,
-        Toast.CENTER
-      );
+      Toast.show('Chỉnh sửa thông tin đối tác thành công', {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.BOTTOM,
+        shadow: true,
+        animation: true,
+      });
     }
     //Toast code
-    Toast.showWithGravity(
-      'Không thể chỉnh sửa thông tin đối tác',
-      Toast.SHORT,
-      Toast.CENTER
-    );
+    Toast.show('Không thể chỉnh sửa thông tin đối tác', {
+      duration: Toast.durations.SHORT,
+      position: Toast.positions.BOTTOM,
+      shadow: true,
+      animation: true,
+    });
   };
 
   const handleDeletePressed = (companyItem: CompanyInterface) => {
@@ -131,17 +135,22 @@ const AdminCompany = (props: Props) => {
     const code = await deleteCompany(company._id);
     //Toast
     if (code === 200) {
-      console.log('200');
       handleCloseModal();
       Actions.refresh({ key: Math.random() });
-      Toast.showWithGravity(
-        'Xóa đối tác thành công',
-        Toast.SHORT,
-        Toast.CENTER
-      );
+      Toast.show('Xóa đối tác thành công', {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.BOTTOM,
+        shadow: true,
+        animation: true,
+      });
     } else {
-      console.log(code);
-      Toast.showWithGravity('Không thể xóa đối tác', Toast.SHORT, Toast.CENTER);
+      Toast.show('Không thể xóa đối tác', {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.BOTTOM,
+        shadow: true,
+        animation: true,
+      });
+      setModalDeleteVisible(false);
     }
   };
 
@@ -209,7 +218,7 @@ const AdminCompany = (props: Props) => {
           render={({ field: { onChange, value } }) => (
             <NormalTextInput
               placeholderText="Mã số thuế"
-              iconName="home"
+              iconName="receipt"
               onTextChange={onChange}
               value={value}
               editable={true}

@@ -21,7 +21,7 @@ import ProductRowWithQuantity from '../../common/ui/layout/cart-layout/productRo
 import { emptyCart } from '../../models/cartReducer';
 import BlueButton from '../../common/ui/base/button/blueButton';
 import CartLayout from '../../common/ui/layout/cart-layout';
-import Toast from 'react-native-simple-toast';
+import Toast from 'react-native-root-toast';
 
 interface Props {}
 const Cart = (props: Props) => {
@@ -41,27 +41,33 @@ const Cart = (props: Props) => {
         setUserInfo(userResponse);
       }
     } else {
-      Toast.showWithGravity(
-        'Không thể lấy thông tin tài khoản',
-        Toast.SHORT,
-        Toast.CENTER
-      );
+      Toast.show('Không thể lấy thông tin tài khoản', {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.BOTTOM,
+        shadow: true,
+        animation: true,
+      });
     }
   }
 
   const handleConfirmPressed = async () => {
     if (cart.productList.length === 0) {
-      Toast.showWithGravity(
-        'Giỏ hàng hiện đang trống',
-        Toast.SHORT,
-        Toast.CENTER
-      );
+      Toast.show('Giỏ hàng hiện đang trống', {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.BOTTOM,
+        shadow: true,
+        animation: true,
+      });
       return;
     }
 
     const token = await AsyncStorage.getItem('@token');
+    await addReceiptAPI({
+      productList: cart.productList,
+      total: cart.total,
+    });
     if (token && account.email !== '') {
-      axios({
+      await axios({
         url: `/receipt/receipt-checkout`,
         baseURL: `${api_url}`,
         method: 'post',
@@ -74,34 +80,42 @@ const Cart = (props: Props) => {
           if (res.data['code'] === 200) {
             dispatch(emptyCart({}));
             Actions.push('menu');
-            Toast.showWithGravity(
-              'Xác nhận đơn hàng thành công',
-              Toast.SHORT,
-              Toast.CENTER
-            );
+            Toast.show('Xác nhận đơn hàng thành công', {
+              duration: Toast.durations.SHORT,
+              position: Toast.positions.BOTTOM,
+              shadow: true,
+              animation: true,
+            });
           } else {
-            Toast.showWithGravity(
-              'Xác nhận đơn hàng thất bại',
-              Toast.SHORT,
-              Toast.CENTER
-            );
+            Toast.show('Xác nhận đơn hàng thất bại', {
+              duration: Toast.durations.SHORT,
+              position: Toast.positions.BOTTOM,
+              shadow: true,
+              animation: true,
+            });
           }
         })
         .catch((err) => {
-          Toast.showWithGravity(
-            'Không thể xác nhận đơn hàng',
-            Toast.SHORT,
-            Toast.CENTER
-          );
+          Toast.show('Không thể xác nhận đơn hàng', {
+            duration: Toast.durations.SHORT,
+            position: Toast.positions.BOTTOM,
+            shadow: true,
+            animation: true,
+          });
         });
     } else {
       Actions.push('login');
-      Toast.showWithGravity('Vui lòng đăng nhập', Toast.SHORT, Toast.CENTER);
+      Toast.show('Vui lòng đăng nhập', {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.BOTTOM,
+        shadow: true,
+        animation: true,
+      });
     }
   };
 
   const pushCart = async () => {
-    const addCart = await addReceiptAPI(cart);
+    await addReceiptAPI(cart);
     //Toast message
   };
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View } from 'react-native';
+import { Image, Text, View } from 'react-native';
 import styles from '../../menu/style';
 import {
   getCompanyDetailFromAPI,
@@ -9,7 +9,7 @@ import {
   ioProductDetailItem,
 } from '../../../common/util/common';
 import numeral from 'numeral';
-import Toast from 'react-native-simple-toast';
+import Toast from 'react-native-root-toast';
 
 interface Props {
   item: ioProductDetailItem;
@@ -23,11 +23,12 @@ const IOProductDetailRow = (props: Props) => {
     if (typeof productDetail !== 'string') {
       setProduct(productDetail);
     } else {
-      Toast.showWithGravity(
-        'Không thể lấy thông tin sản phẩm',
-        Toast.SHORT,
-        Toast.CENTER
-      );
+      Toast.show('Không thể lấy thông tin sản phẩm', {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.BOTTOM,
+        shadow: true,
+        animation: true,
+      });
     }
   };
 
@@ -36,11 +37,12 @@ const IOProductDetailRow = (props: Props) => {
     if (typeof companyDetail !== 'string') {
       setCompany(companyDetail);
     } else {
-      Toast.showWithGravity(
-        'Không thể lấy thông tin đối tác',
-        Toast.SHORT,
-        Toast.CENTER
-      );
+      Toast.show('Không thể lấy thông tin đối tác', {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.BOTTOM,
+        shadow: true,
+        animation: true,
+      });
     }
   };
 
@@ -51,6 +53,11 @@ const IOProductDetailRow = (props: Props) => {
 
   return (
     <View style={styles.productContainer}>
+      <Image
+        source={{ uri: `data:image/png;base64,${product.image}` }}
+        style={styles.imageRound}
+        resizeMode="contain"
+      />
       <View style={styles.detailContainer}>
         <Text style={styles.titleTiny}>{product.name}</Text>
         <Text style={styles.titleTiny}>{company.name}</Text>

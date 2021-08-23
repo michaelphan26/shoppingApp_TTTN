@@ -9,7 +9,7 @@ import { useEffect } from 'react';
 import { SummaryInterface } from '../../../common/util/common';
 import { Actions } from 'react-native-router-flux';
 import CartLayout from '../../../common/ui/layout/cart-layout';
-import Toast from 'react-native-simple-toast';
+import Toast from 'react-native-root-toast';
 
 interface Props {}
 const AdminMenu = (props: Props) => {
@@ -31,19 +31,21 @@ const AdminMenu = (props: Props) => {
           setSummaryObject(res.data['data']);
         } else {
           //Toast
-          Toast.showWithGravity(
-            'Không thể lấy thống kê',
-            Toast.SHORT,
-            Toast.CENTER
-          );
+          Toast.show('Không thể lấy thống kê', {
+            duration: Toast.durations.SHORT,
+            position: Toast.positions.BOTTOM,
+            shadow: true,
+            animation: true,
+          });
         }
       })
       .catch((err) => {
-        Toast.showWithGravity(
-          'Không thể lấy thống kê',
-          Toast.SHORT,
-          Toast.CENTER
-        );
+        Toast.show('Không thể lấy thống kê', {
+          duration: Toast.durations.SHORT,
+          position: Toast.positions.BOTTOM,
+          shadow: true,
+          animation: true,
+        });
       });
   }
 

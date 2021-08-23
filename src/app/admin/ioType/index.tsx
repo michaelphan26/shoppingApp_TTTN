@@ -22,7 +22,7 @@ import {
 } from '../../../common/util/common';
 import { useEffect } from 'react';
 import { CustomAlert } from '../../../common/ui/base/admin-alert';
-import Toast from 'react-native-simple-toast';
+import Toast from 'react-native-root-toast';
 
 interface Props {}
 
@@ -41,11 +41,12 @@ const AdminIOType = (props: Props) => {
       setIOTypeList(ioTypeListFromAPI);
     } else {
       //Toast
-      Toast.showWithGravity(
-        'Không thể lấy danh sách loại nhập xuất',
-        Toast.SHORT,
-        Toast.CENTER
-      );
+      Toast.show('Không thể lấy danh sách loại nhập xuất', {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.BOTTOM,
+        shadow: true,
+        animation: true,
+      });
     }
   }
 
@@ -79,24 +80,27 @@ const AdminIOType = (props: Props) => {
       if (code === 200) {
         handleCloseModal();
         Actions.refresh({ key: Math.random() });
-        Toast.showWithGravity(
-          'Thêm loại nhập xuất thành công',
-          Toast.SHORT,
-          Toast.CENTER
-        );
+        Toast.show('Thêm loại nhập xuất thành công', {
+          duration: Toast.durations.SHORT,
+          position: Toast.positions.BOTTOM,
+          shadow: true,
+          animation: true,
+        });
       } else {
-        Toast.showWithGravity(
-          'Không thể thêm loại nhập xuất',
-          Toast.SHORT,
-          Toast.CENTER
-        );
+        Toast.show('Không thể thêm loại nhập xuất', {
+          duration: Toast.durations.SHORT,
+          position: Toast.positions.BOTTOM,
+          shadow: true,
+          animation: true,
+        });
       }
     } else {
-      Toast.showWithGravity(
-        'Tên không được để trống',
-        Toast.SHORT,
-        Toast.CENTER
-      );
+      Toast.show('Tên không được để trống', {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.BOTTOM,
+        shadow: true,
+        animation: true,
+      });
     }
   };
 
@@ -108,24 +112,27 @@ const AdminIOType = (props: Props) => {
       if (code === 200) {
         handleCloseModal();
         Actions.refresh({ key: Math.random() });
-        Toast.showWithGravity(
-          'Chỉnh sửa loại nhập xuất thành công',
-          Toast.SHORT,
-          Toast.CENTER
-        );
+        Toast.show('Chỉnh sửa loại nhập xuất thành công', {
+          duration: Toast.durations.SHORT,
+          position: Toast.positions.BOTTOM,
+          shadow: true,
+          animation: true,
+        });
       } else {
-        Toast.showWithGravity(
-          'Không thể chỉnh sửa loại nhập xuất',
-          Toast.SHORT,
-          Toast.CENTER
-        );
+        Toast.show('Không thể chỉnh sửa loại nhập xuất', {
+          duration: Toast.durations.SHORT,
+          position: Toast.positions.BOTTOM,
+          shadow: true,
+          animation: true,
+        });
       }
     } else {
-      Toast.showWithGravity(
-        'Tên không được để trống',
-        Toast.SHORT,
-        Toast.CENTER
-      );
+      Toast.show('Tên không được để trống', {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.BOTTOM,
+        shadow: true,
+        animation: true,
+      });
     }
   };
 
@@ -141,31 +148,31 @@ const AdminIOType = (props: Props) => {
       console.log('200');
       handleCloseModal();
       Actions.refresh({ key: Math.random() });
-      Toast.showWithGravity(
-        'Xóa loại nhập xuất thành công',
-        Toast.SHORT,
-        Toast.CENTER
-      );
+      Toast.show('Xóa loại nhập xuất thành công', {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.BOTTOM,
+        shadow: true,
+        animation: true,
+      });
     } else {
-      Toast.showWithGravity(
-        'Không thể xóa loại nhập xuất',
-        Toast.SHORT,
-        Toast.CENTER
-      );
+      Toast.show('Không thể xóa loại nhập xuất', {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.BOTTOM,
+        shadow: true,
+        animation: true,
+      });
+      setModalDeleteVisible(false);
     }
   };
 
   const alertBody = () => {
     return (
-      <View>
-        <Text style={styles.text}>Tên:</Text>
-        <NormalTextInput
-          placeholderText="Tên"
-          onTextChange={(text) => setName(text)}
-          value={name}
-          editable={true}
-        />
-      </View>
+      <NormalTextInput
+        placeholderText="Tên"
+        onTextChange={(text) => setName(text)}
+        value={name}
+        editable={true}
+      />
     );
   };
 

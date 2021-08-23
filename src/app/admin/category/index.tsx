@@ -22,7 +22,7 @@ import {
 } from '../../../common/util/common';
 import { useEffect } from 'react';
 import { CustomAlert } from '../../../common/ui/base/admin-alert';
-import Toast from 'react-native-simple-toast';
+import Toast from 'react-native-root-toast';
 
 interface Props {}
 const AdminCategory = (props: Props) => {
@@ -40,11 +40,12 @@ const AdminCategory = (props: Props) => {
       setCategoryList(categoryListFromAPI);
     } else {
       //Toast
-      Toast.showWithGravity(
-        'Không thể lấy danh sách danh mục',
-        Toast.SHORT,
-        Toast.CENTER
-      );
+      Toast.show('Không thể lấy danh sách danh mục', {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.BOTTOM,
+        shadow: true,
+        animation: true,
+      });
     }
   }
 
@@ -78,25 +79,28 @@ const AdminCategory = (props: Props) => {
       if (code === 200) {
         handleCloseModal();
         Actions.refresh({ key: Math.random() });
-        Toast.showWithGravity(
-          'Thêm danh mục thành công',
-          Toast.SHORT,
-          Toast.CENTER
-        );
+        Toast.show('Thêm danh mục thành công', {
+          duration: Toast.durations.SHORT,
+          position: Toast.positions.BOTTOM,
+          shadow: true,
+          animation: true,
+        });
       } else {
-        Toast.showWithGravity(
-          'Không thể thêm danh mục',
-          Toast.SHORT,
-          Toast.CENTER
-        );
+        Toast.show('Không thể thêm danh mục', {
+          duration: Toast.durations.SHORT,
+          position: Toast.positions.BOTTOM,
+          shadow: true,
+          animation: true,
+        });
       }
     } else {
       //Toast err
-      Toast.showWithGravity(
-        'Tên không được để trống',
-        Toast.SHORT,
-        Toast.CENTER
-      );
+      Toast.show('Tên không được để trống', {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.BOTTOM,
+        shadow: true,
+        animation: true,
+      });
     }
   };
 
@@ -109,19 +113,21 @@ const AdminCategory = (props: Props) => {
         handleCloseModal();
         Actions.refresh({ key: Math.random() });
       } else {
-        Toast.showWithGravity(
-          'Không thể chỉnh sửa danh mục',
-          Toast.SHORT,
-          Toast.CENTER
-        );
+        Toast.show('Không thể chỉnh sửa danh mục', {
+          duration: Toast.durations.SHORT,
+          position: Toast.positions.BOTTOM,
+          shadow: true,
+          animation: true,
+        });
       }
     } else {
       //Toast err
-      Toast.showWithGravity(
-        'Tên không được để trống',
-        Toast.SHORT,
-        Toast.CENTER
-      );
+      Toast.show('Tên không được để trống', {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.BOTTOM,
+        shadow: true,
+        animation: true,
+      });
     }
   };
 
@@ -137,17 +143,20 @@ const AdminCategory = (props: Props) => {
       console.log('200');
       handleCloseModal();
       Actions.refresh({ key: Math.random() });
-      Toast.showWithGravity(
-        'Xóa danh mục thành công',
-        Toast.SHORT,
-        Toast.CENTER
-      );
+      Toast.show('Xóa danh mục thành công', {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.BOTTOM,
+        shadow: true,
+        animation: true,
+      });
     } else {
-      Toast.showWithGravity(
-        'Không thể xóa danh mục',
-        Toast.SHORT,
-        Toast.CENTER
-      );
+      Toast.show('Không thể xóa danh mục', {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.BOTTOM,
+        shadow: true,
+        animation: true,
+      });
+      setModalDeleteVisible(false);
     }
   };
 

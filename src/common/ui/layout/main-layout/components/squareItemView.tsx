@@ -17,8 +17,10 @@ const SquareItemView = (props: Props) => {
           style={styles.image}
           resizeMode="contain"
         />
-        <Text style={styles.titleSmall}>{props.item.name}</Text>
-        <Text style={styles.titleTiny}>
+        <Text style={styles.titleSmall} numberOfLines={1}>
+          {props.item.name}
+        </Text>
+        <Text style={styles.titleTiny} numberOfLines={1}>
           {numeral(props.item.price).format('0,0')}đ
         </Text>
       </View>

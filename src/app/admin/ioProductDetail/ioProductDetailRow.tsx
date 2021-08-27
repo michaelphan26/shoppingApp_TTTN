@@ -59,13 +59,19 @@ const IOProductDetailRow = (props: Props) => {
         resizeMode="contain"
       />
       <View style={styles.detailContainer}>
-        <Text style={styles.titleTiny}>{product.name}</Text>
-        <Text style={styles.titleTiny}>{company.name}</Text>
-        <Text style={styles.titleTiny}>
+        <Text style={styles.titleTiny} numberOfLines={1}>
+          {product.name}
+        </Text>
+        <Text style={styles.titleTiny} numberOfLines={1}>
+          {company.name}
+        </Text>
+        <Text style={styles.titleTiny} numberOfLines={1}>
           Giá:
           {numeral(props.item.price).format('0,0')}đ
         </Text>
-        <Text style={styles.titleTiny}>Số lượng: {props.item.quantity}</Text>
+        <Text style={styles.titleTiny} numberOfLines={1}>
+          Số lượng: {props.item.quantity}
+        </Text>
       </View>
     </View>
   );

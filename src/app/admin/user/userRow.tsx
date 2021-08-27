@@ -67,9 +67,15 @@ const UserRow = (props: Props) => {
   return (
     <View style={styles.rowContainer}>
       <View style={styles.detailContainer}>
-        <Text style={styles.detailText}>{userDetail?.name}</Text>
-        <Text style={styles.detailText}>{props.item.email}</Text>
-        <Text style={styles.detailText}>{roleInfo?.name}</Text>
+        <Text style={styles.detailText} numberOfLines={1}>
+          {userDetail?.name}
+        </Text>
+        <Text style={styles.detailText} numberOfLines={1}>
+          {props.item.email}
+        </Text>
+        <Text style={styles.detailText} numberOfLines={1}>
+          {roleInfo?.name}
+        </Text>
       </View>
 
       <View style={styles.buttonContainer}>

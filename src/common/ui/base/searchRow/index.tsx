@@ -13,7 +13,9 @@ const SearchRow = (props: Props) => {
   return (
     <View style={styles.rowContainer}>
       <View style={styles.detailContainer}>
-        <Text style={styles.detailText}>{props.item.name}</Text>
+        <Text style={styles.detailText} numberOfLines={1}>
+          {props.item.name}
+        </Text>
       </View>
 
       <View style={styles.buttonContainer}>

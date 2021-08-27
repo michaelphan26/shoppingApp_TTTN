@@ -32,9 +32,13 @@ const ProductRowItem = (props: Props) => {
           resizeMode="contain"
         />
         <View style={styles.detailContainer}>
-          <Text style={styles.titleTiny}>{props.item.name}</Text>
-          <Text style={styles.titleTiny}>{props.item.brand}</Text>
-          <Text style={styles.titleTiny}>
+          <Text style={styles.titleTiny} numberOfLines={1}>
+            {props.item.name}
+          </Text>
+          <Text style={styles.titleTiny} numberOfLines={1}>
+            {props.item.brand}
+          </Text>
+          <Text style={styles.titleTiny} numberOfLines={1}>
             {numeral(props.item.price).format('0,0')}đ
           </Text>
         </View>

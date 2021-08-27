@@ -48,12 +48,18 @@ const ReceiptRowContainer = (props: Props) => {
     <TouchableWithoutFeedback>
       <View style={styles.receiptContainer}>
         <View style={styles.detailContainer}>
-          <Text style={styles.titleTiny}>{props.receipt.email}</Text>
-          <Text style={styles.titleTiny}>
+          <Text style={styles.titleTiny} numberOfLines={1}>
+            {props.receipt.email}
+          </Text>
+          <Text style={styles.titleTiny} numberOfLines={1}>
             {numeral(props.receipt.total).format('0,0')}đ
           </Text>
-          <Text style={styles.titleTiny}>{props.receipt.date}</Text>
-          <Text style={styles.titleTiny}>Trạng thái: {receiptType.name}</Text>
+          <Text style={styles.titleTiny} numberOfLines={1}>
+            {props.receipt.date}
+          </Text>
+          <Text style={styles.titleTiny} numberOfLines={1}>
+            Trạng thái: {receiptType.name}
+          </Text>
         </View>
         <TouchableWithoutFeedback
           onPress={() => props.onDetailPressed(props.receipt)}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, Text, TouchableWithoutFeedback, View } from 'react-native';
+import { FlatList, TouchableWithoutFeedback, View } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import SearchRow from '../../../common/ui/base/searchRow';
 import { NormalTextInput } from '../../../common/ui/base/textInput';
@@ -19,10 +19,10 @@ import {
   addIOTypeUrl,
   editIOTypeUrl,
   deleteIOTypeUrl,
+  showToast,
 } from '../../../common/util/common';
 import { useEffect } from 'react';
 import { CustomAlert } from '../../../common/ui/base/admin-alert';
-import Toast from 'react-native-root-toast';
 
 interface Props {}
 
@@ -41,12 +41,7 @@ const AdminIOType = (props: Props) => {
       setIOTypeList(ioTypeListFromAPI);
     } else {
       //Toast
-      Toast.show('Không thể lấy danh sách loại nhập xuất', {
-        duration: Toast.durations.SHORT,
-        position: Toast.positions.BOTTOM,
-        shadow: true,
-        animation: true,
-      });
+      showToast('Không thể lấy danh sách loại nhập xuất');
     }
   }
 
@@ -80,27 +75,12 @@ const AdminIOType = (props: Props) => {
       if (code === 200) {
         handleCloseModal();
         Actions.refresh({ key: Math.random() });
-        Toast.show('Thêm loại nhập xuất thành công', {
-          duration: Toast.durations.SHORT,
-          position: Toast.positions.BOTTOM,
-          shadow: true,
-          animation: true,
-        });
+        showToast('Thêm loại nhập xuất thành công');
       } else {
-        Toast.show('Không thể thêm loại nhập xuất', {
-          duration: Toast.durations.SHORT,
-          position: Toast.positions.BOTTOM,
-          shadow: true,
-          animation: true,
-        });
+        showToast('Không thể thêm loại nhập xuất');
       }
     } else {
-      Toast.show('Tên không được để trống', {
-        duration: Toast.durations.SHORT,
-        position: Toast.positions.BOTTOM,
-        shadow: true,
-        animation: true,
-      });
+      showToast('Tên không được để trống');
     }
   };
 
@@ -112,27 +92,12 @@ const AdminIOType = (props: Props) => {
       if (code === 200) {
         handleCloseModal();
         Actions.refresh({ key: Math.random() });
-        Toast.show('Chỉnh sửa loại nhập xuất thành công', {
-          duration: Toast.durations.SHORT,
-          position: Toast.positions.BOTTOM,
-          shadow: true,
-          animation: true,
-        });
+        showToast('Chỉnh sửa loại nhập xuất thành công');
       } else {
-        Toast.show('Không thể chỉnh sửa loại nhập xuất', {
-          duration: Toast.durations.SHORT,
-          position: Toast.positions.BOTTOM,
-          shadow: true,
-          animation: true,
-        });
+        showToast('Không thể chỉnh sửa loại nhập xuất');
       }
     } else {
-      Toast.show('Tên không được để trống', {
-        duration: Toast.durations.SHORT,
-        position: Toast.positions.BOTTOM,
-        shadow: true,
-        animation: true,
-      });
+      showToast('Tên không được để trống');
     }
   };
 
@@ -148,19 +113,9 @@ const AdminIOType = (props: Props) => {
       console.log('200');
       handleCloseModal();
       Actions.refresh({ key: Math.random() });
-      Toast.show('Xóa loại nhập xuất thành công', {
-        duration: Toast.durations.SHORT,
-        position: Toast.positions.BOTTOM,
-        shadow: true,
-        animation: true,
-      });
+      showToast('Xóa loại nhập xuất thành công');
     } else {
-      Toast.show('Không thể xóa loại nhập xuất', {
-        duration: Toast.durations.SHORT,
-        position: Toast.positions.BOTTOM,
-        shadow: true,
-        animation: true,
-      });
+      showToast('Không thể xóa loại nhập xuất');
       setModalDeleteVisible(false);
     }
   };

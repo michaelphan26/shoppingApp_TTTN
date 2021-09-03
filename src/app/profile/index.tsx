@@ -1,10 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import React from 'react';
-import { useState } from 'react';
-import { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Alert, View } from 'react-native';
+import { View } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { useDispatch, useSelector } from 'react-redux';
 import { BlueButton } from '../../common/ui/base/button';
@@ -18,7 +16,12 @@ import { api_url } from '../../common/util/constant';
 import { accountLogout } from '../../models/accountReducer';
 import { RootState } from '../../models/store';
 import styles from './styles';
-import { getUserInfoFromAPI, UserInfo } from '../../common/util/common';
+import {
+  getUserInfoFromAPI,
+  phoneReg,
+  showToast,
+  UserInfo,
+} from '../../common/util/common';
 import Toast from 'react-native-root-toast';
 
 interface Props {}
@@ -28,7 +31,6 @@ const Profile = (props: Props) => {
     control,
     handleSubmit,
     formState: { errors },
-    reset,
     setValue,
   } = useForm({ reValidateMode: 'onSubmit' });
   const account = useSelector((state: RootState) => state.accountReducer);
@@ -49,45 +51,25 @@ const Profile = (props: Props) => {
   async function getUserInfo() {
     const userInfoFromAPI = await getUserInfoFromAPI();
     if (typeof userInfoFromAPI !== 'string') {
-      if (Object.keys(userInfoFromAPI).length !== 0) {
-        setFormValue(userInfoFromAPI);
-        setUserInfo(userInfoFromAPI);
-      } else {
-        //Toast cannot get info
-        Toast.show('Không thể lấy thông tin tài khoản', {
-          duration: Toast.durations.SHORT,
-          position: Toast.positions.BOTTOM,
-          shadow: true,
-          animation: true,
-        });
-      }
+      setFormValue(userInfoFromAPI);
+      setUserInfo(userInfoFromAPI);
     } else {
       //Toast string
-      Toast.show('Không thể lấy thông tin tài khoản', {
-        duration: Toast.durations.SHORT,
-        position: Toast.positions.BOTTOM,
-        shadow: true,
-        animation: true,
-      });
+      showToast('Không thể lấy thông tin tài khoản');
     }
   }
 
-  async function getProfile() {
+  async function checkProfile() {
     const token = await AsyncStorage.getItem('@token');
     if (token) {
       return await getUserInfo();
     } else {
-      Toast.show('Bạn chưa đăng nhập/đăng ký', {
-        duration: Toast.durations.SHORT,
-        position: Toast.positions.BOTTOM,
-        shadow: true,
-        animation: true,
-      });
+      showToast('Bạn chưa đăng nhập/đăng ký');
     }
   }
 
   useEffect(() => {
-    getProfile();
+    checkProfile();
   }, []);
 
   const cancelEdit = () => {
@@ -97,6 +79,9 @@ const Profile = (props: Props) => {
 
   const backToHome = () => {
     Actions.popTo('menu');
+    setTimeout(() => {
+      Actions.refresh({ key: Math.random() });
+    }, 10);
   };
 
   const handleSaveButton = async (editedInfo: UserInfo) => {
@@ -118,26 +103,17 @@ const Profile = (props: Props) => {
           setIsEdited(!isEdited);
         }
       })
-      .catch((err) =>
-        Toast.show('Không thể chỉnh sửa thông tin tài khoản', {
-          duration: Toast.durations.SHORT,
-          position: Toast.positions.BOTTOM,
-          shadow: true,
-          animation: true,
-        })
-      );
+      .catch((err) => showToast('Không thể chỉnh sửa thông tin tài khoản'));
   };
 
   const handleLogout = async () => {
     dispatch(accountLogout({}));
     await AsyncStorage.setItem('@token', '');
-    Actions.push('menu');
-    Toast.show('Đăng xuất thành công', {
-      duration: Toast.durations.SHORT,
-      position: Toast.positions.BOTTOM,
-      shadow: true,
-      animation: true,
-    });
+    Actions.popTo('menu');
+    setTimeout(() => {
+      Actions.refresh({ key: Math.random() });
+    }, 10);
+    showToast('Đăng xuất thành công');
   };
 
   const handleChangePassword = () => {
@@ -145,7 +121,7 @@ const Profile = (props: Props) => {
   };
 
   const handleReceiptList = () => {
-    Actions.push('receipt');
+    Actions.push('receipt', { userInfo: userInfo });
   };
 
   return (
@@ -178,7 +154,6 @@ const Profile = (props: Props) => {
 
         <Controller
           control={control}
-          rules={{ required: true, minLength: 2, maxLength: 50 }}
           render={({ field: { onChange, value } }) => (
             <NormalTextInput
               placeholderText="SĐT"
@@ -188,6 +163,12 @@ const Profile = (props: Props) => {
               editable={isEdited}
             />
           )}
+          rules={{
+            required: true,
+            minLength: 10,
+            maxLength: 11,
+            pattern: phoneReg,
+          }}
           name="phone"
           defaultValue=""
         />
@@ -195,7 +176,7 @@ const Profile = (props: Props) => {
 
         <Controller
           control={control}
-          rules={{ required: true, minLength: 2, maxLength: 50 }}
+          rules={{ required: true, minLength: 5, maxLength: 100 }}
           render={({ field: { onChange, value } }) => (
             <NormalTextInput
               placeholderText="Địa chỉ"

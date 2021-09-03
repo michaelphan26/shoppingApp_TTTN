@@ -22,6 +22,8 @@ import {
   JustNameItem,
   ReceiptInterface,
 } from '../../../util/common';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../../models/store';
 
 interface Props {
   receipt: ReceiptInterface;
@@ -49,7 +51,7 @@ const ReceiptRowContainer = (props: Props) => {
       <View style={styles.receiptContainer}>
         <View style={styles.detailContainer}>
           <Text style={styles.titleTiny} numberOfLines={1}>
-            {props.receipt.email}
+            {props.receipt._id}
           </Text>
           <Text style={styles.titleTiny} numberOfLines={1}>
             {numeral(props.receipt.total).format('0,0')}đ

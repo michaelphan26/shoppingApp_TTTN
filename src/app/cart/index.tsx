@@ -11,6 +11,7 @@ import {
   addReceiptAPI,
   CartItem,
   getUserInfoFromAPI,
+  showToast,
   UserInfo,
 } from '../../common/util/common';
 import { api_url } from '../../common/util/constant';
@@ -35,37 +36,25 @@ const Cart = (props: Props) => {
   });
 
   async function getUserInfo() {
-    const userResponse: UserInfo | string = await getUserInfoFromAPI();
+    const userResponse = await getUserInfoFromAPI();
     if (typeof userResponse !== 'string') {
-      if (Object.keys(userResponse).length !== 0) {
-        setUserInfo(userResponse);
-      }
+      setUserInfo(userResponse);
     } else {
-      Toast.show('Không thể lấy thông tin tài khoản', {
-        duration: Toast.durations.SHORT,
-        position: Toast.positions.BOTTOM,
-        shadow: true,
-        animation: true,
-      });
+      showToast('Không thể lấy thông tin tài khoản');
     }
   }
 
   const handleConfirmPressed = async () => {
     if (cart.productList.length === 0) {
-      Toast.show('Giỏ hàng hiện đang trống', {
-        duration: Toast.durations.SHORT,
-        position: Toast.positions.BOTTOM,
-        shadow: true,
-        animation: true,
-      });
+      showToast('Giỏ hàng hiện đang trống');
       return;
     }
 
     const token = await AsyncStorage.getItem('@token');
-    await addReceiptAPI({
-      productList: cart.productList,
-      total: cart.total,
-    });
+    // await addReceiptAPI({
+    //   productList: cart.productList,
+    //   total: cart.total,
+    // });
     if (token && account.email !== '') {
       await axios({
         url: `/receipt/receipt-checkout`,
@@ -79,38 +68,21 @@ const Cart = (props: Props) => {
         .then((res) => {
           if (res.data['code'] === 200) {
             dispatch(emptyCart({}));
-            Actions.push('menu');
-            Toast.show('Xác nhận đơn hàng thành công', {
-              duration: Toast.durations.SHORT,
-              position: Toast.positions.BOTTOM,
-              shadow: true,
-              animation: true,
-            });
+            Actions.popTo('menu');
+            setTimeout(() => {
+              Actions.refresh({ key: Math.random() });
+            }, 10);
+            showToast('Xác nhận đơn hàng thành công');
           } else {
-            Toast.show('Xác nhận đơn hàng thất bại', {
-              duration: Toast.durations.SHORT,
-              position: Toast.positions.BOTTOM,
-              shadow: true,
-              animation: true,
-            });
+            showToast('Xác nhận đơn hàng thất bại');
           }
         })
         .catch((err) => {
-          Toast.show('Không thể xác nhận đơn hàng', {
-            duration: Toast.durations.SHORT,
-            position: Toast.positions.BOTTOM,
-            shadow: true,
-            animation: true,
-          });
+          showToast('Không thể xác nhận đơn hàng');
         });
     } else {
       Actions.push('login');
-      Toast.show('Vui lòng đăng nhập', {
-        duration: Toast.durations.SHORT,
-        position: Toast.positions.BOTTOM,
-        shadow: true,
-        animation: true,
-      });
+      showToast('Vui lòng đăng nhập');
     }
   };
 

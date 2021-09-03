@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Alert, Text } from 'react-native';
+import { Text } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { BlueButton } from '../../../common/ui/base/button';
 import { SmallText } from '../../../common/ui/base/errorText';
@@ -15,6 +15,7 @@ import { AntDesign } from 'react-native-vector-icons';
 import { Color } from '../../../common/util/enum';
 import styles from './style';
 import Toast from 'react-native-root-toast';
+import { showToast } from '../../../common/util/common';
 
 interface ChangePasswordInfo {
   oldPassword: string;
@@ -62,29 +63,14 @@ const ChangePassword = () => {
       .then((res) => {
         if (res.data['code'] === 200) {
           setChangeSuccess(true);
-          Toast.show('Thay đổi mật khẩu thành công', {
-            duration: Toast.durations.SHORT,
-            position: Toast.positions.BOTTOM,
-            shadow: true,
-            animation: true,
-          });
+          showToast('Thay đổi mật khẩu thành công');
         } else {
-          Toast.show('Lỗi thay đổi mật khẩu', {
-            duration: Toast.durations.SHORT,
-            position: Toast.positions.BOTTOM,
-            shadow: true,
-            animation: true,
-          });
+          showToast('Lỗi thay đổi mật khẩu');
         }
       })
       .catch((err) => {
         //Toast err
-        Toast.show('Không thể thay đổi mật khẩu', {
-          duration: Toast.durations.SHORT,
-          position: Toast.positions.BOTTOM,
-          shadow: true,
-          animation: true,
-        });
+        showToast('Không thể thay đổi mật khẩu');
       });
   };
 
@@ -105,7 +91,7 @@ const ChangePassword = () => {
           <>
             <Controller
               control={control}
-              rules={{ required: true }}
+              rules={{ required: true, minLength: 8, maxLength: 30 }}
               render={({ field: { onChange, value } }) => (
                 <PasswordTextInput
                   placeholderText="Mật khẩu cũ"
@@ -126,7 +112,7 @@ const ChangePassword = () => {
 
             <Controller
               control={control}
-              rules={{ required: true }}
+              rules={{ required: true, minLength: 8, maxLength: 30 }}
               render={({ field: { onChange, value } }) => (
                 <PasswordTextInput
                   placeholderText="Mật khẩu mới"
@@ -147,7 +133,7 @@ const ChangePassword = () => {
 
             <Controller
               control={control}
-              rules={{ required: true }}
+              rules={{ required: true, minLength: 8, maxLength: 30 }}
               render={({ field: { onChange, value } }) => (
                 <PasswordTextInput
                   placeholderText="Nhập lại"

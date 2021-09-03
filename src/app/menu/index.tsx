@@ -15,14 +15,14 @@ const Menu = (props: Props) => {
 
   async function resetToken() {
     const token = await AsyncStorage.getItem('@token');
-    if (token && account.email === '') {
+    if (token && account._id === '') {
       await AsyncStorage.setItem('@token', '');
     }
   }
 
   useEffect(() => {
     resetToken();
-  });
+  }, []);
 
   const handleTextChange = (searchText: string) => {
     setSearch(searchText);

@@ -18,6 +18,7 @@ import {
   getProductListFromAPI,
   initialProductItem,
   ProductItem,
+  showToast,
 } from '../../../common/util/common';
 import { Color } from '../../../common/util/enum';
 import styles from '../category/style';
@@ -28,7 +29,6 @@ import NumberTextInput from '../../../common/ui/base/textInput/numberTextInput';
 import RNPickerSelect from 'react-native-picker-select';
 import { BlueButton } from '../../../common/ui/base/button';
 import * as ImagePicker from 'expo-image-picker';
-import Toast from 'react-native-root-toast';
 
 interface Props {}
 const AdminProduct = (props: Props) => {
@@ -56,12 +56,7 @@ const AdminProduct = (props: Props) => {
       setProductList(productListFromAPI);
     } else {
       //Toast
-      Toast.show('Không thể lấy danh sách sản phẩm', {
-        duration: Toast.durations.SHORT,
-        position: Toast.positions.BOTTOM,
-        shadow: true,
-        animation: true,
-      });
+      showToast('Không thể lấy danh sách sản phẩm');
     }
   }
 
@@ -78,12 +73,7 @@ const AdminProduct = (props: Props) => {
       setCategoryList(tempList);
     } else {
       //Toast
-      Toast.show('Không thể lấy danh sách danh mục', {
-        duration: Toast.durations.SHORT,
-        position: Toast.positions.BOTTOM,
-        shadow: true,
-        animation: true,
-      });
+      showToast('Không thể lấy danh sách danh mục');
     }
   }
 
@@ -95,12 +85,7 @@ const AdminProduct = (props: Props) => {
   const handleAddPressed = () => {
     setModalVisible(true);
     setAction('Add');
-    Toast.show('Chèn \\n để xuống dòng mô tả', {
-      duration: Toast.durations.SHORT,
-      position: Toast.positions.BOTTOM,
-      shadow: true,
-      animation: true,
-    });
+    showToast('Chèn \\n để xuống dòng mô tả');
   };
 
   const handleEditPressed = (item: ProductItem) => {
@@ -116,12 +101,7 @@ const AdminProduct = (props: Props) => {
       id_category: item.id_category,
     });
     setImageBase64(item.image);
-    Toast.show('Chèn \\n để xuống dòng mô tả', {
-      duration: Toast.durations.SHORT,
-      position: Toast.positions.BOTTOM,
-      shadow: true,
-      animation: true,
-    });
+    showToast('Chèn \\n để xuống dòng mô tả');
   };
 
   const handleCloseModal = () => {
@@ -139,28 +119,13 @@ const AdminProduct = (props: Props) => {
       if (code === 200) {
         handleCloseModal();
         Actions.refresh({ key: Math.random() });
-        Toast.show('Thêm sản phẩm thành công', {
-          duration: Toast.durations.SHORT,
-          position: Toast.positions.BOTTOM,
-          shadow: true,
-          animation: true,
-        });
+        showToast('Thêm sản phẩm thành công');
       } else {
-        Toast.show('Không thể thêm sản phẩm', {
-          duration: Toast.durations.SHORT,
-          position: Toast.positions.BOTTOM,
-          shadow: true,
-          animation: true,
-        });
+        showToast('Không thể thêm sản phẩm');
       }
     } else {
       //Toast err
-      Toast.show('Không thể thêm sản phẩm', {
-        duration: Toast.durations.SHORT,
-        position: Toast.positions.BOTTOM,
-        shadow: true,
-        animation: true,
-      });
+      showToast('Không thể thêm sản phẩm');
     }
   };
 
@@ -171,19 +136,9 @@ const AdminProduct = (props: Props) => {
     if (code === 200) {
       handleCloseModal();
       Actions.refresh({ key: Math.random() });
-      Toast.show('Chỉnh sửa sản phẩm thành công', {
-        duration: Toast.durations.SHORT,
-        position: Toast.positions.BOTTOM,
-        shadow: true,
-        animation: true,
-      });
+      showToast('Không thể thêm sản phẩm');
     } else {
-      Toast.show('Không thể chỉnh sửa sản phẩm', {
-        duration: Toast.durations.SHORT,
-        position: Toast.positions.BOTTOM,
-        shadow: true,
-        animation: true,
-      });
+      showToast('Không thể thêm sản phẩm');
     }
   };
 

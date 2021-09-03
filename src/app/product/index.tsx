@@ -1,6 +1,10 @@
 import React, { useEffect } from 'react';
 import { Image, ScrollView, Text, View } from 'react-native';
-import { addReceiptAPI, ProductItem } from '../../common/util/common';
+import {
+  addReceiptAPI,
+  ProductItem,
+  showToast,
+} from '../../common/util/common';
 import styles from './style';
 import numeral from 'numeral';
 import { Actions } from 'react-native-router-flux';
@@ -32,14 +36,13 @@ const Product = (props: Props) => {
   }, [cart]);
 
   const handleBackPressed = () => {
-    Actions.pop();
+    Actions.popTo('menu');
     setTimeout(() => {
       Actions.refresh({ key: Math.random() });
     }, 10);
   };
   const handleAddToCartPressed = async () => {
     if (props.item.stock !== 0) {
-      const token = await AsyncStorage.getItem('@token');
       dispatch(
         addToCart({
           cartItem: {
@@ -48,19 +51,11 @@ const Product = (props: Props) => {
             discount: props.item.discount,
             quantity: 1,
           },
-          token: token,
         })
       );
-      setTimeout(() => {
-        Actions.refresh({ key: Math.random() });
-      }, 10);
+      showToast('Thêm vào giỏ hàng thành công');
     } else {
-      Toast.show('Sản phẩm đã bán hết', {
-        duration: Toast.durations.SHORT,
-        position: Toast.positions.BOTTOM,
-        shadow: true,
-        animation: true,
-      });
+      showToast('Sản phẩm đã bán hết');
     }
   };
 

@@ -23,6 +23,7 @@ import {
   initialUserInterface,
   UserDetailItem,
   editUserAPI,
+  showToast,
 } from '../../../common/util/common';
 import styles from '../category/style';
 import { Entypo } from 'react-native-vector-icons';
@@ -32,7 +33,6 @@ import { AdminAlert } from '../../../common/ui/base/admin-alert';
 import { Controller, useForm } from 'react-hook-form';
 import { SmallText } from '../../../common/ui/base/errorText';
 import RNPickerSelect from 'react-native-picker-select';
-import Toast from 'react-native-root-toast';
 
 interface Props {}
 const AdminUser = (props: Props) => {
@@ -53,16 +53,11 @@ const AdminUser = (props: Props) => {
 
   async function getUserList() {
     const userListFromAPI = await getUserListFromAPI();
-    if (typeof userListFromAPI != 'string') {
+    if (typeof userListFromAPI !== 'string') {
       setUserList(userListFromAPI);
     } else {
       //Toast
-      Toast.show('Không thể lấy danh sách tài khoản', {
-        duration: Toast.durations.SHORT,
-        position: Toast.positions.BOTTOM,
-        shadow: true,
-        animation: true,
-      });
+      showToast('Không thể lấy danh sách tài khoản');
     }
   }
 
@@ -78,12 +73,7 @@ const AdminUser = (props: Props) => {
       }
       setRoleList(tempList);
     } else {
-      Toast.show('Không thể lấy danh sách chức vụ', {
-        duration: Toast.durations.SHORT,
-        position: Toast.positions.BOTTOM,
-        shadow: true,
-        animation: true,
-      });
+      showToast('Không thể lấy danh sách chức vụ');
     }
   }
 
@@ -132,19 +122,9 @@ const AdminUser = (props: Props) => {
     if (code === 200) {
       handleCloseModal();
       Actions.refresh({ key: Math.random() });
-      Toast.show('Thêm tài khoản thành công', {
-        duration: Toast.durations.SHORT,
-        position: Toast.positions.BOTTOM,
-        shadow: true,
-        animation: true,
-      });
+      showToast('Thêm tài khoản thành công');
     } else {
-      Toast.show('Không thể thêm tài khoản', {
-        duration: Toast.durations.SHORT,
-        position: Toast.positions.BOTTOM,
-        shadow: true,
-        animation: true,
-      });
+      showToast('Không thể thêm tài khoản');
     }
     //Toast code
   };
@@ -155,19 +135,9 @@ const AdminUser = (props: Props) => {
     if (code === 200) {
       handleCloseModal();
       Actions.refresh({ key: Math.random() });
-      Toast.show('Chỉnh sửa tài khoản thành công', {
-        duration: Toast.durations.SHORT,
-        position: Toast.positions.BOTTOM,
-        shadow: true,
-        animation: true,
-      });
+      showToast('Chỉnh sửa tài khoản thành công');
     } else {
-      Toast.show('Không thể chỉnh sửa tài khoản', {
-        duration: Toast.durations.SHORT,
-        position: Toast.positions.BOTTOM,
-        shadow: true,
-        animation: true,
-      });
+      showToast('Không thể chỉnh sửa tài khoản');
     }
   };
 
@@ -247,7 +217,7 @@ const AdminUser = (props: Props) => {
           rules={{
             required: true,
             minLength: 10,
-            maxLength: 10,
+            maxLength: 11,
             pattern: phoneReg,
           }}
           name="phone"
@@ -300,7 +270,7 @@ const AdminUser = (props: Props) => {
 
   return (
     <CartLayout
-      title="Danh sách tài khoản"
+      title="Tài khoản"
       backPressed={() => {
         Actions.pop();
         setTimeout(() => {

@@ -13,6 +13,7 @@ import {
   initialIOProductDetailItem,
   ioProductDetailItem,
   ioProductInterface,
+  showToast,
 } from '../../../common/util/common';
 import { Color } from '../../../common/util/enum';
 import styles from '../category/style';
@@ -23,7 +24,6 @@ import IOProductSelect from './ioProductSelect';
 import NumberTextInput from '../../../common/ui/base/textInput/numberTextInput';
 import IOProductRow from './ioProductRow';
 import DetailAlert from '../../../common/ui/base/admin-alert/detailAlert';
-import Toast from 'react-native-root-toast';
 
 interface Props {}
 const AdminIOProduct = (props: Props) => {
@@ -51,12 +51,7 @@ const AdminIOProduct = (props: Props) => {
       }
       setCompanyList(tempList);
     } else {
-      Toast.show('Không thể lấy danh sách đối tác', {
-        duration: Toast.durations.SHORT,
-        position: Toast.positions.BOTTOM,
-        shadow: true,
-        animation: true,
-      });
+      showToast('Không thể lấy danh sách đối tác');
     }
   }
 
@@ -72,12 +67,7 @@ const AdminIOProduct = (props: Props) => {
       }
       setProductList(tempList);
     } else {
-      Toast.show('Không thể lấy danh sách sản phẩm', {
-        duration: Toast.durations.SHORT,
-        position: Toast.positions.BOTTOM,
-        shadow: true,
-        animation: true,
-      });
+      showToast('Không thể lấy danh sách sản phẩm');
     }
   }
 
@@ -93,12 +83,7 @@ const AdminIOProduct = (props: Props) => {
       }
       setIOTypeList(tempList);
     } else {
-      Toast.show('Không thể lấy danh sách loại nhập xuất', {
-        duration: Toast.durations.SHORT,
-        position: Toast.positions.BOTTOM,
-        shadow: true,
-        animation: true,
-      });
+      showToast('Không thể lấy danh sách loại nhập xuất');
     }
   }
 
@@ -107,12 +92,7 @@ const AdminIOProduct = (props: Props) => {
     if (typeof ioProductListFromAPI !== 'string') {
       setIOProductList(ioProductListFromAPI);
     } else {
-      Toast.show('Không thể lấy danh sách nhập xuất', {
-        duration: Toast.durations.SHORT,
-        position: Toast.positions.BOTTOM,
-        shadow: true,
-        animation: true,
-      });
+      showToast('Không thể lấy danh sách nhập xuất');
     }
   }
 
@@ -140,12 +120,7 @@ const AdminIOProduct = (props: Props) => {
         date: item.date,
       });
     } else {
-      Toast.show('Không thể lấy chi tiết nhập xuất', {
-        duration: Toast.durations.SHORT,
-        position: Toast.positions.BOTTOM,
-        shadow: true,
-        animation: true,
-      });
+      showToast('Không thể lấy chi tiết nhập xuất');
     }
   };
 
@@ -175,35 +150,15 @@ const AdminIOProduct = (props: Props) => {
         if (code === 200) {
           handleCloseModal();
           Actions.refresh({ key: Math.random() });
-          Toast.show('Thêm nhập xuất thành công', {
-            duration: Toast.durations.SHORT,
-            position: Toast.positions.BOTTOM,
-            shadow: true,
-            animation: true,
-          });
+          showToast('Thêm nhập xuất thành công');
         } else {
-          Toast.show('Không thể thêm nhập xuất', {
-            duration: Toast.durations.SHORT,
-            position: Toast.positions.BOTTOM,
-            shadow: true,
-            animation: true,
-          });
+          showToast('Không thể thêm nhập xuất');
         }
       } else {
-        Toast.show('Danh sách không hợp lệ', {
-          duration: Toast.durations.SHORT,
-          position: Toast.positions.BOTTOM,
-          shadow: true,
-          animation: true,
-        });
+        showToast('Danh sách không hợp lệ');
       }
     } else {
-      Toast.show('Danh sách sản phẩm không được để trống', {
-        duration: Toast.durations.SHORT,
-        position: Toast.positions.BOTTOM,
-        shadow: true,
-        animation: true,
-      });
+      showToast('Danh sách sản phẩm không được để trống');
     }
   };
 

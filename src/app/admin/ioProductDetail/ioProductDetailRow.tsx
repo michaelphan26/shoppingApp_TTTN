@@ -7,6 +7,7 @@ import {
   initialCompanyItem,
   initialProductItem,
   ioProductDetailItem,
+  showToast,
 } from '../../../common/util/common';
 import numeral from 'numeral';
 import Toast from 'react-native-root-toast';
@@ -23,12 +24,7 @@ const IOProductDetailRow = (props: Props) => {
     if (typeof productDetail !== 'string') {
       setProduct(productDetail);
     } else {
-      Toast.show('Không thể lấy thông tin sản phẩm', {
-        duration: Toast.durations.SHORT,
-        position: Toast.positions.BOTTOM,
-        shadow: true,
-        animation: true,
-      });
+      showToast('Không thể lấy thông tin sản phẩm');
     }
   };
 
@@ -37,12 +33,7 @@ const IOProductDetailRow = (props: Props) => {
     if (typeof companyDetail !== 'string') {
       setCompany(companyDetail);
     } else {
-      Toast.show('Không thể lấy thông tin đối tác', {
-        duration: Toast.durations.SHORT,
-        position: Toast.positions.BOTTOM,
-        shadow: true,
-        animation: true,
-      });
+      showToast('Không thể lấy thông tin đối tác');
     }
   };
 

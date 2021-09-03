@@ -6,6 +6,7 @@ import {
   JustNameItem,
   getProductByCategoryFromAPI,
   ProductItem,
+  showToast,
 } from '../../../common/util/common';
 import Toast from 'react-native-root-toast';
 
@@ -25,12 +26,7 @@ const CategoryRowContainer = (props: Props) => {
       setProductList(productListByCategory);
     } else {
       //Toast
-      Toast.show('Không thể lấy danh sách sản phẩm', {
-        duration: Toast.durations.SHORT,
-        position: Toast.positions.BOTTOM,
-        shadow: true,
-        animation: true,
-      });
+      showToast('Không thể lấy danh sách sản phẩm');
     }
   };
 

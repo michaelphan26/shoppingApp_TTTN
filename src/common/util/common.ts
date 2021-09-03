@@ -1,17 +1,19 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { api_url } from "./constant";
+import Toast from 'react-native-root-toast';
 
 export const emailReg = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-export const phoneReg = /((09|03|07|08|05)+([0-9]{8})\b)/g;
+export const phoneReg = /((02|09|03|07|08|05)+([0-9]{9})\b)/g;
 
-export interface RegisterInfo {
-  email: string;
-  password: string;
-  name: string;
-  phone: string;
-  address: string;
+export const showToast=(message: string)=>{
+  Toast.show(message, {
+    duration: Toast.durations.SHORT,
+    position: Toast.positions.BOTTOM,
+    animation: true,
+    shadow:true,
+  })
 }
 
 export interface UserInterface{
@@ -40,6 +42,7 @@ export interface ProductItem{
   price: number;
   description: string;
   image: string;
+  stock: number;
   discount: number;
   status:boolean
 }
@@ -52,6 +55,7 @@ export const initialProductItem: ProductItem={
   price: 0,
   description: '',
   image: '',
+  stock:0,
   discount: 0,
   status:true,
 }
@@ -60,6 +64,11 @@ export interface JustNameItem{
     _id: string;
     name:string
 }
+
+export const initialJustNameItem: JustNameItem = {
+  _id: '',
+  name: '',
+};
 
 export interface CartItem{
   id_product: string;
@@ -83,7 +92,7 @@ export interface ReceiptInterface{
   _id: string,
   date: string,
   total: number,
-  email: string,
+  id_user: string,
   id_receiptType: string,
 }
 
@@ -125,10 +134,7 @@ export interface UserDetailItem{
   joinDate:string
 }
 
-export const initialJustNameItem: JustNameItem = {
-  _id: '',
-  name: '',
-};
+
 
 export interface CompanyInterface{
   _id:string,
@@ -253,6 +259,31 @@ export async function addReceiptAPI(cart:CartInterface) {
   }
 }
 
+export async function getUserItemByIDFromAPI(_id: string) {
+  const token = await AsyncStorage.getItem('@token');
+    let userInfo = {} as UserItem;
+    await axios({
+      url: `admin/account/${_id}`,
+      baseURL: `${api_url}`,
+      method: 'get',
+      headers: {
+        'x-auth-token': token,
+      },
+    })
+      .then((res) => {
+        if (res.data['code'] === 200) {
+          userInfo=res.data['data']
+        }
+        else {
+          return res.data['message'] as string;
+        }
+      })
+      .catch((err) => {
+        return err.response.data['message'] as string
+      });
+    return userInfo;
+}
+
 export async function getUserInfoFromAPI() {
   const token = await AsyncStorage.getItem('@token');
   if (token) {
@@ -281,7 +312,7 @@ export async function getUserInfoFromAPI() {
   else {
     const msg = "No token";
     return msg;
-      }
+  }
 }
 
 export async function getUserInfoByIDFromAPI(_id: string) {
@@ -341,11 +372,11 @@ export async function getProductListFromAPI() {
            productList=res.data['data'];
         }
         else {
-          return res.data['message']
+          return res.data['message'] as string
         }
       })
       .catch((err) => {
-        return err.response.data['message'];
+        return err.response.data['message'] as string;
       });
   return productList
 }
@@ -362,10 +393,10 @@ export async function getCategoryListFromAPI() {
         if (res.data['code'] === 200) {
           categoryList = res.data['data'];
         }
-        else { return res.data['message'] }
+        else return res.data['message'] as string
       })
       .catch((err) => {
-        return err.response.data['message']
+        return err.response.data['message'] as string
       });
   return categoryList;
 }
@@ -383,11 +414,11 @@ export async function getProductByCategoryFromAPI(id_category:string) {
           productList=res.data['data']
         }
         else {
-          return res.data['message'];
+          return res.data['message'] as string;
         }
       })
       .catch((err) => {
-        return err.response.data['message'];
+        return err.response.data['message'] as string;
       });
   return productList;
 }
@@ -407,9 +438,9 @@ export async function getReceiptListFromAPI() {
     if (res.data['code'] === 200) {
       receiptList = res.data['data'] as ReceiptInterface;
     }
-    else return res.data['message']
+    else return res.data['message'] as string
   }).catch(err => {
-    return err.response.data['message'];
+    return err.response.data['message'] as string;
   })
 
   return receiptList;
@@ -472,9 +503,9 @@ export async function getProductDetailFromAPI(_id:string) {
     if (res.data['code'] === 200) {
       productDetail = res.data['data'];
     }
-    else return res.data['message']
+    else return res.data['message'] as string;
   }).catch(err => {
-    return err.response.data['message'];
+    return err.response.data['message'] as string;
   })
 
   return productDetail;
@@ -700,9 +731,9 @@ export async function getUserListFromAPI() {
     if (res.data['code'] === 200) {
       userList = res.data['data'];
     }
-    else return res.data['message']
+    else return res.data['message'] as string
   }).catch(err => {
-    return err.response.data['message'];
+    return err.response.data['message'] as string;
   })
 
   return userList;

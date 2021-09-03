@@ -4,9 +4,9 @@ import { ScrollView, Text, View } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import {
   getReceiptDetailFromAPI,
-  getUserInfoFromAPI,
   ReceiptDetailInterface,
   ReceiptInterface,
+  showToast,
   UserInfo,
 } from '../../common/util/common';
 import styles from './style';
@@ -14,38 +14,17 @@ import numeral from 'numeral';
 import ProductRowNoQuantity from '../../common/ui/layout/cart-layout/productRowNoQuantity';
 import CartLayout from '../../common/ui/layout/cart-layout';
 import Toast from 'react-native-root-toast';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../models/store';
 
 interface Props {
   receipt: ReceiptInterface;
+  userInfo: UserInfo;
 }
 
 const ReceiptDetail = (props: Props) => {
   const [receiptDetail, setReceiptDetail] = useState([] as any);
-  const [userInfo, setUserInfo] = useState<UserInfo>({
-    name: '',
-    phone: '',
-    address: '',
-  });
-
-  async function getUserInfo() {
-    const userInfoFromAPI = await getUserInfoFromAPI();
-    if (typeof userInfoFromAPI !== 'string') {
-      // if (Object.keys(userInfoFromAPI).length !== 0) {
-      //   set
-      // } else {
-      //   //Toast cannot get info
-      // }
-      setUserInfo(userInfoFromAPI);
-    } else {
-      //Toast string
-      Toast.show('Không thể lấy thông tin tài khoản', {
-        duration: Toast.durations.SHORT,
-        position: Toast.positions.BOTTOM,
-        shadow: true,
-        animation: true,
-      });
-    }
-  }
+  const account = useSelector((state: RootState) => state.accountReducer);
 
   //get Receipt detail
   async function getReceiptDetail() {
@@ -57,17 +36,11 @@ const ReceiptDetail = (props: Props) => {
       setReceiptDetail(receiptDetailFromAPI);
     } else {
       //Toast
-      Toast.show('Không thể lấy thông tin hóa đơn', {
-        duration: Toast.durations.SHORT,
-        position: Toast.positions.BOTTOM,
-        shadow: true,
-        animation: true,
-      });
+      showToast('Không thể lấy thông tin hóa đơn');
     }
   }
 
   useEffect(() => {
-    getUserInfo();
     getReceiptDetail();
   }, []);
 
@@ -93,10 +66,10 @@ const ReceiptDetail = (props: Props) => {
       </View>
       <View style={styles.detailContainer}>
         <Text style={styles.title}>Thông tin đơn hàng</Text>
-        <Text style={styles.detailText}>Họ tên: {userInfo.name}</Text>
-        <Text style={styles.detailText}>SĐT: {userInfo.phone}</Text>
-        <Text style={styles.detailText}>Email: {props.receipt.email}</Text>
-        <Text style={styles.detailText}>Địa chỉ: {userInfo.address}</Text>
+        <Text style={styles.detailText}>Họ tên: {props.userInfo.name}</Text>
+        <Text style={styles.detailText}>SĐT: {props.userInfo.phone}</Text>
+        <Text style={styles.detailText}>Email: {account.email}</Text>
+        <Text style={styles.detailText}>Địa chỉ: {props.userInfo.address}</Text>
         <Text style={styles.detailText}>Ngày tháng: {props.receipt.date}</Text>
       </View>
       <View style={styles.buttonContainer}>

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Alert } from 'react-native';
 import { BlueButton } from '../../../common/ui/base/button';
 import { SmallText } from '../../../common/ui/base/errorText';
 import {
@@ -8,7 +7,7 @@ import {
   PasswordTextInput,
 } from '../../../common/ui/base/textInput';
 import AuthLayoutContainer from '../../../common/ui/layout/auth-Layout/layoutContainer';
-import { emailReg, phoneReg, RegisterInfo } from '../../../common/util/common';
+import { emailReg, phoneReg, showToast } from '../../../common/util/common';
 import { LargeTextTouchable } from '../../../common/ui/base/touchableText';
 import { Actions } from 'react-native-router-flux';
 import axios from 'axios';
@@ -18,6 +17,14 @@ import { useDispatch } from 'react-redux';
 import { accountLogin } from '../../../models/accountReducer';
 import { LargeCardView } from '../../../common/ui/layout/auth-Layout';
 import Toast from 'react-native-root-toast';
+
+interface RegisterInfo {
+  email: string;
+  password: string;
+  name: string;
+  phone: string;
+  address: string;
+}
 
 const Register = () => {
   const {
@@ -45,29 +52,12 @@ const Register = () => {
           await AsyncStorage.setItem('@token', res.headers['x-auth-token']);
           dispatch(accountLogin(res.data['data']));
           Actions.push('menu');
-          Toast.show('Đăng ký thành công', {
-            duration: Toast.durations.SHORT,
-            position: Toast.positions.BOTTOM,
-            shadow: true,
-            animation: true,
-          });
+          showToast('Đăng ký thành công');
         } else {
-          Toast.show('Đăng ký thất bại', {
-            duration: Toast.durations.SHORT,
-            position: Toast.positions.BOTTOM,
-            shadow: true,
-            animation: true,
-          });
+          showToast('Đăng ký thất bại');
         }
       })
-      .catch((err) =>
-        Toast.show('Đăng ký thất bại', {
-          duration: Toast.durations.SHORT,
-          position: Toast.positions.BOTTOM,
-          shadow: true,
-          animation: true,
-        })
-      );
+      .catch((err) => showToast('Đăng ký thất bại'));
   };
 
   const handleBackToLogin = () => {
@@ -146,7 +136,7 @@ const Register = () => {
           rules={{
             required: true,
             minLength: 10,
-            maxLength: 10,
+            maxLength: 11,
             pattern: phoneReg,
           }}
           name="phone"

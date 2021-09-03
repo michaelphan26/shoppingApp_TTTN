@@ -6,12 +6,20 @@ import ReceiptRowContainer from '../../common/ui/layout/receipt-layout/receiptRo
 import {
   getReceiptListFromAPI,
   ReceiptInterface,
+  showToast,
+  UserInfo,
 } from '../../common/util/common';
 import styles from './style';
 import Toast from 'react-native-root-toast';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../models/store';
 
-const Receipt = () => {
+interface Props {
+  userInfo: UserInfo;
+}
+const Receipt = (props: Props) => {
   const [receiptList, setReceiptList] = useState([] as any);
+  const account = useSelector((state: RootState) => state.accountReducer);
 
   const getReceiptList = async () => {
     const receiptListFromAPI = await getReceiptListFromAPI();
@@ -19,12 +27,7 @@ const Receipt = () => {
       setReceiptList(receiptListFromAPI);
     } else {
       //Toast
-      Toast.show('Không thể lấy danh sách hóa đơn', {
-        duration: Toast.durations.SHORT,
-        position: Toast.positions.BOTTOM,
-        shadow: true,
-        animation: true,
-      });
+      showToast('Không thể lấy danh sách hóa đơn');
     }
   };
 
@@ -33,7 +36,10 @@ const Receipt = () => {
   }, []);
 
   const handleDetailPressed = (receipt: ReceiptInterface) => {
-    Actions.push('receiptDetail', { receipt: receipt });
+    Actions.push('receiptDetail', {
+      receipt: receipt,
+      userInfo: props.userInfo,
+    });
   };
 
   return (
@@ -55,6 +61,7 @@ const Receipt = () => {
             return (
               <ReceiptRowContainer
                 receipt={item}
+                email={account.email}
                 key={item._id}
                 onDetailPressed={handleDetailPressed}
               />

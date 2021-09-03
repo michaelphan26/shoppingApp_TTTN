@@ -19,10 +19,10 @@ import {
   addReceiptTypeUrl,
   editReceiptTypeUrl,
   deleteReceiptTypeUrl,
+  showToast,
 } from '../../../common/util/common';
 import { useEffect } from 'react';
 import { CustomAlert } from '../../../common/ui/base/admin-alert';
-import Toast from 'react-native-root-toast';
 
 interface Props {}
 
@@ -41,12 +41,7 @@ const AdminReceiptType = (props: Props) => {
       setReceiptTypeList(receiptTypeListFromAPI);
     } else {
       //Toast
-      Toast.show('Không thể lấy danh sách loại hóa đơn', {
-        duration: Toast.durations.SHORT,
-        position: Toast.positions.BOTTOM,
-        shadow: true,
-        animation: true,
-      });
+      showToast('Không thể lấy danh sách loại hóa đơn');
     }
   }
 
@@ -74,66 +69,36 @@ const AdminReceiptType = (props: Props) => {
   };
 
   const handleAddReceiptType = async () => {
-    if (name.trim().length !== 0) {
+    if (name.trim().length >= 2 && name.trim().length <= 20) {
       const code = await addJustName(addReceiptTypeUrl, name.trim());
       //Toast
       if (code === 200) {
         handleCloseModal();
         Actions.refresh({ key: Math.random() });
-        Toast.show('Thêm loại hóa đơn thành công', {
-          duration: Toast.durations.SHORT,
-          position: Toast.positions.BOTTOM,
-          shadow: true,
-          animation: true,
-        });
+        showToast('Thêm loại hóa đơn thành công');
       } else {
-        Toast.show('Không thể thêm loại hóa đơn', {
-          duration: Toast.durations.SHORT,
-          position: Toast.positions.BOTTOM,
-          shadow: true,
-          animation: true,
-        });
+        showToast('Không thể thêm loại hóa đơn');
       }
     } else {
       //Toast err
-      Toast.show('Tên không được để trống', {
-        duration: Toast.durations.SHORT,
-        position: Toast.positions.BOTTOM,
-        shadow: true,
-        animation: true,
-      });
+      showToast('Tên không được để trống');
     }
   };
 
   const handleSaveReceiptType = async () => {
-    if (name.trim().length !== 0) {
+    if (name.trim().length >= 2 && name.trim().length <= 20) {
       editItem.name = name.trim();
       const code = await editJustName(editReceiptTypeUrl, editItem);
       //Toast
       if (code === 200) {
         handleCloseModal();
         Actions.refresh({ key: Math.random() });
-        Toast.show('Chỉnh sửa loại hóa đơn thành công', {
-          duration: Toast.durations.SHORT,
-          position: Toast.positions.BOTTOM,
-          shadow: true,
-          animation: true,
-        });
+        showToast('Chỉnh sửa loại hóa đơn thành công');
       } else {
-        Toast.show('Không thể chỉnh sửa loại hóa đơn', {
-          duration: Toast.durations.SHORT,
-          position: Toast.positions.BOTTOM,
-          shadow: true,
-          animation: true,
-        });
+        showToast('Không thể chỉnh sửa loại hóa đơn');
       }
     } else {
-      Toast.show('Tên không được để trống', {
-        duration: Toast.durations.SHORT,
-        position: Toast.positions.BOTTOM,
-        shadow: true,
-        animation: true,
-      });
+      showToast('Tên không được để trống');
     }
   };
 
@@ -149,19 +114,9 @@ const AdminReceiptType = (props: Props) => {
       console.log('200');
       handleCloseModal();
       Actions.refresh({ key: Math.random() });
-      Toast.show('Xóa loại hóa đơn thành công', {
-        duration: Toast.durations.SHORT,
-        position: Toast.positions.BOTTOM,
-        shadow: true,
-        animation: true,
-      });
+      showToast('Xóa loại hóa đơn thành công');
     } else {
-      Toast.show('Không thể xóa loại hóa đơn', {
-        duration: Toast.durations.SHORT,
-        position: Toast.positions.BOTTOM,
-        shadow: true,
-        animation: true,
-      });
+      showToast('Không thể xóa loại hóa đơn');
       setModalDeleteVisible(false);
     }
   };
@@ -179,7 +134,7 @@ const AdminReceiptType = (props: Props) => {
 
   return (
     <CartLayout
-      title="Danh mục loại HĐ"
+      title="Loại hóa đơn"
       backPressed={() => {
         Actions.pop();
         setTimeout(() => {

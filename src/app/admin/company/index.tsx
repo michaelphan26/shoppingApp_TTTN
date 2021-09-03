@@ -12,6 +12,7 @@ import {
   addCompanyToAPI,
   editCompanyAPI,
   deleteCompany,
+  showToast,
 } from '../../../common/util/common';
 import styles from '../category/style';
 import { Entypo } from 'react-native-vector-icons';
@@ -20,7 +21,6 @@ import { AdminAlert, CustomAlert } from '../../../common/ui/base/admin-alert';
 import { Controller, useForm } from 'react-hook-form';
 import { SmallText } from '../../../common/ui/base/errorText';
 import CompanyRow from './companyRow';
-import Toast from 'react-native-root-toast';
 
 interface Props {}
 const AdminCompany = (props: Props) => {
@@ -43,12 +43,7 @@ const AdminCompany = (props: Props) => {
       setCompanyList(companyListFromAPI);
     } else {
       //Toast
-      Toast.show('Không thể lấy danh sách đối tác', {
-        duration: Toast.durations.SHORT,
-        position: Toast.positions.BOTTOM,
-        shadow: true,
-        animation: true,
-      });
+      showToast('Không thể lấy danh sách đối tác');
     }
   }
 
@@ -88,19 +83,9 @@ const AdminCompany = (props: Props) => {
     if (code === 200) {
       handleCloseModal();
       Actions.refresh({ key: Math.random() });
-      Toast.show('Không thể thêm đối tác', {
-        duration: Toast.durations.SHORT,
-        position: Toast.positions.BOTTOM,
-        shadow: true,
-        animation: true,
-      });
+      showToast('Không thể thêm đối tác');
     } else {
-      Toast.show('Không thể thêm đối tác', {
-        duration: Toast.durations.SHORT,
-        position: Toast.positions.BOTTOM,
-        shadow: true,
-        animation: true,
-      });
+      showToast('Không thể thêm đối tác');
     }
   };
 
@@ -110,20 +95,10 @@ const AdminCompany = (props: Props) => {
     if (code === 200) {
       handleCloseModal();
       Actions.refresh({ key: Math.random() });
-      Toast.show('Chỉnh sửa thông tin đối tác thành công', {
-        duration: Toast.durations.SHORT,
-        position: Toast.positions.BOTTOM,
-        shadow: true,
-        animation: true,
-      });
+      showToast('Chỉnh sửa thông tin đối tác thành công');
     }
     //Toast code
-    Toast.show('Không thể chỉnh sửa thông tin đối tác', {
-      duration: Toast.durations.SHORT,
-      position: Toast.positions.BOTTOM,
-      shadow: true,
-      animation: true,
-    });
+    showToast('Không thể chỉnh sửa thông tin đối tác');
   };
 
   const handleDeletePressed = (companyItem: CompanyInterface) => {
@@ -137,19 +112,9 @@ const AdminCompany = (props: Props) => {
     if (code === 200) {
       handleCloseModal();
       Actions.refresh({ key: Math.random() });
-      Toast.show('Xóa đối tác thành công', {
-        duration: Toast.durations.SHORT,
-        position: Toast.positions.BOTTOM,
-        shadow: true,
-        animation: true,
-      });
+      showToast('Xóa đối tác thành công');
     } else {
-      Toast.show('Không thể xóa đối tác', {
-        duration: Toast.durations.SHORT,
-        position: Toast.positions.BOTTOM,
-        shadow: true,
-        animation: true,
-      });
+      showToast('Không thể xóa đối tác');
       setModalDeleteVisible(false);
     }
   };
@@ -188,7 +153,7 @@ const AdminCompany = (props: Props) => {
           rules={{
             required: true,
             minLength: 10,
-            maxLength: 10,
+            maxLength: 11,
             pattern: phoneReg,
           }}
           name="phone"
@@ -224,7 +189,7 @@ const AdminCompany = (props: Props) => {
               editable={true}
             />
           )}
-          rules={{ required: true, minLength: 5, maxLength: 100 }}
+          rules={{ required: true, minLength: 5, maxLength: 50 }}
           name="tax_number"
           defaultValue={action === 'Add' ? '' : company.tax_number}
         />
@@ -235,7 +200,7 @@ const AdminCompany = (props: Props) => {
 
   return (
     <CartLayout
-      title="Danh sách đối tác"
+      title="Đối tác"
       backPressed={() => {
         Actions.pop();
         setTimeout(() => {

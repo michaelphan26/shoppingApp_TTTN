@@ -30,9 +30,12 @@ const UserRow = (props: Props) => {
   const [roleInfo, setRoleInfo] = useState<JustNameItem>(initialJustNameItem);
 
   async function getUserDetail() {
+    console.log('Get detail');
+    console.log(props.item._id);
     const userDetailFromAPI = await getUserInfoByIDFromAPI(props.item._id);
     if (typeof userDetailFromAPI != 'string') {
       setUserDetail(userDetailFromAPI);
+      console.log(userDetailFromAPI);
     } else {
       //Toast
       Toast.show('Không thể thông tin tài khoản', {

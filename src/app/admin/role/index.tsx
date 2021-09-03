@@ -19,6 +19,7 @@ import {
   addRoleUrl,
   editRoleUrl,
   deleteRoleUrl,
+  showToast,
 } from '../../../common/util/common';
 import { useEffect } from 'react';
 import { CustomAlert } from '../../../common/ui/base/admin-alert';
@@ -41,12 +42,7 @@ const AdminRole = (props: Props) => {
       setRoleList(roleListFromAPI);
     } else {
       //Toast
-      Toast.show('Không thể lấy danh sách chức vụ', {
-        duration: Toast.durations.SHORT,
-        position: Toast.positions.BOTTOM,
-        shadow: true,
-        animation: true,
-      });
+      showToast('Không thể lấy danh sách chức vụ');
     }
   }
 
@@ -74,67 +70,37 @@ const AdminRole = (props: Props) => {
   };
 
   const handleAddRole = async () => {
-    if (name.trim().length !== 0) {
+    if (name.trim().length >= 2 && name.trim().length <= 20) {
       const code = await addJustName(addRoleUrl, name.trim());
       //Toast
       if (code === 200) {
         handleCloseModal();
         Actions.refresh({ key: Math.random() });
-        Toast.show('Thêm chức vụ thành công', {
-          duration: Toast.durations.SHORT,
-          position: Toast.positions.BOTTOM,
-          shadow: true,
-          animation: true,
-        });
+        showToast('Thêm chức vụ thành công');
       } else {
-        Toast.show('Không thể thêm chức vụ', {
-          duration: Toast.durations.SHORT,
-          position: Toast.positions.BOTTOM,
-          shadow: true,
-          animation: true,
-        });
+        showToast('Không thể thêm chức vụ');
       }
     } else {
       //Toast err
-      Toast.show('Tên không được để trống', {
-        duration: Toast.durations.SHORT,
-        position: Toast.positions.BOTTOM,
-        shadow: true,
-        animation: true,
-      });
+      showToast('Tên không được để trống');
     }
   };
 
   const handleSaveRole = async () => {
-    if (name.trim().length !== 0) {
+    if (name.trim().length >= 2 && name.trim().length <= 20) {
       editItem.name = name.trim();
       const code = await editJustName(editRoleUrl, editItem);
       //Toast
       if (code === 200) {
         handleCloseModal();
         Actions.refresh({ key: Math.random() });
-        Toast.show('Chỉnh sửa chức vụ thành công', {
-          duration: Toast.durations.SHORT,
-          position: Toast.positions.BOTTOM,
-          shadow: true,
-          animation: true,
-        });
+        showToast('Chỉnh sửa chức vụ thành công');
       } else {
-        Toast.show('Không thể chỉnh sửa chức vụ', {
-          duration: Toast.durations.SHORT,
-          position: Toast.positions.BOTTOM,
-          shadow: true,
-          animation: true,
-        });
+        showToast('Không thể chỉnh sửa chức vụ');
       }
     } else {
       //Toast err
-      Toast.show('Tên không được để trống', {
-        duration: Toast.durations.SHORT,
-        position: Toast.positions.BOTTOM,
-        shadow: true,
-        animation: true,
-      });
+      showToast('Tên không được để trống');
     }
   };
 
@@ -147,22 +113,11 @@ const AdminRole = (props: Props) => {
     const code = await deleteJustName(deleteRoleUrl, editItem);
     //Toast
     if (code === 200) {
-      console.log('200');
       handleCloseModal();
       Actions.refresh({ key: Math.random() });
-      Toast.show('Xóa chức vụ thành công', {
-        duration: Toast.durations.SHORT,
-        position: Toast.positions.BOTTOM,
-        shadow: true,
-        animation: true,
-      });
+      showToast('Xóa chức vụ thành công');
     } else {
-      Toast.show('Không thể xóa chức vụ', {
-        duration: Toast.durations.SHORT,
-        position: Toast.positions.BOTTOM,
-        shadow: true,
-        animation: true,
-      });
+      showToast('Không thể xóa chức vụ');
       setModalDeleteVisible(false);
     }
   };
@@ -180,7 +135,7 @@ const AdminRole = (props: Props) => {
 
   return (
     <CartLayout
-      title="Danh mục chức vụ"
+      title="Chức vụ"
       backPressed={() => {
         Actions.pop();
         setTimeout(() => {

@@ -1,15 +1,14 @@
 import React from 'react';
-import { Dimensions, FlatList, View } from 'react-native';
+import { Dimensions, FlatList } from 'react-native';
 import DetailCard from './detailCard';
 import { useState } from 'react';
 import axios from 'axios';
 import { api_url } from '../../../common/util/constant';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect } from 'react';
-import { SummaryInterface } from '../../../common/util/common';
+import { showToast, SummaryInterface } from '../../../common/util/common';
 import { Actions } from 'react-native-router-flux';
 import CartLayout from '../../../common/ui/layout/cart-layout';
-import Toast from 'react-native-root-toast';
 
 interface Props {}
 const AdminMenu = (props: Props) => {
@@ -31,21 +30,11 @@ const AdminMenu = (props: Props) => {
           setSummaryObject(res.data['data']);
         } else {
           //Toast
-          Toast.show('Không thể lấy thống kê', {
-            duration: Toast.durations.SHORT,
-            position: Toast.positions.BOTTOM,
-            shadow: true,
-            animation: true,
-          });
+          showToast('Không thể lấy thống kê');
         }
       })
       .catch((err) => {
-        Toast.show('Không thể lấy thống kê', {
-          duration: Toast.durations.SHORT,
-          position: Toast.positions.BOTTOM,
-          shadow: true,
-          animation: true,
-        });
+        showToast('Không thể lấy thống kê');
       });
   }
 

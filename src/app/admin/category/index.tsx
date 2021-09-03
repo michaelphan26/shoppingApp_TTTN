@@ -19,10 +19,10 @@ import {
   addCategoryUrl,
   editCategoryUrl,
   deleteCategoryUrl,
+  showToast,
 } from '../../../common/util/common';
 import { useEffect } from 'react';
 import { CustomAlert } from '../../../common/ui/base/admin-alert';
-import Toast from 'react-native-root-toast';
 
 interface Props {}
 const AdminCategory = (props: Props) => {
@@ -40,12 +40,7 @@ const AdminCategory = (props: Props) => {
       setCategoryList(categoryListFromAPI);
     } else {
       //Toast
-      Toast.show('Không thể lấy danh sách danh mục', {
-        duration: Toast.durations.SHORT,
-        position: Toast.positions.BOTTOM,
-        shadow: true,
-        animation: true,
-      });
+      showToast('Không thể lấy danh sách danh mục');
     }
   }
 
@@ -73,61 +68,37 @@ const AdminCategory = (props: Props) => {
   };
 
   const handleAddCategory = async () => {
-    if (name.trim().length !== 0) {
+    if (name.trim().length >= 2 && name.trim().length <= 50) {
       const code = await addJustName(addCategoryUrl, name.trim());
       //Toast
       if (code === 200) {
         handleCloseModal();
         Actions.refresh({ key: Math.random() });
-        Toast.show('Thêm danh mục thành công', {
-          duration: Toast.durations.SHORT,
-          position: Toast.positions.BOTTOM,
-          shadow: true,
-          animation: true,
-        });
+        showToast('Thêm danh mục thành công');
       } else {
-        Toast.show('Không thể thêm danh mục', {
-          duration: Toast.durations.SHORT,
-          position: Toast.positions.BOTTOM,
-          shadow: true,
-          animation: true,
-        });
+        showToast('Không thể thêm danh mục');
       }
     } else {
       //Toast err
-      Toast.show('Tên không được để trống', {
-        duration: Toast.durations.SHORT,
-        position: Toast.positions.BOTTOM,
-        shadow: true,
-        animation: true,
-      });
+      showToast('Tên không được để trống');
     }
   };
 
   const handleSaveCategory = async () => {
-    if (name.trim().length !== 0) {
+    if (name.trim().length >= 2 && name.trim().length <= 50) {
       editItem.name = name.trim();
       const code = await editJustName(editCategoryUrl, editItem);
       //Toast
       if (code === 200) {
         handleCloseModal();
         Actions.refresh({ key: Math.random() });
+        showToast('Chỉnh sửa danh mục thành công');
       } else {
-        Toast.show('Không thể chỉnh sửa danh mục', {
-          duration: Toast.durations.SHORT,
-          position: Toast.positions.BOTTOM,
-          shadow: true,
-          animation: true,
-        });
+        showToast('Không thể chỉnh sửa danh mục');
       }
     } else {
       //Toast err
-      Toast.show('Tên không được để trống', {
-        duration: Toast.durations.SHORT,
-        position: Toast.positions.BOTTOM,
-        shadow: true,
-        animation: true,
-      });
+      showToast('Tên không được để trống');
     }
   };
 
@@ -140,22 +111,11 @@ const AdminCategory = (props: Props) => {
     const code = await deleteJustName(deleteCategoryUrl, editItem);
     //Toast
     if (code === 200) {
-      console.log('200');
       handleCloseModal();
       Actions.refresh({ key: Math.random() });
-      Toast.show('Xóa danh mục thành công', {
-        duration: Toast.durations.SHORT,
-        position: Toast.positions.BOTTOM,
-        shadow: true,
-        animation: true,
-      });
+      showToast('Xóa danh mục thành công');
     } else {
-      Toast.show('Không thể xóa danh mục', {
-        duration: Toast.durations.SHORT,
-        position: Toast.positions.BOTTOM,
-        shadow: true,
-        animation: true,
-      });
+      showToast('Không thể xóa danh mục');
       setModalDeleteVisible(false);
     }
   };

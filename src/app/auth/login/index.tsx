@@ -1,6 +1,5 @@
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Alert } from 'react-native';
 import {
   NormalTextInput,
   PasswordTextInput,
@@ -20,6 +19,7 @@ import {
   addReceiptAPI,
   emailReg,
   getCartFromAPI,
+  showToast,
 } from '../../../common/util/common';
 import { SmallCardView } from '../../../common/ui/layout/auth-Layout';
 import { BlueButton } from '../../../common/ui/base/button';
@@ -71,42 +71,22 @@ const Login = () => {
               dispatch(loadCart(cartFromAPI));
             } else {
               //Toast
-              Toast.show('Không thể lấy giỏ hàng', {
-                duration: Toast.durations.SHORT,
-                position: Toast.positions.BOTTOM,
-                shadow: true,
-                animation: true,
-              });
+              showToast('Không thể lấy giỏ hàng');
             }
           } else {
             await addReceiptAPI(cart);
           }
           Actions.pop();
-          Actions.push('profile');
-          Toast.show('Đăng nhập thành công', {
-            duration: Toast.durations.SHORT,
-            position: Toast.positions.BOTTOM,
-            shadow: true,
-            animation: true,
-          });
+          setTimeout(() => {
+            Actions.refresh({ key: Math.random() });
+          }, 10);
+          showToast('Đăng nhập thành công');
         } else {
           //Toast res.data['message']
-          Toast.show('Đăng nhập không thành công', {
-            duration: Toast.durations.SHORT,
-            position: Toast.positions.BOTTOM,
-            shadow: true,
-            animation: true,
-          });
+          showToast('Đăng nhập không thành công');
         }
       })
-      .catch((err) =>
-        Toast.show('Đăng nhập không thành công', {
-          duration: Toast.durations.SHORT,
-          position: Toast.positions.BOTTOM,
-          shadow: true,
-          animation: true,
-        })
-      );
+      .catch((err) => showToast('Đăng nhập không thành công'));
   };
 
   const handleChangeVisible = (): void => {
@@ -163,7 +143,12 @@ const Login = () => {
         <LargeTextTouchable title="Đăng ký" pressed={handleRegisterPress} />
         <LargeTextTouchable
           title="Trở về trang chủ"
-          pressed={() => Actions.popTo('menu')}
+          pressed={() => {
+            Actions.popTo('menu');
+            setTimeout(() => {
+              Actions.refresh({ key: Math.random() });
+            }, 10);
+          }}
         />
       </SmallCardView>
     </AuthLayoutContainer>

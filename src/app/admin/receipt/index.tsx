@@ -7,15 +7,27 @@ import CartLayout from '../../../common/ui/layout/cart-layout';
 import ReceiptRowContainer from '../../../common/ui/layout/receipt-layout/receiptRowContainer';
 import {
   getReceiptListAdminFromAPI,
+  getUserInfoByIDFromAPI,
+  getUserItemByIDFromAPI,
   ReceiptInterface,
+  showToast,
 } from '../../../common/util/common';
 import styles from '../category/style';
-import Toast from 'react-native-root-toast';
 
 interface Props {}
 const AdminReceipt = (props: Props) => {
   const [searchText, setSearchText] = useState<string>('');
   const [receiptList, setReceiptList] = useState([] as any);
+
+  const getUserDetail = async (_id: string) => {
+    const userDetail = await getUserInfoByIDFromAPI(_id);
+    if (typeof userDetail !== 'string') {
+      return userDetail;
+    } else {
+      //Toast
+      showToast('Không thể lấy thông tin tài khoản');
+    }
+  };
 
   const getReceiptList = async () => {
     const receiptListFromAPI = await getReceiptListAdminFromAPI();
@@ -23,12 +35,7 @@ const AdminReceipt = (props: Props) => {
       setReceiptList(receiptListFromAPI);
     } else {
       //Toast
-      Toast.show('Không thể lấy danh sách hóa đơn', {
-        duration: Toast.durations.SHORT,
-        position: Toast.positions.BOTTOM,
-        shadow: true,
-        animation: true,
-      });
+      showToast('Không thể lấy danh sách khách hàng');
     }
   };
 
@@ -36,13 +43,14 @@ const AdminReceipt = (props: Props) => {
     getReceiptList();
   }, []);
 
-  const handleDetailPressed = (receipt: ReceiptInterface) => {
-    Actions.push('receiptDetail', { receipt: receipt });
+  const handleDetailPressed = async (receipt: ReceiptInterface) => {
+    const userInfo = await getUserDetail(receipt.id_user);
+    Actions.push('receiptDetail', { receipt: receipt, userInfo: userInfo });
   };
 
   return (
     <CartLayout
-      title="Danh mục HĐ"
+      title="Hóa đơn"
       backPressed={() => {
         Actions.pop();
         setTimeout(() => {

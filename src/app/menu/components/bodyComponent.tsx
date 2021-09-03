@@ -9,6 +9,7 @@ import {
   getCategoryNameFromAPI,
   getProductListFromAPI,
   ProductItem,
+  showToast,
 } from '../../../common/util/common';
 import { Actions } from 'react-native-router-flux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -30,29 +31,24 @@ const BodyComponent = (props: Props) => {
       setProductList(productListFromAPI);
     } else {
       //Toast string
-      Toast.show('Không thể lấy danh sách sản phẩm', {
-        duration: Toast.durations.SHORT,
-        position: Toast.positions.BOTTOM,
-        shadow: true,
-        animation: true,
-      });
+      showToast('Không thể lấy danh sách sản phẩm');
     }
   };
 
-  const getCategory = async () => {
+  const getCategoryList = async () => {
     const categoryListFromAPI = await getCategoryListFromAPI();
     if (typeof categoryListFromAPI !== 'string') {
       setCategoryList(categoryListFromAPI);
     } else {
       //Toast
-      Toast.show('Không thể lấy danh sách danh mục', {
-        duration: Toast.durations.SHORT,
-        position: Toast.positions.BOTTOM,
-        shadow: true,
-        animation: true,
-      });
+      showToast('Không thể lấy danh sách danh mục');
     }
   };
+
+  useEffect(() => {
+    getCategoryList();
+    getProductList();
+  }, []);
 
   const handleProductPressed = (
     item: ProductItem,
@@ -84,11 +80,6 @@ const BodyComponent = (props: Props) => {
     );
   };
 
-  useEffect(() => {
-    getCategory();
-    getProductList();
-  }, []);
-
   return (
     <FlatList
       showsVerticalScrollIndicator={false}
@@ -113,7 +104,6 @@ const BodyComponent = (props: Props) => {
               return (
                 <CategoryRowContainer
                   categoryItem={item.item}
-                  key={item.item._id}
                   productPressed={handleProductPressed}
                 />
               );
@@ -122,7 +112,6 @@ const BodyComponent = (props: Props) => {
               return (
                 <ProductRowContainer
                   item={item.item}
-                  key={item.item._id}
                   addToCart={handleAddToCart}
                   productPressed={handleSearchPressed}
                 />
@@ -135,39 +124,6 @@ const BodyComponent = (props: Props) => {
           : (item: ProductItem) => item._id
       }
     />
-
-    //   {!props.searchText
-    //     ? categoryList.map((item: CategoryItem) => {
-    //         return (
-    //           <CategoryRowContainer
-    //             categoryItem={item}
-    //             key={item._id}
-    //             productPressed={handleProductPressed}
-    //           />
-    //         );
-    //       })
-    //     : productList
-    //         .filter((item: ProductItem) => {
-    //           return (
-    //             item.name
-    //               .toLowerCase()
-    //               .startsWith(props.searchText.trim().toLowerCase()) ||
-    //             item.brand
-    //               .toLowerCase()
-    //               .startsWith(props.searchText.trim().toLowerCase())
-    //           );
-    //         })
-    //         .map((item: ProductItem) => {
-    //           return (
-    //             <ProductRowContainer
-    //               item={item}
-    //               key={item._id}
-    //               addToCart={handleAddToCart}
-    //               productPressed={handleSearchPressed}
-    //             />
-    //           );
-    //         })}
-    // </ScrollView>
   );
 };
 

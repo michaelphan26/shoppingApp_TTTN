@@ -12,6 +12,7 @@ import styles from './style';
 import {
   addReceiptAPI,
   CartItem,
+  getCategoryNameFromAPI,
   getProductDetailFromAPI,
   ProductItem,
 } from '../../../util/common';
@@ -46,13 +47,11 @@ const ProductRowWithQuantity = (props: Props) => {
   }, []);
 
   const handleIncreaseQuantity = async () => {
-    const token = await AsyncStorage.getItem('@token');
     const newQuantity = props.item.quantity + 1;
     dispatch(
       changeQuantity({
         item: props.item,
         newQuantity: newQuantity,
-        token: token,
       })
     );
     await addReceiptAPI({
@@ -78,12 +77,10 @@ const ProductRowWithQuantity = (props: Props) => {
 
   const handleDecreaseQuantity = async () => {
     const newQuantity = props.item.quantity - 1;
-    const token = await AsyncStorage.getItem('@token');
     dispatch(
       changeQuantity({
         item: props.item,
         newQuantity: newQuantity,
-        token: token,
       })
     );
     await addReceiptAPI({
@@ -115,37 +112,8 @@ const ProductRowWithQuantity = (props: Props) => {
     });
   };
 
-  const getProduct = async (id_product: string): Promise<ProductItem> => {
-    let product: ProductItem = {} as ProductItem;
-    await axios({
-      url: `product/product-detail/${id_product}`,
-      baseURL: `${api_url}`,
-      method: 'get',
-    }).then((res) => {
-      if (res.data['code'] === 200) {
-        product = res.data['data'];
-      }
-    });
-    return product;
-  };
-
-  const getCategoryName = async (product: ProductItem): Promise<string> => {
-    let categoryName = '';
-    await axios({
-      url: `category/get-name/${product.id_category}`,
-      baseURL: `${api_url}`,
-      method: 'get',
-    }).then((res) => {
-      if (res.data['code'] === 200) {
-        categoryName = res.data['data'].name;
-      }
-    });
-    return categoryName;
-  };
-
   const handleCheckProductDetail = async () => {
-    const product = await getProduct(props.item.id_product);
-    const categoryName = await getCategoryName(product);
+    const categoryName = await getCategoryNameFromAPI(product);
     console.log(categoryName);
     Actions.push('product', {
       item: product,

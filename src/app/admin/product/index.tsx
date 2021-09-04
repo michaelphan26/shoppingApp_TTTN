@@ -15,6 +15,7 @@ import {
   addProductAPI,
   editProductAPI,
   getCategoryListFromAPI,
+  getProductListAdminFromAPI,
   getProductListFromAPI,
   initialProductItem,
   ProductItem,
@@ -51,7 +52,7 @@ const AdminProduct = (props: Props) => {
   } = useForm({ reValidateMode: 'onSubmit' });
 
   async function getProductList() {
-    const productListFromAPI = await getProductListFromAPI();
+    const productListFromAPI = await getProductListAdminFromAPI();
     if (typeof productListFromAPI != 'string') {
       setProductList(productListFromAPI);
     } else {
@@ -272,19 +273,14 @@ const AdminProduct = (props: Props) => {
               <RNPickerSelect
                 style={styles}
                 onValueChange={onChange}
-                placeholder={{
-                  label: 'Chọn trạng thái',
-                  value: '',
-                }}
                 value={value}
                 items={statusList}
                 useNativeAndroidPickerStyle={false}
               />
             </TouchableHighlight>
           )}
-          rules={{ required: true }}
           name="status"
-          defaultValue={action === 'Add' ? '' : product.status}
+          defaultValue={action === 'Add' ? true : product.status}
         />
         {errors.status && <SmallText title="Chưa chọn trạng thái" />}
 

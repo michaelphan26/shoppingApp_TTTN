@@ -384,6 +384,32 @@ export async function getProductListFromAPI() {
   return productList
 }
 
+export async function getProductListAdminFromAPI() {
+  const token=await AsyncStorage.getItem("@token")
+  let productList= [] as any;
+  await axios({
+      url: `/admin/product-list`,
+      baseURL: `${api_url}`,
+      method: 'get',
+    responseType: 'json',
+    headers: {
+        "x-auth-token":token
+      }
+    })
+      .then((res) => {
+        if (res.data['code'] === 200) {
+           productList=res.data['data'];
+        }
+        else {
+          return res.data['message'] as string
+        }
+      })
+      .catch((err) => {
+        return err.response.data['message'] as string;
+      });
+  return productList
+}
+
 export async function getCategoryListFromAPI() {
   let categoryList = [] as any;
   await axios({

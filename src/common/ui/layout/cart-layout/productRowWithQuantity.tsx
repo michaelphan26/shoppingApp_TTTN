@@ -54,10 +54,6 @@ const ProductRowWithQuantity = (props: Props) => {
         newQuantity: newQuantity,
       })
     );
-    await addReceiptAPI({
-      productList: cart.productList,
-      total: cart.total,
-    });
     // if (token !== null) {
     //   console.log('Push API');
     //   axios({
@@ -83,10 +79,6 @@ const ProductRowWithQuantity = (props: Props) => {
         newQuantity: newQuantity,
       })
     );
-    await addReceiptAPI({
-      productList: cart.productList,
-      total: cart.total,
-    });
     // if (token !== null) {
     //   console.log('Push API');
     //   axios({
@@ -106,10 +98,6 @@ const ProductRowWithQuantity = (props: Props) => {
 
   const handleRemoveFromCart = async () => {
     dispatch(removeFromCart(props.item));
-    await addReceiptAPI({
-      productList: cart.productList,
-      total: cart.total,
-    });
   };
 
   const handleCheckProductDetail = async () => {

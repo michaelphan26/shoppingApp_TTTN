@@ -1,7 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
-import { addReceiptAPI, CartItem } from "../common/util/common";
-import { api_url } from "../common/util/constant";
+import { CartItem } from "../common/util/common";
 
 const CartReducer = createSlice({
     name: 'cart',
@@ -32,7 +30,7 @@ const CartReducer = createSlice({
                 if (state.productList[index].id_product === cartItem.id_product) {
                     if (parseInt(state.productList[index].quantity) > parseInt(newQuantity)) {
                         const change = parseInt(state.productList[index].quantity) - parseInt(newQuantity);
-                        const totalChange = change * parseInt(state.productList[index].price);
+                        const totalChange = change * (parseInt(state.productList[index].price) - (parseInt(state.productList[index].price) * parseInt(state.productList[index].discount)/100));
                         state.total = state.total - totalChange;
                         state.productList[index].quantity = newQuantity;
 
@@ -42,7 +40,7 @@ const CartReducer = createSlice({
                     }
                     else if (parseInt(state.productList[index].quantity) < parseInt(newQuantity)) {
                         const change = parseInt(newQuantity) - parseInt(state.productList[index].quantity);
-                        const totalChange = change * parseInt(state.productList[index].price);
+                        const totalChange = change *( parseInt(state.productList[index].price)- (parseInt(state.productList[index].price)*parseInt(state.productList[index].discount)/100));
                         state.total = state.total + totalChange;
                         state.productList[index].quantity = newQuantity;
                     }
@@ -52,7 +50,8 @@ const CartReducer = createSlice({
         },
         removeFromCart(state, action) {
             state.productList=state.productList.filter((item:CartItem)=>item.id_product!==action.payload.id_product)
-            state.total = state.total - (parseInt(action.payload.quantity) * parseInt(action.payload.price))
+            state.total = state.total - (parseInt(action.payload.quantity) *
+                (parseInt(action.payload.price) - parseInt(action.payload.price) * parseInt(action.payload.discount) / 100))
         },
         emptyCart(state, action) {
             state.productList = [] as any;

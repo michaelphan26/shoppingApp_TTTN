@@ -131,7 +131,9 @@ const AdminIOProduct = (props: Props) => {
   };
 
   const handleAddIOProduct = async () => {
-    if (ioProductDetailList.length !== 0) {
+    if (ioType === '') {
+      showToast('Chưa chọn trạng thái');
+    } else if (ioProductDetailList.length !== 0) {
       let check = true;
       for (const index in ioProductDetailList) {
         if (

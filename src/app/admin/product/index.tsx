@@ -114,6 +114,7 @@ const AdminProduct = (props: Props) => {
   const handleAddProduct = async (info: ProductItem) => {
     if (imageBase64 !== '') {
       info.image = imageBase64;
+      delete info._id;
       const code = await addProductAPI(info);
       //Toast
       if (code === 200) {
@@ -131,14 +132,15 @@ const AdminProduct = (props: Props) => {
 
   const handleSaveProduct = async (info: ProductItem) => {
     info.image = imageBase64;
+    delete info._id;
     const code = await editProductAPI(info, product._id);
     //Toast
     if (code === 200) {
       handleCloseModal();
       Actions.refresh({ key: Math.random() });
-      showToast('Không thể thêm sản phẩm');
+      showToast('Chỉnh sửa sản phẩm thành công');
     } else {
-      showToast('Không thể thêm sản phẩm');
+      showToast('Không thể chỉnh sửa sản phẩm');
     }
   };
 
@@ -166,11 +168,11 @@ const AdminProduct = (props: Props) => {
               editable={true}
             />
           )}
-          rules={{ required: true }}
+          rules={{ required: true, minLength: 2, maxLength: 64 }}
           defaultValue={action === 'Add' ? '' : product.name}
           name="name"
         />
-        {errors.name && <SmallText title="Tên không được để trống" />}
+        {errors.name && <SmallText title="Tên không đúng" />}
 
         <Controller
           control={control}
@@ -183,7 +185,7 @@ const AdminProduct = (props: Props) => {
               editable={true}
             />
           )}
-          rules={{ required: true, minLength: 2, maxLength: 100 }}
+          rules={{ required: true, minLength: 3, maxLength: 20 }}
           name="brand"
           defaultValue={action === 'Add' ? '' : product.brand}
         />

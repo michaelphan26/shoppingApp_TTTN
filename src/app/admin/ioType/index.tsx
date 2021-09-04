@@ -69,7 +69,7 @@ const AdminIOType = (props: Props) => {
   };
 
   const handleAddIOType = async () => {
-    if (name.trim().length !== 0) {
+    if (name.trim().length >= 2 && name.trim().length <= 30) {
       const code = await addJustName(addIOTypeUrl, name.trim());
       //Toast
       if (code === 200) {
@@ -85,7 +85,7 @@ const AdminIOType = (props: Props) => {
   };
 
   const handleSaveIOType = async () => {
-    if (name.trim().length !== 0) {
+    if (name.trim().length >= 2 && name.trim().length <= 30) {
       editItem.name = name.trim();
       const code = await editJustName(editIOTypeUrl, editItem);
       //Toast

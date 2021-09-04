@@ -54,7 +54,18 @@ const styles = StyleSheet.create({
         fontSize:Platform.OS==='android' ? Dimensions.get('window').height *2.2 /100 : Dimensions.get('window').height*1.5/100,
         fontWeight: 'bold',
         color:Color.black
-    }
+    },
+    badge: {
+        position: 'absolute',
+        right: -6,
+        top: -3,
+        height: 20,
+        width: 20,
+        borderRadius: 10,
+        backgroundColor: Color.pink,
+        alignItems: 'center',
+        justifyContent:'center'
+    },
 })
 
 export default styles

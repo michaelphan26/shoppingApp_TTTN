@@ -51,10 +51,10 @@ const Cart = (props: Props) => {
     }
 
     const token = await AsyncStorage.getItem('@token');
-    // await addReceiptAPI({
-    //   productList: cart.productList,
-    //   total: cart.total,
-    // });
+    await addReceiptAPI({
+      productList: cart.productList,
+      total: cart.total,
+    });
     if (token && account.email !== '') {
       await axios({
         url: `/receipt/receipt-checkout`,
@@ -86,14 +86,16 @@ const Cart = (props: Props) => {
     }
   };
 
-  const pushCart = async () => {
-    await addReceiptAPI(cart);
-    //Toast message
-  };
-
   useEffect(() => {
     getUserInfo();
   }, []);
+
+  async function pushCart() {
+    await addReceiptAPI({
+      productList: cart.productList,
+      total: cart.total,
+    });
+  }
 
   useEffect(() => {
     pushCart();

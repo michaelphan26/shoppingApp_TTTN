@@ -5,14 +5,15 @@ import Toast from 'react-native-root-toast';
 
 export const emailReg = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-export const phoneReg = /((02|09|03|07|08|05)+([0-9]{9})\b)/g;
+export const phoneReg = /((02|09|03|07|08|05)+([0-9]{8,9})\b)/g;
 
 export const showToast=(message: string)=>{
   Toast.show(message, {
     duration: Toast.durations.SHORT,
     position: Toast.positions.BOTTOM,
     animation: true,
-    shadow:true,
+    shadow: true,
+    containerStyle: {zIndex:1000}
   })
 }
 
@@ -213,7 +214,7 @@ export const getCartFromAPI = async ()=>{
   const token = await AsyncStorage.getItem("@token");
   let cart = {} as CartInterface
   if (token) {
-    axios({
+    await axios({
       url: 'receipt/get-cart',
       baseURL: `${api_url}`,
       method: 'get',
@@ -223,7 +224,9 @@ export const getCartFromAPI = async ()=>{
       responseType:'json'
     }).then(res => {
       if (res.data['code'] === 200) {
+        console.log("Cart")
         cart = res.data['data'];
+        console.log(cart)
       }
       else {
         return res.data['message'] as string;
@@ -231,7 +234,7 @@ export const getCartFromAPI = async ()=>{
     }).catch(err => {
       return err.response.data['message'] as string
     })
-    return cart
+    return cart;
   } else {
     return "No token";
   }

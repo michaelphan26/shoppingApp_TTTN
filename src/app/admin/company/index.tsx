@@ -133,11 +133,11 @@ const AdminCompany = (props: Props) => {
               editable={true}
             />
           )}
-          rules={{ required: true }}
+          rules={{ required: true, minLength: 3, maxLength: 100 }}
           defaultValue={action === 'Add' ? '' : company.name}
           name="name"
         />
-        {errors.name && <SmallText title="Tên không được để trống" />}
+        {errors.name && <SmallText title="Tên không đúng" />}
 
         <Controller
           control={control}

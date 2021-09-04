@@ -80,7 +80,7 @@ const AdminCategory = (props: Props) => {
       }
     } else {
       //Toast err
-      showToast('Tên không được để trống');
+      showToast('Tên không đúng');
     }
   };
 
@@ -98,7 +98,7 @@ const AdminCategory = (props: Props) => {
       }
     } else {
       //Toast err
-      showToast('Tên không được để trống');
+      showToast('Tên không đúng');
     }
   };
 

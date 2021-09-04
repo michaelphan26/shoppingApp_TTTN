@@ -49,29 +49,37 @@ const ChangePassword = () => {
   const handleChangePasswordPress = async (
     changeDetail: ChangePasswordInfo
   ) => {
-    const token = await AsyncStorage.getItem('@token');
-    await axios({
-      url: 'auth/change-password',
-      baseURL: `${api_url}`,
-      method: 'post',
-      responseType: 'json',
-      headers: {
-        'x-auth-token': token,
-      },
-      data: changeDetail,
-    })
-      .then((res) => {
-        if (res.data['code'] === 200) {
-          setChangeSuccess(true);
-          showToast('Thay đổi mật khẩu thành công');
-        } else {
-          showToast('Lỗi thay đổi mật khẩu');
-        }
+    if (changeDetail.oldPassword.trim() === changeDetail.newPassword.trim()) {
+      return showToast('Mật khẩu mới không được giống mật khẩu cũ');
+    } else if (
+      changeDetail.newPassword.trim() !== changeDetail.confirmPassword.trim()
+    ) {
+      return showToast('Mật khẩu xác nhận không đúng');
+    } else {
+      const token = await AsyncStorage.getItem('@token');
+      await axios({
+        url: 'auth/change-password',
+        baseURL: `${api_url}`,
+        method: 'post',
+        responseType: 'json',
+        headers: {
+          'x-auth-token': token,
+        },
+        data: changeDetail,
       })
-      .catch((err) => {
-        //Toast err
-        showToast('Không thể thay đổi mật khẩu');
-      });
+        .then((res) => {
+          if (res.data['code'] === 200) {
+            setChangeSuccess(true);
+            showToast('Thay đổi mật khẩu thành công');
+          } else {
+            showToast('Lỗi thay đổi mật khẩu');
+          }
+        })
+        .catch((err) => {
+          //Toast err
+          showToast('Không thể thay đổi mật khẩu');
+        });
+    }
   };
 
   return (

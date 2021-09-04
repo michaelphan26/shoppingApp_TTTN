@@ -1,8 +1,8 @@
 import React from 'react';
 import { Text, TouchableWithoutFeedback, View } from 'react-native';
-import styles from './style';
+import styles from '../style';
 import { Entypo } from 'react-native-vector-icons';
-import { ioProductInterface } from '../../../common/util/common';
+import { ioProductInterface } from '../../../../common/util/common';
 
 interface Props {
   item: ioProductInterface;

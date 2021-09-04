@@ -20,9 +20,9 @@ import styles from '../category/style';
 import { Entypo } from 'react-native-vector-icons';
 import RNPickerSelect from 'react-native-picker-select';
 import { BlueButton } from '../../../common/ui/base/button';
-import IOProductSelect from './ioProductSelect';
+import IOProductSelect from './components/ioProductSelect';
 import NumberTextInput from '../../../common/ui/base/textInput/numberTextInput';
-import IOProductRow from './ioProductRow';
+import IOProductRow from './components/ioProductRow';
 import DetailAlert from '../../../common/ui/base/admin-alert/detailAlert';
 
 interface Props {}

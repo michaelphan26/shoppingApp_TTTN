@@ -11,7 +11,7 @@ import {
 } from '../../common/util/common';
 import styles from './style';
 import numeral from 'numeral';
-import ProductRowNoQuantity from '../../common/ui/layout/cart-layout/productRowNoQuantity';
+import ProductRowNoQuantity from '../../common/ui/layout/cart-layout/components/productRowNoQuantity';
 import CartLayout from '../../common/ui/layout/cart-layout';
 import Toast from 'react-native-root-toast';
 import { useSelector } from 'react-redux';

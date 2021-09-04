@@ -1,10 +1,10 @@
 import React from 'react';
 import { View } from 'react-native';
-import NumberTextInput from '../../../common/ui/base/textInput/numberTextInput';
-import styles from './style';
-import categoryStyles from '../category/style';
+import NumberTextInput from '../../../../common/ui/base/textInput/numberTextInput';
+import styles from '../style';
+import categoryStyles from '../../category/style';
 import RNPickerSelect from 'react-native-picker-select';
-import { ioProductDetailItem } from '../../../common/util/common';
+import { ioProductDetailItem } from '../../../../common/util/common';
 
 interface Props {
   index: number;

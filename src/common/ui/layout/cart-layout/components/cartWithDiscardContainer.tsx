@@ -1,7 +1,7 @@
 import React from 'react';
 import { TouchableWithoutFeedback, View } from 'react-native';
 import { Entypo, MaterialIcons } from 'react-native-vector-icons';
-import styles from './style';
+import styles from '../style';
 
 interface Props {
   removeFromCart: () => void;

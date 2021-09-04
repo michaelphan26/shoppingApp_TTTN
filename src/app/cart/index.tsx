@@ -18,7 +18,7 @@ import { api_url } from '../../common/util/constant';
 import { RootState } from '../../models/store';
 import styles from './style';
 import numeral from 'numeral';
-import ProductRowWithQuantity from '../../common/ui/layout/cart-layout/productRowWithQuantity';
+import ProductRowWithQuantity from '../../common/ui/layout/cart-layout/components/productRowWithQuantity';
 import { emptyCart } from '../../models/cartReducer';
 import BlueButton from '../../common/ui/base/button/blueButton';
 import CartLayout from '../../common/ui/layout/cart-layout';

@@ -8,23 +8,26 @@ import {
 } from 'react-native';
 import numeral from 'numeral';
 import CartWithDiscardContainer from './cartWithDiscardContainer';
-import styles from './style';
+import styles from '../style';
 import {
   CartItem,
   getProductDetail,
   getProductDetailFromAPI,
   ProductItem,
   ReceiptDetailInterface,
-} from '../../../util/common';
+} from '../../../../util/common';
 import axios from 'axios';
 import { useEffect } from 'react';
-import { api_url } from '../../../util/constant';
-import { Color } from '../../../util/enum';
+import { api_url } from '../../../../util/constant';
+import { Color } from '../../../../util/enum';
 import { Entypo } from 'react-native-vector-icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { changeQuantity, removeFromCart } from '../../../../models/cartReducer';
+import {
+  changeQuantity,
+  removeFromCart,
+} from '../../../../../models/cartReducer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { RootState } from '../../../../models/store';
+import { RootState } from '../../../../../models/store';
 import { Actions } from 'react-native-router-flux';
 
 interface Props {

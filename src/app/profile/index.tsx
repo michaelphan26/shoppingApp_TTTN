@@ -32,6 +32,7 @@ const Profile = (props: Props) => {
     handleSubmit,
     formState: { errors },
     setValue,
+    clearErrors,
   } = useForm({ reValidateMode: 'onSubmit' });
   const account = useSelector((state: RootState) => state.accountReducer);
   const [isEdited, setIsEdited] = useState<boolean>(false);
@@ -46,6 +47,7 @@ const Profile = (props: Props) => {
     setValue('name', userDetail.name);
     setValue('phone', userDetail.phone);
     setValue('address', userDetail.address);
+    clearErrors();
   };
 
   async function getUserInfo() {

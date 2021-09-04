@@ -86,6 +86,7 @@ const AdminIOType = (props: Props) => {
 
   const handleSaveIOType = async () => {
     if (name.trim().length >= 2 && name.trim().length <= 30) {
+      const baseName = editItem.name;
       editItem.name = name.trim();
       const code = await editJustName(editIOTypeUrl, editItem);
       //Toast
@@ -94,6 +95,7 @@ const AdminIOType = (props: Props) => {
         Actions.refresh({ key: Math.random() });
         showToast('Chỉnh sửa loại nhập xuất thành công');
       } else {
+        editItem.name = baseName;
         showToast('Không thể chỉnh sửa loại nhập xuất');
       }
     } else {

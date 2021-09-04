@@ -224,9 +224,7 @@ export const getCartFromAPI = async ()=>{
       responseType:'json'
     }).then(res => {
       if (res.data['code'] === 200) {
-        console.log("Cart")
         cart = res.data['data'];
-        console.log(cart)
       }
       else {
         return res.data['message'] as string;
@@ -503,6 +501,29 @@ export async function getReceiptDetailFromAPI(_id:string){
   let receiptDetailList = [] as any;
   await axios({
     url: `receipt/receipt-detail/${_id}`,
+    baseURL: `${api_url}`,
+    method: 'get',
+    headers: {
+      "x-auth-token":token
+    },
+    responseType:'json',
+  }).then(res => {
+    if (res.data['code'] === 200) {
+      receiptDetailList = res.data['data'];
+    }
+    else return res.data['message']
+  }).catch(err => {
+    return err.response.data['message'];
+  })
+
+  return receiptDetailList;
+}
+
+export async function getReceiptDetailAdminFromAPI(_id:string){
+  const token = await AsyncStorage.getItem("@token");
+  let receiptDetailList = [] as any;
+  await axios({
+    url: `admin/receipt-detail/${_id}`,
     baseURL: `${api_url}`,
     method: 'get',
     headers: {

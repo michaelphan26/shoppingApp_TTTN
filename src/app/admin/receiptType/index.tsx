@@ -87,6 +87,7 @@ const AdminReceiptType = (props: Props) => {
 
   const handleSaveReceiptType = async () => {
     if (name.trim().length >= 2 && name.trim().length <= 20) {
+      const baseName = editItem.name;
       editItem.name = name.trim();
       const code = await editJustName(editReceiptTypeUrl, editItem);
       //Toast
@@ -95,6 +96,7 @@ const AdminReceiptType = (props: Props) => {
         Actions.refresh({ key: Math.random() });
         showToast('Chỉnh sửa loại hóa đơn thành công');
       } else {
+        editItem.name = baseName;
         showToast('Không thể chỉnh sửa loại hóa đơn');
       }
     } else {

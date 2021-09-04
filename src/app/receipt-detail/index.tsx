@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import {
+  getReceiptDetailAdminFromAPI,
   getReceiptDetailFromAPI,
   ReceiptDetailInterface,
   ReceiptInterface,
@@ -13,13 +14,13 @@ import styles from './style';
 import numeral from 'numeral';
 import ProductRowNoQuantity from '../../common/ui/layout/cart-layout/components/productRowNoQuantity';
 import CartLayout from '../../common/ui/layout/cart-layout';
-import Toast from 'react-native-root-toast';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../models/store';
 
 interface Props {
   receipt: ReceiptInterface;
   userInfo: UserInfo;
+  isAdmin: boolean;
 }
 
 const ReceiptDetail = (props: Props) => {
@@ -28,9 +29,15 @@ const ReceiptDetail = (props: Props) => {
 
   //get Receipt detail
   async function getReceiptDetail() {
-    const receiptDetailFromAPI = await getReceiptDetailFromAPI(
-      props.receipt._id
-    );
+    let receiptDetailFromAPI;
+    if (props.isAdmin) {
+      receiptDetailFromAPI = await getReceiptDetailAdminFromAPI(
+        props.receipt._id
+      );
+    } else {
+      receiptDetailFromAPI = await getReceiptDetailFromAPI(props.receipt._id);
+    }
+
     if (typeof receiptDetailFromAPI !== 'string') {
       //
       setReceiptDetail(receiptDetailFromAPI);

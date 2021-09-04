@@ -86,6 +86,7 @@ const AdminCategory = (props: Props) => {
 
   const handleSaveCategory = async () => {
     if (name.trim().length >= 2 && name.trim().length <= 50) {
+      const baseName = editItem.name;
       editItem.name = name.trim();
       const code = await editJustName(editCategoryUrl, editItem);
       //Toast
@@ -94,6 +95,7 @@ const AdminCategory = (props: Props) => {
         Actions.refresh({ key: Math.random() });
         showToast('Chỉnh sửa danh mục thành công');
       } else {
+        editItem.name = baseName;
         showToast('Không thể chỉnh sửa danh mục');
       }
     } else {

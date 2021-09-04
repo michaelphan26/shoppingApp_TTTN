@@ -39,6 +39,7 @@ const Receipt = (props: Props) => {
     Actions.push('receiptDetail', {
       receipt: receipt,
       userInfo: props.userInfo,
+      isAdmin: false,
     });
   };
 

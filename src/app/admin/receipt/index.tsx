@@ -45,7 +45,11 @@ const AdminReceipt = (props: Props) => {
 
   const handleDetailPressed = async (receipt: ReceiptInterface) => {
     const userInfo = await getUserDetail(receipt.id_user);
-    Actions.push('receiptDetail', { receipt: receipt, userInfo: userInfo });
+    Actions.push('receiptDetail', {
+      receipt: receipt,
+      userInfo: userInfo,
+      isAdmin: true,
+    });
   };
 
   return (

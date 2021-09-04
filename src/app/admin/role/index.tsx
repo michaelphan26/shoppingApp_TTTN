@@ -88,6 +88,7 @@ const AdminRole = (props: Props) => {
 
   const handleSaveRole = async () => {
     if (name.trim().length >= 2 && name.trim().length <= 20) {
+      const baseName = editItem.name;
       editItem.name = name.trim();
       const code = await editJustName(editRoleUrl, editItem);
       //Toast
@@ -96,6 +97,7 @@ const AdminRole = (props: Props) => {
         Actions.refresh({ key: Math.random() });
         showToast('Chỉnh sửa chức vụ thành công');
       } else {
+        editItem.name = baseName;
         showToast('Không thể chỉnh sửa chức vụ');
       }
     } else {

@@ -116,6 +116,7 @@ const AdminProduct = (props: Props) => {
     if (imageBase64 !== '') {
       info.image = imageBase64;
       delete info._id;
+      delete info.stock;
       const code = await addProductAPI(info);
       //Toast
       if (code === 200) {
@@ -134,6 +135,7 @@ const AdminProduct = (props: Props) => {
   const handleSaveProduct = async (info: ProductItem) => {
     info.image = imageBase64;
     delete info._id;
+    delete info.stock;
     const code = await editProductAPI(info, product._id);
     //Toast
     if (code === 200) {
@@ -273,12 +275,17 @@ const AdminProduct = (props: Props) => {
               <RNPickerSelect
                 style={styles}
                 onValueChange={onChange}
+                placeholder={{
+                  label: 'Chọn trạng thái',
+                  value: '',
+                }}
                 value={value}
                 items={statusList}
                 useNativeAndroidPickerStyle={false}
               />
             </TouchableHighlight>
           )}
+          rules={{ required: true }}
           name="status"
           defaultValue={action === 'Add' ? true : product.status}
         />

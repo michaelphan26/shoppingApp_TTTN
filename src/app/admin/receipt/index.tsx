@@ -2,13 +2,12 @@ import React, { useEffect } from 'react';
 import { useState } from 'react';
 import { FlatList, View } from 'react-native';
 import { Actions } from 'react-native-router-flux';
-import { NormalTextInput } from '../../../common/ui/base/textInput';
+import NumberTextInput from '../../../common/ui/base/textInput/numberTextInput';
 import CartLayout from '../../../common/ui/layout/cart-layout';
 import ReceiptRowContainer from '../../../common/ui/layout/receipt-layout/receiptRowContainer';
 import {
   getReceiptListAdminFromAPI,
   getUserInfoByIDFromAPI,
-  getUserItemByIDFromAPI,
   ReceiptInterface,
   showToast,
 } from '../../../common/util/common';
@@ -63,7 +62,7 @@ const AdminReceipt = (props: Props) => {
       }}
     >
       <View style={styles.searchContainer}>
-        <NormalTextInput
+        <NumberTextInput
           iconName="search"
           placeholderText="Tìm kiếm..."
           onTextChange={(text) => setSearchText(text)}
@@ -73,7 +72,9 @@ const AdminReceipt = (props: Props) => {
       </View>
 
       <FlatList
-        data={receiptList}
+        data={receiptList.filter((item: ReceiptInterface) =>
+          item.date.startsWith(searchText.trim())
+        )}
         style={styles.listContainer}
         renderItem={(item: ReceiptInterface) => {
           return (

@@ -8,13 +8,9 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
-import { api_url } from '../../../../util/constant';
-import styles from '../../../../../app/menu/style';
-import SquareItemView from './squareItemView';
+import styles from '../style';
 import numeral from 'numeral';
 import { FontAwesome, Entypo } from 'react-native-vector-icons';
-import CartIconContainer from './cartIconContainer';
 import { ProductItem } from '../../../../util/common';
 
 interface Props {
@@ -24,7 +20,7 @@ interface Props {
 }
 const ProductRowItemNoCart = (props: Props) => {
   return (
-    <View style={styles.productContainer}>
+    <View style={styles.productAdminContainer}>
       <Image
         source={{ uri: `data:image/png;base64,${props.item.image}` }}
         style={styles.imageRound}
@@ -36,6 +32,9 @@ const ProductRowItemNoCart = (props: Props) => {
         </Text>
         <Text style={styles.titleTiny} numberOfLines={1}>
           {props.item.brand}
+        </Text>
+        <Text style={styles.titleTiny} numberOfLines={1}>
+          Tồn kho: {props.item.stock}
         </Text>
         <Text style={styles.titleTiny} numberOfLines={1}>
           {numeral(props.item.price).format('0,0')}đ

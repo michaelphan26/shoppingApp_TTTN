@@ -16,6 +16,7 @@ import numeral from 'numeral';
 import { FontAwesome, Entypo } from 'react-native-vector-icons';
 import CartIconContainer from './cartIconContainer';
 import { ProductItem } from '../../../../util/common';
+import SearchRowDiscountIconBadge from '../../../../../app/menu/components/searchRowDiscountIconBadge';
 
 interface Props {
   item: ProductItem;
@@ -26,6 +27,9 @@ const ProductRowItem = (props: Props) => {
   return (
     <TouchableWithoutFeedback onPress={() => props.productPressed(props.item)}>
       <View style={styles.productContainer}>
+        {props.item.discount != 0 ? (
+          <SearchRowDiscountIconBadge percent={props.item.discount} />
+        ) : null}
         <Image
           source={{ uri: `data:image/png;base64,${props.item.image}` }}
           style={styles.imageRound}

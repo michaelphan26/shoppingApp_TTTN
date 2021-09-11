@@ -221,7 +221,7 @@ export const getCartFromAPI = async ()=>{
       headers: {
         "x-auth-token":token  
         },
-      responseType:'json'
+      responseType: 'json'
     }).then(res => {
       if (res.data['code'] === 200) {
         cart = res.data['data'];

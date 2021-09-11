@@ -9,6 +9,7 @@ import {
   getIOProductDetailFromAPI,
   getIOProductListFromAPI,
   getIOTypeFromAPI,
+  getProductListAdminFromAPI,
   getProductListFromAPI,
   initialIOProductDetailItem,
   ioProductDetailItem,
@@ -56,7 +57,7 @@ const AdminIOProduct = (props: Props) => {
   }
 
   async function getProductList() {
-    const productListFromAPI = await getProductListFromAPI();
+    const productListFromAPI = await getProductListAdminFromAPI();
     if (typeof productListFromAPI !== 'string') {
       let tempList = [] as any;
       for (const index in productListFromAPI) {
@@ -134,13 +135,14 @@ const AdminIOProduct = (props: Props) => {
     if (ioType === '') {
       showToast('Chưa chọn trạng thái');
     } else if (ioProductDetailList.length !== 0) {
+      console.log(ioProductDetailList);
       let check = true;
       for (const index in ioProductDetailList) {
         if (
-          ioProductDetailList[index].idProduct === '' ||
+          ioProductDetailList[index].id_product === '' ||
           ioProductDetailList[index].id_company === '' ||
-          ioProductDetailList[index].quantity < 1 ||
-          ioProductDetailList[index].price < 1001
+          parseInt(ioProductDetailList[index].price) < 1001 ||
+          parseInt(ioProductDetailList[index].quantity) < 1
         ) {
           check = false;
           break;

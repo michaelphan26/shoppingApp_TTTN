@@ -4,7 +4,7 @@ import { NormalTextInput } from '../../../common/ui/base/textInput';
 import { Entypo, FontAwesome } from 'react-native-vector-icons';
 import { Color } from '../../../common/util/enum';
 import styles from '../style';
-import IconBadge from './iconBadge';
+import CartIconBadge from './cartIconBadge';
 import { Actions } from 'react-native-router-flux';
 
 interface Props {
@@ -27,7 +27,7 @@ const HeadComponent = (props: Props) => {
       <TouchableWithoutFeedback onPress={() => Actions.push('cart')}>
         <View>
           <FontAwesome name="shopping-cart" size={25} color={Color.black} />
-          <IconBadge />
+          <CartIconBadge />
         </View>
       </TouchableWithoutFeedback>
       <TouchableWithoutFeedback onPress={() => props.profilePressed()}>

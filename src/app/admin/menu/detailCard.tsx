@@ -11,10 +11,10 @@ const DetailCard = (props: Props) => {
   return (
     <TouchableWithoutFeedback onPress={() => props.itemPressed(props.item)}>
       <View style={styles.detailContainer}>
-        <Text style={styles.title} numberOfLines={1}>
-          {props.item.title}
+        <Text style={styles.title} numberOfLines={2}>
+          {props.item.title.replace(/\\n/g, '\n')}
         </Text>
-        {props.item.count === 0 ? (
+        {props.item.count === 0 && props.item.count !== null ? (
           <Text style={styles.countPink}>{props.item.count}</Text>
         ) : (
           <Text style={styles.countBlue}>{props.item.count}</Text>

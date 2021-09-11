@@ -63,10 +63,9 @@ const Login = () => {
       .then(async (res) => {
         if (res.data['code'] === 200) {
           await AsyncStorage.setItem('@token', res.headers['x-auth-token']);
-          dispatch(accountLogin(res.data['data']));
+          await dispatch(accountLogin(res.data['data']));
           //Check cart
           if (cart.productList.length === 0) {
-            console.log('Get cart');
             const cartFromAPI = await getCartFromAPI();
             if (typeof cartFromAPI !== 'string') {
               dispatch(loadCart(cartFromAPI));

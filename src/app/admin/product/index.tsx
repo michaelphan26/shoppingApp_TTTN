@@ -41,8 +41,8 @@ const AdminProduct = (props: Props) => {
   const [product, setProduct] = useState<ProductItem>(initialProductItem);
   const [imageBase64, setImageBase64] = useState<string | undefined>('');
   const statusList = [
-    { label: 'Đang kinh doanh', value: true },
-    { label: 'Ngừng kinh doanh', value: false },
+    { label: 'Đang kinh doanh', value: 'true' },
+    { label: 'Ngừng kinh doanh', value: 'false' },
   ];
   const {
     control,
@@ -113,7 +113,8 @@ const AdminProduct = (props: Props) => {
   };
 
   const handleAddProduct = async (info: ProductItem) => {
-    if (imageBase64 !== '') {
+    console.log(info);
+    if (imageBase64 !== '' && info.status.toString() !== '') {
       info.image = imageBase64;
       delete info._id;
       delete info.stock;
@@ -133,6 +134,7 @@ const AdminProduct = (props: Props) => {
   };
 
   const handleSaveProduct = async (info: ProductItem) => {
+    console.log(info);
     info.image = imageBase64;
     delete info._id;
     delete info.stock;
@@ -287,7 +289,7 @@ const AdminProduct = (props: Props) => {
           )}
           rules={{ required: true }}
           name="status"
-          defaultValue={action === 'Add' ? true : product.status}
+          defaultValue={action === 'Add' ? 'true' : product.status.toString()}
         />
         {errors.status && <SmallText title="Chưa chọn trạng thái" />}
 

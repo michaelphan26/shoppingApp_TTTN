@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../models/store';
 import styles from '../style';
 
-const IconBadge = () => {
+const CartIconBadge = () => {
   const cart = useSelector((state: RootState) => state.cartReducer);
 
   return (
@@ -14,4 +14,4 @@ const IconBadge = () => {
   );
 };
 
-export default IconBadge;
+export default CartIconBadge;

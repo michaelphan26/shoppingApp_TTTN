@@ -107,6 +107,25 @@ const styles = StyleSheet.create({
         marginTop: 5,
         marginBottom:10
     },
+    productAdminContainer: {
+        flexDirection:'row',
+        width: Dimensions.get('window').width * 98 / 100,
+        height: Dimensions.get('window').height * 16 / 100,
+        alignSelf: 'center',
+        alignItems: 'center',
+        backgroundColor: Color.white,
+        borderRadius: 10,
+        shadowRadius: 5,
+        shadowOpacity: 0.3,
+        shadowOffset: {
+            width: 1,
+            height:1
+        },
+        elevation: Platform.OS==='android' ? 5 :0,
+        paddingHorizontal: 5,
+        marginTop: 5,
+        marginBottom:10
+    },
     imageRound: {
         width: '20%',
         height: '90%',

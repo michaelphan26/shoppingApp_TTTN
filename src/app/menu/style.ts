@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
         borderBottomColor: Color["medium-gray"]
     },
     titleSmall: {
-fontSize:Platform.OS==='android' ? Dimensions.get('window').height *2.5 /100 : Dimensions.get('window').height*1.7/100,        // fontSize: Dimensions.get('window').width *6/100-6,
+        fontSize:Platform.OS==='android' ? Dimensions.get('window').height *2.5 /100 : Dimensions.get('window').height*1.7/100,        // fontSize: Dimensions.get('window').width *6/100-6,
         fontWeight: 'bold',
         color:Color.black
     },
@@ -125,6 +125,31 @@ fontSize:Platform.OS==='android' ? Dimensions.get('window').height *2.5 /100 : D
         //fontSize:10
         fontWeight: 'bold',
         color:Color.white
+    },
+    discountBadge: {
+        flexDirection:'row',
+        position: 'absolute',
+        right: -5,
+        top: -3,
+        height: 20,
+        width: 35,
+        borderRadius: 10,
+        backgroundColor: Color.pink,
+        alignItems: "center",
+        justifyContent: 'center',
+    },
+    discountBadgeLeft: {
+        flexDirection:'row',
+        position: 'absolute',
+        left: 0,
+        top: -5,
+        height: 20,
+        width: 35,
+        borderRadius: 10,
+        backgroundColor: Color.pink,
+        alignItems: "center",
+        justifyContent: 'center',
+        zIndex:10
     }
 })
  

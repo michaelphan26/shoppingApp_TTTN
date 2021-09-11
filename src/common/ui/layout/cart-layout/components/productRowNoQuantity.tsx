@@ -29,6 +29,7 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { RootState } from '../../../../../models/store';
 import { Actions } from 'react-native-router-flux';
+import SearchRowDiscountIconBadge from '../../../../../app/menu/components/searchRowDiscountIconBadge';
 
 interface Props {
   item: ReceiptDetailInterface;
@@ -53,6 +54,9 @@ const ProductRowNoQuantity = (props: Props) => {
   return (
     <TouchableWithoutFeedback onPress={handleCheckProductDetail}>
       <View style={styles.productContainer}>
+        {props.item.discount != 0 ? (
+          <SearchRowDiscountIconBadge percent={props.item.discount} />
+        ) : null}
         <View style={styles.detailWrapper}>
           <Image
             source={{ uri: `data:image/png;base64,${product.image}` }}
